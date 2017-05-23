@@ -5,6 +5,7 @@
         <group>
             <file>file:/E:/AHK-Interface/src/ahk/pkginterface/KeyData.java</file>
             <file>file:/E:/AHK-Interface/src/ahk/pkginterface/AHKInterface.java</file>
+            <file>file:/E:/AHK-Interface/src/ahk/pkginterface/database/ProfileDB.java</file>
         </group>
     </open-files>
 </project-private>
