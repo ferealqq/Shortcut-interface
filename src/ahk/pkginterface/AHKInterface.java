@@ -1,22 +1,24 @@
 package ahk.pkginterface;
 
-import ahk.pkginterface.database.ProfileDB;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import static javax.swing.JFrame.EXIT_ON_CLOSE;
 import javax.swing.JPanel;
 
 public class AHKInterface extends JFrame {
 
-    private JPanel pohja = new JPanel(new BorderLayout());
+    private JPanel rootPane = new JPanel(new BorderLayout());
     private JPanel keyboard = new JPanel(new GridLayout(6, 1));
     private JPanel bottomPane = new JPanel(new GridLayout(1,6));
+
+    private SignIn signInFrame = new SignIn(this);
 
     private JButton btscripts = new JButton("Open");
     private JButton btsignin = new JButton("Sign in");
@@ -28,6 +30,7 @@ public class AHKInterface extends JFrame {
     private JButton btnext = new JButton("Next");
 
     private ArrayList<String> newhotkeys = new ArrayList<>();
+    private int currentUserId;
 
     public AHKInterface() {
         this.setTitle("AHK-Interface");
@@ -36,6 +39,19 @@ public class AHKInterface extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         asetteleKomponentit();
         this.setResizable(false);
+
+        btsignin.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                signInFrame.setVisible(true);
+            }
+        });
+    }
+    public void setCurrentUserId(int id) {
+        currentUserId = id;
+    }
+    private void changeToOnline(){
+        btsignin.setText("");
     }
 
     private void setKeyboard() {
@@ -80,9 +96,9 @@ public class AHKInterface extends JFrame {
         bottomPane.add(bthelp);
         bottomPane.add(btnext);
 
-        pohja.add(keyboard, BorderLayout.CENTER);
-        pohja.add(bottomPane, BorderLayout.PAGE_END);
-        this.add(pohja);
+        rootPane.add(keyboard, BorderLayout.CENTER);
+        rootPane.add(bottomPane, BorderLayout.PAGE_END);
+        this.add(rootPane);
         setKeyboard();
     }
 }

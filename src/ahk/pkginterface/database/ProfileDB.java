@@ -44,12 +44,12 @@ public class ProfileDB {
             closeConnection(connection);
         }
     }
-    public boolean checkPassword(String password,int currentUserId){
+    public boolean checkPassword(String password,String username){
         try{
             connection=DriverManager.getConnection(connectionStrings[0],connectionStrings[1],connectionStrings[2]);
-            String sqlquery = "select password from profile where profile_id=?";
+            String sqlquery = "select password from profile where username=?";
             prepStatement = connection.prepareStatement(sqlquery);
-            prepStatement.setInt(1,currentUserId);
+            prepStatement.setString(1,username);
             resultSet = prepStatement.executeQuery();
             String hashed ="";
             if(resultSet.next()) hashed = resultSet.getString("password");
@@ -69,6 +69,22 @@ public class ProfileDB {
         java.util.regex.Matcher m = p.matcher(email);
         return m.matches();
     }
+    public int getProileIdByUsername(String username){
+        try{
+            connection = DriverManager.getConnection(connectionStrings[0],connectionStrings[1],connectionStrings[2]);
+            String sqlquery = "select profile_id from profile where username = ?";
+            prepStatement = connection.prepareStatement(sqlquery);
+            prepStatement.setString(1,username);
+            resultSet = prepStatement.executeQuery();
+            if(resultSet.next()) return resultSet.getInt("profile_id");
+            prepStatement.close();
+        }catch(Exception ex){
+            System.out.println("Error in getProfileIdByUsername : "+ex);
+        }finally {
+            closeConnection(connection);
+        }
+        return 0;
+    }
     public static void closeConnection(Connection con) {
         if (con != null) {
             try {
@@ -78,6 +94,6 @@ public class ProfileDB {
         }
     }
     public static void main(String[] args) {
-        System.out.println(new ProfileDB().checkPassword("pka",1));
+        System.out.println(new ProfileDB().checkPassword("pekka","pekka"));
     }
 }
