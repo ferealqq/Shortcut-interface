@@ -1,11 +1,10 @@
 package ahk.pkginterface.database;
 
 import ahk.pkginterface.JBcrypt.BCrypt;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import sun.java2d.cmm.Profile;
+
+import javax.swing.*;
+import java.sql.*;
 
 public class ProfileDB {
 
@@ -24,7 +23,7 @@ public class ProfileDB {
 /**
  *  Creates the user and sends the data to the database server
  */
-    public boolean createUser(String username,String password,String email){
+    public boolean createUser(String username, String password, String email){
         if(!isValidEmailAddress(email)) return false;
         password = BCrypt.hashpw(password, BCrypt.gensalt());
         try{
@@ -36,13 +35,32 @@ public class ProfileDB {
             prepStatement.setString(3,email);
             prepStatement.executeUpdate();
             prepStatement.close();
-            return true;
-        }catch (Exception ex){
+            return false;
+        }catch (SQLException ex){
             System.out.println("Error in createUser : "+ ex);
             return false;
         }finally {
             closeConnection(connection);
         }
+    }
+    public boolean checkUsername(String username){
+        // gets data from database to check if the username is taken or not. If the username is taken returns false; if not return true;
+        try{
+            connection = DriverManager.getConnection(connectionStrings[0],connectionStrings[1],connectionStrings[2]);
+            String sqlquery = "select username from profile where username = ?";
+            prepStatement = connection.prepareStatement(sqlquery);
+            prepStatement.setString(1, username);
+            resultSet = prepStatement.executeQuery();
+            if(resultSet.next()) return false;
+            prepStatement.close();
+            return true;
+        }catch (Exception ex){
+            System.out.println("Error in checkUsername : "+ ex);
+            return false;
+        }finally {
+            closeConnection(connection);
+        }
+
     }
     public boolean checkPassword(String password,String username){
         try{
@@ -94,6 +112,6 @@ public class ProfileDB {
         }
     }
     public static void main(String[] args) {
-        System.out.println(new ProfileDB().checkPassword("pekka","pekka"));
+        System.out.println(new ProfileDB().checkUsername("pekka"));
     }
 }

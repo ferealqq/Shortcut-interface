@@ -1,2 +1,9 @@
 Open:
     hakee sekä tietokoneelta löytyneet ahk ohjelmat että käyttäjälle tallennetut ohjelmat.
+Register Form
+    Kuin käyttäjä on valmis ja kirjoittaa seuraavassa ruudussa jotain. Register ottaa edellisen kentän tiedot ja tarkistaa että tietokannassa ei ole kyseistä nimeä käytetty.
+
+
+
+sqlException codes
+    username taken == 0

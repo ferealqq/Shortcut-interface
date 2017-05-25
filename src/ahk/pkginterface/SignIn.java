@@ -4,27 +4,30 @@ import ahk.pkginterface.database.ProfileDB;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 public class SignIn extends JFrame {
-    private JPanel rootPane = new JPanel(new GridLayout(3, 1));
+    private JPanel rootPane = new JPanel(new GridLayout(4, 1));
     private JPanel labelPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
     private JPanel pwPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
     private JPanel loginPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    private JPanel bottomPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
     private JLabel lbUsername = new JLabel("Username");
     private JLabel lbPassword = new JLabel("Password");
     private JLabel Register = new JLabel("                        Register                        ");
+    private JLabel lbBack = new JLabel("Back");
 
     private JTextField tfUsername = new JTextField(15);
     private JPasswordField tfPw = new JPasswordField(15);
     private JButton signin = new JButton("Sign in");
+
+    private Register registerFrame;
     private ProfileDB db = new ProfileDB();
 
+
     public SignIn(AHKInterface mainFrame) {
+        registerFrame = new Register(mainFrame,this);
         this.setTitle("SignIn");
         this.setSize(230, 260);
         this.setLocationRelativeTo(null);
@@ -51,11 +54,24 @@ public class SignIn extends JFrame {
                 if(db.checkPassword(tfPw.getText(),tfUsername.getText())) {
                     mainFrame.setCurrentUserId(db.getProileIdByUsername(tfUsername.getText()));
                     setVisible(false);
-                    System.out.println("?");
                     dispose();
                 }else{
                     JOptionPane.showMessageDialog(rootPane,"Something went wrong try again!");
                 }
+            }
+        });
+        Register.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                registerFrame.setVisible(true);
+                setVisible(false);
+            }
+        });
+        lbBack.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                mainFrame.setVisible(true);
+                setVisible(false);
             }
         });
     }
@@ -65,15 +81,18 @@ public class SignIn extends JFrame {
     }
 
     private void setComponents() {
+        //lbBack.setSize(new Dimension());
         labelPane.add(lbUsername);
         labelPane.add(tfUsername);
         pwPane.add(lbPassword);
         pwPane.add(tfPw);
         loginPane.add(signin);
         loginPane.add(Register);
+        bottomPane.add(lbBack);
         rootPane.add(labelPane);
         rootPane.add(pwPane);
         rootPane.add(loginPane);
+        rootPane.add(bottomPane);
         this.add(rootPane);
     }
 }

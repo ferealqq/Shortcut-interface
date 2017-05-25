@@ -18,7 +18,7 @@ public class AHKInterface extends JFrame {
     private JPanel keyboard = new JPanel(new GridLayout(6, 1));
     private JPanel bottomPane = new JPanel(new GridLayout(1,6));
 
-    private SignIn signInFrame = new SignIn(this);
+    private SignIn signInFrame;
 
     private ActionListener alLogout;
     private ActionListener alSignIn;
@@ -33,9 +33,10 @@ public class AHKInterface extends JFrame {
     private JButton btnext = new JButton("Next");
 
     private ArrayList<String> newhotkeys = new ArrayList<>();
-    private int currentUserId;
+    public int currentUserId;
 
     public AHKInterface() {
+        signInFrame  = new SignIn(this);
         this.setTitle("AHK-Interface");
         this.setSize(1000, 600);
         this.setLocationRelativeTo(null);

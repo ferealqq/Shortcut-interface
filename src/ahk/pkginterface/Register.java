@@ -4,10 +4,7 @@ import ahk.pkginterface.database.ProfileDB;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
 
 public class Register extends JFrame{
     private JPanel rootPane = new JPanel(new GridLayout(5, 1));
@@ -30,46 +27,70 @@ public class Register extends JFrame{
     private JButton btRegister = new JButton("Register");
     private JButton btBack = new JButton("Back");
 
+    private AHKInterface mainFrame;
+    private SignIn signInFrame;
     private ProfileDB db = new ProfileDB();
 
-    public Register(AHKInterface mainFrame) {
+    private MouseAdapter hoverUsername = new MouseAdapter() {
+        @Override
+        public void mouseEntered(MouseEvent e) {
+
+        }
+
+        @Override
+        public void mouseExited(MouseEvent e) {
+
+        }
+    };
+
+    public Register(AHKInterface mainForm,SignIn signInForm) {
+        mainFrame = mainForm;
+        signInFrame = signInForm;
         this.setSize(250, 350);
         this.setLocationRelativeTo(null);
         btRegister.setPreferredSize(new Dimension(90, 30));
         btBack.setPreferredSize(new Dimension(90, 30));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         setComponents();
-        tfPw.addKeyListener(new KeyAdapter() {
+        tfEmail.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent keyEvent) {
-                if(keyEvent.getKeyCode()==KeyEvent.VK_ENTER){
-                    if(db.checkPassword(tfPw.getText(),tfUsername.getText())) {
-                        mainFrame.setCurrentUserId(db.getProileIdByUsername(tfUsername.getText()));
-                        setVisible(false);
-                        dispose();
-                    }else{
-                        JOptionPane.showMessageDialog(rootPane,"Something went wrong try again!");
-                    }
-                }
+            public void keyPressed(KeyEvent e) {
+                if(db.checkUsername(tfUsername.getText())) tfUsername.setForeground(Color.red);
             }
         });
         btRegister.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(db.checkPassword(tfPw.getText(),tfUsername.getText())) {
-                    mainFrame.setCurrentUserId(db.getProileIdByUsername(tfUsername.getText()));
-                    setVisible(false);
-                    System.out.println("?");
+                if (tfPw.getText().equals(tfPw2.getText())) {
+                    if(!db.createUser(tfUsername.getText(), tfPw.getText(), tfEmail.getText())) {
+                        JOptionPane.showMessageDialog(rootPane,"Something went wrong!");
+                        tfPw.setText("");
+                        tfPw2.setText("");
+                        tfEmail.setText("");
+                        tfUsername.setText("");
+                        return;
+                    }
+                    if(mainFrame.currentUserId==0){
+                        mainFrame.setCurrentUserId(db.getProileIdByUsername(tfUsername.getText()));
+                        System.out.println(mainFrame.currentUserId);
+                    }
                     dispose();
-                }else{
-                    JOptionPane.showMessageDialog(rootPane,"Something went wrong try again!");
+                    mainFrame.setVisible(true);
+                    JOptionPane.showMessageDialog(rootPane,"Successful!");
                 }
+            }
+        });
+        btBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                signInFrame.setVisible(true);
+                dispose();
             }
         });
     }
 
     public static void main(String[] args) {
-        new Register(new AHKInterface()).setVisible(true);
+        new Register(new AHKInterface(),new SignIn(new AHKInterface())).setVisible(true);
     }
 
     private void setComponents() {
