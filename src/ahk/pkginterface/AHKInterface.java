@@ -20,6 +20,9 @@ public class AHKInterface extends JFrame {
 
     private SignIn signInFrame = new SignIn(this);
 
+    private ActionListener alLogout;
+    private ActionListener alSignIn;
+
     private JButton btscripts = new JButton("Open");
     private JButton btsignin = new JButton("Sign in");
     private JButton btdetect = new JButton("Detect");
@@ -40,18 +43,29 @@ public class AHKInterface extends JFrame {
         asetteleKomponentit();
         this.setResizable(false);
 
-        btsignin.addActionListener(new ActionListener() {
+        alSignIn = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 signInFrame.setVisible(true);
             }
-        });
+        };
+        btsignin.addActionListener(alSignIn);
+        alLogout = new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                currentUserId = 0;
+                btsignin.removeActionListener(alLogout);
+                btsignin.addActionListener(alSignIn);
+                btsignin.setText("Sign in");
+            }
+        };
     }
-    public void setCurrentUserId(int id) {
-        currentUserId = id;
-    }
-    private void changeToOnline(){
-        btsignin.setText("");
+
+    public void setCurrentUserId(int id) { currentUserId = id; changeToLogout(); }
+    private void changeToLogout(){
+        btsignin.setText("Log out");
+        btsignin.removeActionListener(alSignIn);
+        btsignin.addActionListener(alLogout);
     }
 
     private void setKeyboard() {

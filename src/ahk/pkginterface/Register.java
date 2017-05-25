@@ -9,26 +9,34 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-public class SignIn extends JFrame {
-    private JPanel rootPane = new JPanel(new GridLayout(3, 1));
-    private JPanel labelPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
+public class Register extends JFrame{
+    private JPanel rootPane = new JPanel(new GridLayout(5, 1));
+    private JPanel usernamePane = new JPanel(new FlowLayout(FlowLayout.CENTER));
     private JPanel pwPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    private JPanel loginPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    private JPanel pwPane2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    private JPanel emailPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
+    private JPanel registerPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
     private JLabel lbUsername = new JLabel("Username");
+    private JLabel lbEmail = new JLabel("     Email     ");
     private JLabel lbPassword = new JLabel("Password");
-    private JLabel Register = new JLabel("                        Register                        ");
+    private JLabel lbPassword2 = new JLabel("Re-enter password");
 
     private JTextField tfUsername = new JTextField(15);
+    private JTextField tfEmail = new JTextField(15);
     private JPasswordField tfPw = new JPasswordField(15);
-    private JButton signin = new JButton("Sign in");
+    private JPasswordField tfPw2 = new JPasswordField(15);
+
+    private JButton btRegister = new JButton("Register");
+    private JButton btBack = new JButton("Back");
+
     private ProfileDB db = new ProfileDB();
 
-    public SignIn(AHKInterface mainFrame) {
-        this.setTitle("SignIn");
-        this.setSize(230, 260);
+    public Register(AHKInterface mainFrame) {
+        this.setSize(250, 350);
         this.setLocationRelativeTo(null);
-        signin.setPreferredSize(new Dimension(80, 30));
+        btRegister.setPreferredSize(new Dimension(90, 30));
+        btBack.setPreferredSize(new Dimension(90, 30));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         setComponents();
         tfPw.addKeyListener(new KeyAdapter() {
@@ -45,7 +53,7 @@ public class SignIn extends JFrame {
                 }
             }
         });
-        signin.addActionListener(new ActionListener() {
+        btRegister.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(db.checkPassword(tfPw.getText(),tfUsername.getText())) {
@@ -61,19 +69,31 @@ public class SignIn extends JFrame {
     }
 
     public static void main(String[] args) {
-        new SignIn(new AHKInterface()).setVisible(true);
+        new Register(new AHKInterface()).setVisible(true);
     }
 
     private void setComponents() {
-        labelPane.add(lbUsername);
-        labelPane.add(tfUsername);
+        usernamePane.add(lbUsername);
+        usernamePane.add(tfUsername);
+
+        emailPane.add(lbEmail);
+        emailPane.add(tfEmail);
+
         pwPane.add(lbPassword);
         pwPane.add(tfPw);
-        loginPane.add(signin);
-        loginPane.add(Register);
-        rootPane.add(labelPane);
+
+        pwPane2.add(lbPassword2);
+        pwPane2.add(tfPw2);
+
+        registerPane.add(btBack);
+        registerPane.add(btRegister);
+
+        rootPane.add(usernamePane);
+        rootPane.add(emailPane);
         rootPane.add(pwPane);
-        rootPane.add(loginPane);
+        rootPane.add(pwPane2);
+        rootPane.add(registerPane);
+
         this.add(rootPane);
     }
 }
