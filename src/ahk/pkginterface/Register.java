@@ -1,10 +1,14 @@
 package ahk.pkginterface;
 
+import ahk.pkginterface.commentFrames.commentFrame;
 import ahk.pkginterface.database.ProfileDB;
 
 import javax.swing.*;
+import javax.xml.stream.Location;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.ColorModel;
+import java.util.ArrayList;
 
 public class Register extends JFrame{
     private JPanel rootPane = new JPanel(new GridLayout(5, 1));
@@ -31,14 +35,19 @@ public class Register extends JFrame{
     private SignIn signInFrame;
     private ProfileDB db = new ProfileDB();
 
-    private MouseAdapter hoverUsername = new MouseAdapter() {
+    private String commentMsg;
+    private commentFrame comment = new commentFrame();
+
+    private MouseAdapter setHover = new MouseAdapter() {
         @Override
         public void mouseEntered(MouseEvent e) {
-
+            comment.comment.setText(commentMsg);
+            comment.addText();
+            comment.setVisible(true);
         }
-
         @Override
         public void mouseExited(MouseEvent e) {
+            comment.setVisible(false);
 
         }
     };
@@ -52,10 +61,23 @@ public class Register extends JFrame{
         btBack.setPreferredSize(new Dimension(90, 30));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         setComponents();
-        tfEmail.addKeyListener(new KeyAdapter() {
+        tfUsername.addKeyListener(new KeyAdapter() {
             @Override
-            public void keyPressed(KeyEvent e) {
-                if(db.checkUsername(tfUsername.getText())) tfUsername.setForeground(Color.red);
+            public void keyReleased(KeyEvent e) {
+                if(!db.checkUsername(tfUsername.getText())){
+                    commentMsg = "Username taken! Try something else.";
+                    comment.comment.setText(commentMsg);
+                    comment.addText();
+                    comment.setVisible(true);
+                    tfUsername.setForeground(Color.red);
+                    comment.setLocation(getX()+210,getY()+57);
+                    tfUsername.addMouseListener(setHover);
+                }else{
+                    tfUsername.setForeground(Color.BLACK);
+                    tfUsername.removeMouseListener(setHover);
+                    commentMsg ="";
+                    comment.comment.setText("");
+                }
             }
         });
         btRegister.addActionListener(new ActionListener() {
