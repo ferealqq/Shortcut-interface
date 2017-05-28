@@ -36,7 +36,7 @@ public class Register extends JFrame{
     private ProfileDB db = new ProfileDB();
 
     private String commentMsg;
-    private commentFrame comment = new commentFrame();
+    private commentFrame comment = new commentFrame(this);
 
     private MouseAdapter setHover = new MouseAdapter() {
         @Override
@@ -77,12 +77,38 @@ public class Register extends JFrame{
                     tfUsername.removeMouseListener(setHover);
                     commentMsg ="";
                     comment.comment.setText("");
+                    comment.setVisible(false);
                 }
             }
         });
+        tfEmail.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (!db.checkEmail(tfEmail.getText())) {
+                    commentMsg = "Email is being used. Try something else!";
+                    comment.comment.setText(commentMsg);
+                    comment.addText();
+                    comment.setVisible(true);
+                    tfEmail.setForeground(Color.red);
+                    comment.setLocation(getX() + 210, getY() + 118);
+                    tfEmail.addMouseListener(setHover);
+                } else {
+                    tfEmail.setForeground(Color.BLACK);
+                    tfEmail.removeMouseListener(setHover);
+                    commentMsg = "";
+                    comment.comment.setText("");
+                    comment.setVisible(false);
+                }
+            }
+        });
+
         btRegister.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                for (char c:
+                     tfPw.getPassword()) {
+                    System.out.println(c);
+                }
                 if (tfPw.getText().equals(tfPw2.getText())) {
                     if(!db.createUser(tfUsername.getText(), tfPw.getText(), tfEmail.getText())) {
                         JOptionPane.showMessageDialog(rootPane,"Something went wrong!");
@@ -94,11 +120,12 @@ public class Register extends JFrame{
                     }
                     if(mainFrame.currentUserId==0){
                         mainFrame.setCurrentUserId(db.getProileIdByUsername(tfUsername.getText()));
-                        System.out.println(mainFrame.currentUserId);
                     }
                     dispose();
                     mainFrame.setVisible(true);
                     JOptionPane.showMessageDialog(rootPane,"Successful!");
+                }else{
+                    JOptionPane.showMessageDialog(rootPane,"Passwords doesn't match, try again!");
                 }
             }
         });

@@ -60,7 +60,23 @@ public class ProfileDB {
         }finally {
             closeConnection(connection);
         }
-
+    }
+    public boolean checkEmail(String email){
+        try{
+            connection = DriverManager.getConnection(connectionStrings[0],connectionStrings[1],connectionStrings[2]);
+            String sqlquery = "select email from profile where email = ?";
+            prepStatement = connection.prepareStatement(sqlquery);
+            prepStatement.setString(1, email);
+            resultSet = prepStatement.executeQuery();
+            if(resultSet.next()) return false;
+            prepStatement.close();
+            return true;
+        }catch (Exception ex){
+            System.out.println("Error in checkUsername : "+ ex);
+            return false;
+        }finally {
+            closeConnection(connection);
+        }
     }
     public boolean checkPassword(String password,String username){
         try{
