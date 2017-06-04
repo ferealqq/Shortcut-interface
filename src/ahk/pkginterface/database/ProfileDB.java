@@ -15,7 +15,6 @@ public class ProfileDB {
     private String[] connectionStrings = {"","",""};
 
     public ProfileDB() {
-        // tämä on testi
         connectionStrings[0] = "jdbc:postgresql://localhost:5432/ahk-interface";
         connectionStrings[1] = "postgres";
         connectionStrings[2] = "pekka";

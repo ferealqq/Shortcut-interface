@@ -4,3 +4,7 @@ Open:
 Register Form
     Kuin käyttäjä on valmis ja kirjoittaa seuraavassa ruudussa jotain. Register ottaa edellisen kentän tiedot ja tarkistaa että tietokannassa ei ole kyseistä nimeä käytetty.
     Sitten kuin hoveraat usernamea niin se kertoo että usrename on otettu. Mutta miten teet commentointi ikkunan.
+
+Search building tip.
+            System.out.println(k.getActions().get(1).getAction().toLowerCase().contains("vol"));
+            tolowercase koska haluat että ei ole väliä onko caps vaiko ei.

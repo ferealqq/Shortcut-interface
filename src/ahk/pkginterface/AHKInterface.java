@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Objects;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -60,6 +61,13 @@ public class AHKInterface extends JFrame {
                 btsignin.setText("Sign in");
             }
         };
+        btnext.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(Objects.nonNull(newhotkeys)) {
+                }
+            }
+        });
     }
 
     public void setCurrentUserId(int id) { currentUserId = id; changeToLogout(); }
@@ -83,10 +91,10 @@ public class AHKInterface extends JFrame {
                         if (e.getButton() == MouseEvent.BUTTON1) {
                             if (!key.getBackground().equals(Color.white)) {
                                 key.setBackground(Color.white);
+                                newhotkeys.add(currentKey);
                             } else {
                                 key.setBackground(Color.BLACK);
                             }
-                            newhotkeys.add(currentKey);
                         }
                     }
                 });
