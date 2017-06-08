@@ -1,6 +1,6 @@
 package ahk.pkginterface;
 
-import ahk.pkginterface.database.ProfileDB;
+import ahk.pkginterface.database.ProfilesData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +23,7 @@ public class SignIn extends JFrame {
     private JButton signin = new JButton("Sign in");
 
     private Register registerFrame;
-    private ProfileDB db = new ProfileDB();
+    private ProfilesData db = new ProfilesData();
 
 
     public SignIn(AHKInterface mainFrame) {

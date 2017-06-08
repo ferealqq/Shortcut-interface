@@ -1,14 +1,11 @@
 package ahk.pkginterface;
 
 import ahk.pkginterface.commentFrames.commentFrame;
-import ahk.pkginterface.database.ProfileDB;
+import ahk.pkginterface.database.ProfilesData;
 
 import javax.swing.*;
-import javax.xml.stream.Location;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.ColorModel;
-import java.util.ArrayList;
 
 public class Register extends JFrame{
     private JPanel rootPane = new JPanel(new GridLayout(5, 1));
@@ -33,7 +30,7 @@ public class Register extends JFrame{
 
     private AHKInterface mainFrame;
     private SignIn signInFrame;
-    private ProfileDB db = new ProfileDB();
+    private ProfilesData db = new ProfilesData();
 
     private String commentMsg;
     private commentFrame comment = new commentFrame();

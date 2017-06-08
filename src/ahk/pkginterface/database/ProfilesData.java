@@ -1,12 +1,10 @@
 package ahk.pkginterface.database;
 
 import ahk.pkginterface.JBcrypt.BCrypt;
-import sun.java2d.cmm.Profile;
 
-import javax.swing.*;
 import java.sql.*;
 
-public class ProfileDB {
+public class ProfilesData {
 
     private Connection connection = null;
     private ResultSet resultSet = null;
@@ -14,19 +12,21 @@ public class ProfileDB {
     private PreparedStatement prepStatement = null;
     private String[] connectionStrings = {"","",""};
 
-    public ProfileDB() {
+    public ProfilesData() {
         connectionStrings[0] = "jdbc:postgresql://localhost:5432/ahk-interface";
         connectionStrings[1] = "postgres";
         connectionStrings[2] = "pekka";
     }
-/**
- *  Creates the user and sends the data to the database server
- */
+
+    private String setConnectionStrings(){
+        return connectionStrings[0]+connectionStrings[1]+connectionStrings[2];
+    }
+
     public boolean createUser(String username, String password, String email){
         if(!isValidEmailAddress(email)) return false;
         password = BCrypt.hashpw(password, BCrypt.gensalt());
         try{
-            connection = DriverManager.getConnection(connectionStrings[0],connectionStrings[1],connectionStrings[2]);
+            connection = DriverManager.getConnection(setConnectionStrings());
             String sqlquery = "Insert into profile (username,password,email) values (?,?,?)";
             prepStatement = connection.prepareStatement(sqlquery);
             prepStatement.setString(1,username);
@@ -45,7 +45,7 @@ public class ProfileDB {
     public boolean checkUsername(String username){
         // gets data from database to check if the username is taken or not. If the username is taken returns false; if not return true;
         try{
-            connection = DriverManager.getConnection(connectionStrings[0],connectionStrings[1],connectionStrings[2]);
+            connection = DriverManager.getConnection(setConnectionStrings());
             String sqlquery = "select username from profile where username = ?";
             prepStatement = connection.prepareStatement(sqlquery);
             prepStatement.setString(1, username);
@@ -63,7 +63,7 @@ public class ProfileDB {
     }
     public boolean checkPassword(String password,String username){
         try{
-            connection=DriverManager.getConnection(connectionStrings[0],connectionStrings[1],connectionStrings[2]);
+            connection=DriverManager.getConnection(setConnectionStrings());
             String sqlquery = "select password from profile where username=?";
             prepStatement = connection.prepareStatement(sqlquery);
             prepStatement.setString(1,username);
@@ -88,7 +88,7 @@ public class ProfileDB {
     }
     public int getProileIdByUsername(String username){
         try{
-            connection = DriverManager.getConnection(connectionStrings[0],connectionStrings[1],connectionStrings[2]);
+            connection = DriverManager.getConnection(setConnectionStrings());
             String sqlquery = "select profile_id from profile where username = ?";
             prepStatement = connection.prepareStatement(sqlquery);
             prepStatement.setString(1,username);
@@ -111,6 +111,6 @@ public class ProfileDB {
         }
     }
     public static void main(String[] args) {
-        System.out.println(new ProfileDB().checkUsername("pekka"));
+        System.out.println(new ProfilesData().checkUsername("pekka"));
     }
 }
