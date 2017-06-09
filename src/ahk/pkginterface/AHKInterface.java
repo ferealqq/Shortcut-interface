@@ -1,16 +1,16 @@
 package ahk.pkginterface;
 
+import ahk.pkginterface.browsingFrames.browseAction;
+
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import java.util.Objects;
+import javax.swing.*;
 
 public class AHKInterface extends JFrame {
 
@@ -32,12 +32,16 @@ public class AHKInterface extends JFrame {
     private JButton bthelp = new JButton("Help");
     private JButton btnext = new JButton("Next");
 
-    private ArrayList<String> newhotkeys = new ArrayList<>();
+    private browseAction bAction = new browseAction();
+    private JFrame mainFrame;
+
+    private ArrayList<String> newhotkeys;
     public int currentUserId;
 
     public AHKInterface() {
         signInFrame  = new SignIn(this);
         this.setTitle("AHK-Interface");
+        mainFrame = this;
         this.setSize(1000, 600);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -60,6 +64,18 @@ public class AHKInterface extends JFrame {
                 btsignin.setText("Sign in");
             }
         };
+        btnext.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                if(!Objects.isNull(newhotkeys)) {
+                    bAction.setVisible(true);
+                    System.out.println(newhotkeys);
+                    bAction.setLocation(mainFrame.getX() + mainFrame.getWidth(), mainFrame.getY());
+                }else{
+                    JOptionPane.showMessageDialog(rootPane,"You haven't selected a key");
+                }
+            }
+        });
     }
 
     public void setCurrentUserId(int id) { currentUserId = id; changeToLogout(); }
@@ -69,12 +85,12 @@ public class AHKInterface extends JFrame {
         btsignin.addActionListener(alLogout);
     }
 
-    private void setKeyboard() {
+    /*private void setKeyboard() {
         int row = 0;
-        KeyData keys = new KeyData();
+        Keys keys = new Keys();
         while (row <= keys.rows.size() - 1) {
-            JPanel rowPane = new JPanel(new GridLayout(1, keys.rows.get(row).length));
-            for (String currentKey : keys.rows.get(row)) {
+            JPanel rowPane = new JPanel(new GridLayout(1, keys.rows.get(row).size()));
+            for (Key currentKey : keys.rows.get(row)) {
                 JButton key = new JButton(currentKey);
                 key.setForeground(Color.GRAY);
                 key.setBackground(Color.black);
@@ -83,10 +99,13 @@ public class AHKInterface extends JFrame {
                         if (e.getButton() == MouseEvent.BUTTON1) {
                             if (!key.getBackground().equals(Color.white)) {
                                 key.setBackground(Color.white);
+                                if(Objects.isNull(newhotkeys)) newhotkeys = new ArrayList<>();
+                                newhotkeys.add(currentKey);
                             } else {
                                 key.setBackground(Color.BLACK);
+                                newhotkeys.remove(currentKey);
+                                if(newhotkeys.isEmpty()) newhotkeys = null;
                             }
-                            newhotkeys.add(currentKey);
                         }
                     }
                 });
@@ -96,6 +115,7 @@ public class AHKInterface extends JFrame {
             row++;
         }
     }
+    */
 
     public static void main(String[] args) {
         new AHKInterface().setVisible(true);
@@ -114,6 +134,6 @@ public class AHKInterface extends JFrame {
         rootPane.add(keyboard, BorderLayout.CENTER);
         rootPane.add(bottomPane, BorderLayout.PAGE_END);
         this.add(rootPane);
-        setKeyboard();
+        //setKeyboard();
     }
 }
