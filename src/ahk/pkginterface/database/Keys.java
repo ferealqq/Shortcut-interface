@@ -29,17 +29,4 @@ public class Keys {
         rows.add(fifthrow);
         rows.add(sixthrow);
     }
-
-    public static void main(String[] args) throws IOException {
-        Gson gson = new Gson();
-        Key k = new Key("kuk", "suk");
-        System.out.println(k.getKey() + "whathtaht");
-        final Type type = new TypeToken<Collection<Keys>>() {
-        }.getType();
-        System.out.println("asd");
-        JsonReader jsonReader = new JsonReader(new FileReader("SQL lauseet/test-keyboard-layout.json"));
-        System.out.println("asd");
-        Keys jotain = gson.fromJson(jsonReader,Keys.class);
-        System.out.println(jotain.secondrow.get(1).getKeysynonyminahk());
     }
-}

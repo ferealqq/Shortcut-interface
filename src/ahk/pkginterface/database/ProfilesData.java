@@ -45,7 +45,7 @@ public class ProfilesData {
     public boolean checkUsername(String username){
         // gets data from database to check if the username is taken or not. If the username is taken returns false; if not return true;
         try{
-            connection = DriverManager.getConnection(setConnectionStrings());
+            connection = DriverManager.getConnection(connectionStrings[0]+connectionStrings[1]+connectionStrings[2]);
             String sqlquery = "select username from profile where username = ?";
             prepStatement = connection.prepareStatement(sqlquery);
             prepStatement.setString(1, username);

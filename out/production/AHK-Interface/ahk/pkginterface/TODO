@@ -4,6 +4,15 @@ Open:
 Database:
     Tee table joka pitää sisällään jokaiseen nappulaan vastaavan nimen ahk ohjelmointi kielessä.
 
+    8.6
+        Todo: kirjoita koodi joka laittaa test-keyboard-layout.json databaseen tableen nimeltä rowsFI.
+        Todo: ke
+
+    Ei toimivat nappulat ahkoossa EU/US [ ]  \ ; '' \ \ / \ /\/\/\
+
+
+    Tee table databaseen jossa on ahk ohjelmointi kielen säännöt.
+
 Register Form
     Kuin käyttäjä on valmis ja kirjoittaa seuraavassa ruudussa jotain. Register ottaa edellisen kentän tiedot ja tarkistaa että tietokannassa ei ole kyseistä nimeä käytetty.
     Sitten kuin hoveraat usernamea niin se kertoo että usrename on otettu. Mutta miten teet commentointi ikkunan.
