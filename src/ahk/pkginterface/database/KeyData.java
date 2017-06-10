@@ -38,24 +38,26 @@ public class KeyData {
     * this can be exploited to ruin the databse the program is running on.
      */
     public void writeRowsUS() throws SQLException, FileNotFoundException {
-        Keys keys = readKeyboardLayoutUSToKeys();
-        keys.addRowsToArrayListRows();
-        ArrayList<ArrayList> rows = keys.rows;
-        int longestRow = sortRows(); //sortRows gets the longestRow and returns it.
-        connection = DriverManager.getConnection(setConnectionString());
-        for (int keyCount = 0; keyCount <= longestRow; keyCount++) {
-            String sql = "insert into rowsus (firstrow,secondrow,thirdrow,fourthrow,fifthrow,sixthrow) values (?,?,?,?,?,?)";
-            prepStatement = connection.prepareStatement(sql);
-            writeFirstrow(prepStatement,keys,keyCount);
-            writeSecondrow(prepStatement,keys,keyCount);
-            writeThridrow(prepStatement,keys,keyCount);
-            writeFourthrow(prepStatement,keys,keyCount);
-            writeFifthrow(prepStatement,keys,keyCount);
-            writeSixthrow(prepStatement,keys,keyCount);
-            prepStatement.execute();
-            prepStatement.close();
+        if(!checkIfDataExistsAlready()){
+            Keys keys = readKeyboardLayoutUSToKeys();
+            keys.addRowsToArrayListRows();
+            ArrayList<ArrayList> rows = keys.rows;
+            int longestRow = sortRows(); //sortRows gets the longestRow and returns it.
+            connection = DriverManager.getConnection(setConnectionString());
+            for (int keyCount = 0; keyCount <= longestRow; keyCount++) {
+                String sql = "insert into rowsus (firstrow,secondrow,thirdrow,fourthrow,fifthrow,sixthrow) values (?,?,?,?,?,?)";
+                prepStatement = connection.prepareStatement(sql);
+                writeFirstrow(prepStatement,keys,keyCount);
+                writeSecondrow(prepStatement,keys,keyCount);
+                writeThridrow(prepStatement,keys,keyCount);
+                writeFourthrow(prepStatement,keys,keyCount);
+                writeFifthrow(prepStatement,keys,keyCount);
+                writeSixthrow(prepStatement,keys,keyCount);
+                prepStatement.execute();
+                prepStatement.close();
+            }
+            closeConnection(connection);
         }
-        closeConnection(connection);
     }
 
     /*
@@ -68,17 +70,17 @@ public class KeyData {
         prepStatement = connection.prepareStatement(sql);
         resultSet = prepStatement.executeQuery();
         if(resultSet.next()){
-            if(resultSet.getInt("count")==0) return false;
+            if(resultSet.getInt("count")==0) return true;
         }
         prepStatement.close();
         resultSet.close();
         closeConnection(connection);
-        return true;
+        return false;
     }
     /*
     * sortRows gets the longest row and returns the size of the row.
      */
-    public int sortRows() throws FileNotFoundException {
+    public int sortRows() throws FileNotFoundException, SQLException {
         Keys keys = readKeyboardLayoutUSToKeys();
         keys.addRowsToArrayListRows();
         ArrayList<ArrayList>arrayLists = keys.rows;
@@ -137,9 +139,6 @@ public class KeyData {
 
     public static void main(String[] args) throws FileNotFoundException, SQLException {
         KeyData keydata =new KeyData();
-        Keys k = new KeyData().readKeyboardLayoutUSToKeys();
-        k.addRowsToArrayListRows();
-        System.out.println(k.rows.get(1).get(1).getClass());
     }
 
     public static void closeConnection(Connection con) {
