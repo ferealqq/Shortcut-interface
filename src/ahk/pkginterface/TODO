@@ -4,9 +4,9 @@ Open:
 Database:
     Tee table joka pitää sisällään jokaiseen nappulaan vastaavan nimen ahk ohjelmointi kielessä.
 
-    8.6
-        Todo: kirjoita koodi joka laittaa test-keyboard-layout.json databaseen tableen nimeltä rowsFI.
-        Todo: ke
+    10.8
+        todo: korjaa ahk-interface että se toimii asian mukaisesti keydata refactorin jälkeen.
+        todo :  Reform. Käy kaikki koodin kohdat läpi ja katso voitko tehdä jostain kohdasta metodin että koodista tulisi puhdas.
 
     Ei toimivat nappulat ahkoossa EU/US [ ]  \ ; '' \ \ / \ /\/\/\
 

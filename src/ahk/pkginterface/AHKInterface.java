@@ -1,6 +1,11 @@
 package ahk.pkginterface;
 
 import ahk.pkginterface.browsingFrames.browseAction;
+import ahk.pkginterface.database.Key;
+import ahk.pkginterface.database.KeyData;
+import ahk.pkginterface.database.Keys;
+
+import java.awt.Color;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
@@ -8,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Objects;
 import javax.swing.*;
@@ -47,7 +53,11 @@ public class AHKInterface extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         asetteleKomponentit();
         this.setResizable(false);
-
+        try {
+            setKeyboard();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         alSignIn = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -85,37 +95,39 @@ public class AHKInterface extends JFrame {
         btsignin.addActionListener(alLogout);
     }
 
-    /*private void setKeyboard() {
+    private void setKeyboard() throws FileNotFoundException {
         int row = 0;
-        Keys keys = new Keys();
+        Keys keys = new KeyData().readKeyboardLayoutUSToKeys();
+        keys.addRowsToArrayListRows();
         while (row <= keys.rows.size() - 1) {
             JPanel rowPane = new JPanel(new GridLayout(1, keys.rows.get(row).size()));
-            for (Key currentKey : keys.rows.get(row)) {
-                JButton key = new JButton(currentKey);
-                key.setForeground(Color.GRAY);
-                key.setBackground(Color.black);
-                key.addMouseListener(new MouseAdapter() {
+            ArrayList<Key> listofCurrentKeys = keys.rows.get(row);
+            for (Key currentKey : listofCurrentKeys) {
+                JButton btkey = new JButton(currentKey.getKey());
+                btkey.setForeground(Color.GRAY);
+                btkey.setBackground(Color.black);
+                btkey.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
                         if (e.getButton() == MouseEvent.BUTTON1) {
-                            if (!key.getBackground().equals(Color.white)) {
-                                key.setBackground(Color.white);
+                            if (!btkey.getBackground().equals(Color.white)) {
+                                btkey.setBackground(Color.white);
                                 if(Objects.isNull(newhotkeys)) newhotkeys = new ArrayList<>();
-                                newhotkeys.add(currentKey);
+                                newhotkeys.add(currentKey.getKey());
                             } else {
-                                key.setBackground(Color.BLACK);
-                                newhotkeys.remove(currentKey);
+                                btkey.setBackground(Color.BLACK);
+                                newhotkeys.remove(currentKey.getKey());
                                 if(newhotkeys.isEmpty()) newhotkeys = null;
                             }
                         }
                     }
                 });
-                rowPane.add(key);
+                rowPane.add(btkey);
             }
             keyboard.add(rowPane);
             row++;
         }
     }
-    */
+
 
     public static void main(String[] args) {
         new AHKInterface().setVisible(true);

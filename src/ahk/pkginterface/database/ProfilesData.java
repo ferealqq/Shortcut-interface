@@ -13,9 +13,6 @@ public class ProfilesData {
     private String[] connectionStrings = {"","",""};
 
     public ProfilesData() {
-        connectionStrings[0] = "jdbc:postgresql://localhost:5432/ahk-interface";
-        connectionStrings[1] = "postgres";
-        connectionStrings[2] = "pekka";
     }
 
     private String setConnectionStrings(){
@@ -109,18 +106,6 @@ public class ProfilesData {
             } catch (Exception e) {
             }
         }
-    }
-    public void getDatabaseInformation() throws SQLException {
-        connection = DriverManager.getConnection(connectionStrings[0]);
-        String sql = "\\ndt;";
-        prepStatement = connection.prepareStatement(sql);
-        resultSet = prepStatement.executeQuery();
-        int i = 0;
-        while(resultSet.next()) {
-            System.out.println(resultSet.getObject(i));
-            i++;
-        }
-
     }
     public static void main(String[] args) {
         System.out.println(new ProfilesData().checkUsername("pekka"));

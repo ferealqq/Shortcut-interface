@@ -1,6 +1,25 @@
 Open:
     hakee sekä tietokoneelta löytyneet ahk ohjelmat että käyttäjälle tallennetut ohjelmat.
 
+Database:
+    Tee table joka pitää sisällään jokaiseen nappulaan vastaavan nimen ahk ohjelmointi kielessä.
+
+    10.8
+        todo: korjaa ahk-interface että se toimii asian mukaisesti keydata refactorin jälkeen.
+        todo :  Reform. Käy kaikki koodin kohdat läpi ja katso voitko tehdä jostain kohdasta metodin että koodista tulisi puhdas.
+
+    Ei toimivat nappulat ahkoossa EU/US [ ]  \ ; '' \ \ / \ /\/\/\
+
+
+    Tee table databaseen jossa on ahk ohjelmointi kielen säännöt.
+
 Register Form
     Kuin käyttäjä on valmis ja kirjoittaa seuraavassa ruudussa jotain. Register ottaa edellisen kentän tiedot ja tarkistaa että tietokannassa ei ole kyseistä nimeä käytetty.
     Sitten kuin hoveraat usernamea niin se kertoo että usrename on otettu. Mutta miten teet commentointi ikkunan.
+
+Search building tip.
+            System.out.println(k.getActions().get(1).getAction().toLowerCase().contains("vol"));
+            tolowercase koska haluat että ei ole väliä onko caps vaiko ei.
+
+            JPanel removal idea
+                ota talteen arraylistaan kaikki componentit mitä haluaisit poistaa ja postane fore lauseella ja jätä searchField paikalleen.
