@@ -53,11 +53,6 @@ public class AHKInterface extends JFrame {
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         asetteleKomponentit();
         this.setResizable(false);
-        try {
-            setKeyboard();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
         alSignIn = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -146,6 +141,10 @@ public class AHKInterface extends JFrame {
         rootPane.add(keyboard, BorderLayout.CENTER);
         rootPane.add(bottomPane, BorderLayout.PAGE_END);
         this.add(rootPane);
-        //setKeyboard();
+        try {
+            setKeyboard();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
