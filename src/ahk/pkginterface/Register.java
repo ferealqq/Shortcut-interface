@@ -89,13 +89,15 @@ public class Register extends JFrame{
                         tfUsername.setText("");
                         return;
                     }
-                    if(mainFrame.currentUserId==0){
+                    /*if(mainFrame.currentUserId==0){
                         mainFrame.setCurrentUserId(db.getProileIdByUsername(tfUsername.getText()));
                         System.out.println(mainFrame.currentUserId);
                     }
                     dispose();
                     mainFrame.setVisible(true);
+                */
                     JOptionPane.showMessageDialog(rootPane,"Successful!");
+
                 }
             }
         });
