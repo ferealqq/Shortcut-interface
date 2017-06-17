@@ -2,15 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="34d685f4-faaa-4f25-bf49-6d691a0d0670" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Css/ahk_main_bottombtns_css.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Css/ahk_main_css.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/test.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/Css/ahk_main_bottombtns_css.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/Css/ahk_main_css.css" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/ahk/test.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ahk/pkginterface/TODO" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/TODO" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -99,8 +90,8 @@
       <file leaf-file-name="TODO" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/TODO">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="5" lean-forward="false" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
+            <state relative-caret-position="136">
+              <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -878,8 +869,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/TODO">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="5" lean-forward="false" selection-start-line="6" selection-start-column="5" selection-end-line="6" selection-end-column="5" />
+        <state relative-caret-position="136">
+          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding />
         </state>
       </provider>
