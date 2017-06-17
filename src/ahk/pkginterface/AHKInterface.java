@@ -42,10 +42,10 @@ public class AHKInterface extends JFrame {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        createButtons();
+        createButtons(scene);
         return (scene);
     }
-    private void createButtons(){
+    private void createButtons(Scene scene){
         HBox buttonRow = new HBox();
 
         Button btScripts = new Button("Scripts");
@@ -87,6 +87,8 @@ public class AHKInterface extends JFrame {
         buttonRow.setHgrow(btNext,Priority.ALWAYS);
         buttonRow.getChildren().addAll(btScripts,btSignin,btDetect,btUndo,btBrowse,btCommit,btHelp,btNext);
         buttonRow.setAlignment(Pos.BOTTOM_LEFT);
+        String buttonRowCss = this.getClass().getResource("Css/ahk_main_bottombtns_css.css").toExternalForm();
+        buttonRow.getStylesheets().add(buttonRowCss);
         rootPane.getChildren().add(buttonRow);
     }
     private void createKeyboard() throws FileNotFoundException {
