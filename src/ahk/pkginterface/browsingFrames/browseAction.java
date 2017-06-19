@@ -1,80 +1,94 @@
 package ahk.pkginterface.browsingFrames;
 
+import ahk.pkginterface.AHKInterface;
 import ahk.pkginterface.database.ActionsData;
 import ahk.pkginterface.database.Actions;
 import ahk.pkginterface.commentFrames.commentFrame;
-
-
+import javafx.embed.swing.JFXPanel;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.input.KeyEvent;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javafx.scene.control.TextField;
 
-public class browseAction extends JFrame{
+public class browseAction{
+    public final JFXPanel jfxPanel = new JFXPanel();
+    public final BorderPane rootPane = new BorderPane();
+    public AHKInterface mainFrame;
 
-    private JPanel rootPane = new JPanel(new GridLayout(10, 1));
-    private JTextField searchField = new JTextField();
-    private ActionsData actionsDB = new ActionsData();
+    private final Button btBack = new Button("Back");
+    private final TextField searchField = new TextField("Search");
+    private final ActionsData actionsData = new ActionsData();
+    private ArrayList<Label> currentComponentArchive = new ArrayList<>();
 
-    private ArrayList<JLabel> currentComponentArchive = new ArrayList<>();
-
-    public browseAction() {
-        this.setUndecorated(true);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        this.setSize(200, 600);
-        setComponents();
-        searchField.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                for (JLabel deletedComponent:currentComponentArchive) {
-                    rootPane.remove(deletedComponent);
-                }
-                rootPane.revalidate();
-                rootPane.repaint();
-                currentComponentArchive.removeAll(currentComponentArchive);
-                searchField.requestFocus();
-
-                String searchWords = searchField.getText();
-                setActionChoices(actionsDB.searchAction(searchWords));
+    private EventHandler<KeyEvent> keyReleasedAL;
+    private EventHandler<ActionEvent> btBackAction;
+    public browseAction(AHKInterface mainForm) {
+        mainFrame = mainForm;
+        mainFrame.add(jfxPanel);
+        initComponents(jfxPanel);
+    }
+    private void initComponents(JFXPanel jfxPanel){
+        Scene scene = createScene();
+        jfxPanel.setScene(scene);
+    }
+    private Scene createScene() {
+        Scene scene = new Scene(rootPane,800,500);
+        String searchFieldCss = this.getClass().getResource("search_field_css.css").toExternalForm();
+        searchField.getStylesheets().add(searchFieldCss);
+        rootPane.setTop(searchField);
+        BorderPane.setAlignment(btBack, Pos.BOTTOM_LEFT);
+        String btBackCss = this.getClass().getResource("ahk_main_bottombtns_css.css").toExternalForm();
+        btBack.getStylesheets().add(btBackCss);
+        rootPane.setBottom(btBack);
+        createComponents(actionsData.getActions());
+        createListeners();
+        setListeners();
+        return (scene);
+    }
+    private void setListeners(){
+        btBack.setOnAction(btBackAction);
+    }
+    public void createListeners(){
+        keyReleasedAL = new EventHandler<KeyEvent>() {
+            public void handle(KeyEvent ke) {
+                System.out.println("works");
             }
-        });
-
+        };
+        btBackAction = new EventHandler<ActionEvent>(){
+            public void handle(ActionEvent event){
+                jfxPanel.hide();
+                mainFrame.mainJfxPane.show();
+            }
+        };
     }
-    public void setActionChoices(ArrayList<Actions> acc){
-        for (Actions action : acc){
-            commentFrame CommentFrame = new commentFrame();
-            JLabel actionLabel = new JLabel(action.getAction());
-            actionLabel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                }
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    CommentFrame.comment.setText("fug memes");
-                    CommentFrame.addText();
-                    CommentFrame.setVisible(true);
-                    CommentFrame.setLocationRelativeTo(actionLabel);
-                }
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    CommentFrame.setVisible(false);
-                }
-            });
+    public JFXPanel giveView(){
+        return jfxPanel;
+    }
+    private void createComponents(ArrayList<Actions> listofActions){
+        VBox labelPane = new VBox(5);
+        String actionlabelsCss = this.getClass().getResource("action_labels_css.css").toExternalForm();
+        for(Actions action : listofActions){
+            Label actionLabel = new Label();
+            labelPane.setVgrow(actionLabel,Priority.ALWAYS);
+            actionLabel.setText(action.getAction());
+            actionLabel.getStylesheets().add(actionlabelsCss);
+            actionLabel.setMaxWidth(Double.MAX_VALUE);
             currentComponentArchive.add(actionLabel);
-            rootPane.add(actionLabel);
         }
+        labelPane.getChildren().addAll(currentComponentArchive);
+        rootPane.setCenter(labelPane);
     }
-    public void setComponents() {
-        rootPane.add(searchField);
-        setActionChoices(actionsDB.getActions());
-        this.add(new JScrollPane(rootPane));
-    }
-    public static void main(String[] args) {
-        browseAction bAction = new browseAction();
-        bAction.setVisible(true);
 
+    public static void main(String[] args) {
     }
 }

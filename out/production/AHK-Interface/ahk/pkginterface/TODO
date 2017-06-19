@@ -4,9 +4,8 @@ Open:
 Database:
     Tee table joka pitää sisällään jokaiseen nappulaan vastaavan nimen ahk ohjelmointi kielessä.
 
-    10.8
-        todo: korjaa ahk-interface että se toimii asian mukaisesti keydata refactorin jälkeen.
-        todo :  Reform. Käy kaikki koodin kohdat läpi ja katso voitko tehdä jostain kohdasta metodin että koodista tulisi puhdas.
+Css: http://fxexperience.com/2011/12/styling-fx-buttons-with-css/
+Css: http://fxexperience.com/2011/12/styling-fx-buttons-with-css/
 
     Ei toimivat nappulat ahkoossa EU/US [ ]  \ ; '' \ \ / \ /\/\/\
 
