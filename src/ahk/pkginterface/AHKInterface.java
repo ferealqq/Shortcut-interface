@@ -26,8 +26,11 @@ public class AHKInterface extends JFrame {
     private final VBox rootPane = new VBox();
 
     private final ArrayList<Button> bottomRowButtons = new ArrayList<>();
+    public final ArrayList<Key> pressedKeys = new ArrayList<>();
 
     private EventHandler<ActionEvent> btNextAction;
+    private EventHandler<ActionEvent> btDetectAction;
+
 
     public AHKInterface(){
         this.add(mainJfxPane);
@@ -50,23 +53,33 @@ public class AHKInterface extends JFrame {
             e.printStackTrace();
         }
         createButtons(scene);
-        createEventListenersForBottomButtonRow();
+        createKeyListeners();
+        setKeyListeners();
         return (scene);
     }
-    private void createEventListenersForBottomButtonRow(){
+    private void createKeyListeners(){
         AHKInterface mainFrame = this;
+        btNextAction = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(pressedKeys.isEmpty()) {
+                    JOptionPane.showMessageDialog(AHKInterface.super.rootPane,"You havent selected any keys try again later!");
+                    return;
+                }
+                mainJfxPane.hide();
+                browseAction browseJfxPane = new browseAction(mainFrame);
+                add(browseJfxPane.giveView());
+            }
+        };
+    }
+    private void setKeyListeners(){
         for (int i = 0; i < bottomRowButtons.size(); i++) {
             switch(i){
+                case 2:
+                    Button btDetect = bottomRowButtons.get(2);
+                    btDetect.setOnAction(btDetectAction);
                 case 7:
                     Button btNext = bottomRowButtons.get(7);
-                    btNextAction = new EventHandler<ActionEvent>() {
-                        @Override
-                        public void handle(ActionEvent event) {
-                            mainJfxPane.hide();
-                            browseAction browseJfxPane = new browseAction(mainFrame);
-                            add(browseJfxPane.giveView());
-                        }
-                    };
                     btNext.setOnAction(btNextAction);
             }
         }
@@ -132,10 +145,26 @@ public class AHKInterface extends JFrame {
         for (ArrayList<Key> row :keys.rows) {
             HBox rowPane = new HBox();
             for (int i = 0; i <row.size();i++) {
-                Button btnKey = new Button(row.get(i).getKey());
+                Key currentkey = row.get(i);
+                Button btnKey = new Button(currentkey.getKey());
                 rowPane.setHgrow(btnKey, Priority.ALWAYS);
                 btnKey.setMaxWidth(Double.MAX_VALUE);
                 btnKey.setMaxHeight(Double.MAX_VALUE);
+                btnKey.setOnAction(new EventHandler<ActionEvent>(){
+                    @Override
+                    public void handle(ActionEvent event){
+                        if(pressedKeys.contains(currentkey)) {
+                            pressedKeys.remove(currentkey);
+                            btnKey.setStyle(null);
+                            System.out.println("removed "+ currentkey.getKey());
+                        }else{
+                            btnKey.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
+                            System.out.println("added " + currentkey.getKey());
+                            pressedKeys.add(currentkey);
+                        }
+
+                    }
+                });
                 rowPane.getChildren().add(btnKey);
             }
             rootPane.setVgrow(rowPane,Priority.ALWAYS);
