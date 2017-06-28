@@ -1,6 +1,9 @@
 Open:
     hakee sekä tietokoneelta löytyneet ahk ohjelmat että käyttäjälle tallennetut ohjelmat.
 
+Käyttöliittymä:
+    Tee oma frame holder. Eli laita setUndecorated frame ja tee omat exit ja close nappulat. Oikeaan ylä kulmaan.
+
 Database:
     Tee table joka pitää sisällään jokaiseen nappulaan vastaavan nimen ahk ohjelmointi kielessä.
 

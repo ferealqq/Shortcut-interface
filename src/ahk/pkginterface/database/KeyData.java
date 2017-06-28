@@ -1,4 +1,4 @@
-package ahk.pkginterface.database;
+ package ahk.pkginterface.database;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;

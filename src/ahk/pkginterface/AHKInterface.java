@@ -11,12 +11,15 @@ import javafx.scene.control.Button;
 
 import javax.swing.*;
 
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 
+import java.awt.*;
+import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
@@ -24,6 +27,7 @@ import java.util.ArrayList;
 public class AHKInterface extends JFrame {
     public final JFXPanel mainJfxPane = new JFXPanel();
     private final VBox rootPane = new VBox();
+    public final BorderPane stepPane = new BorderPane();
 
     private final ArrayList<Button> bottomRowButtons = new ArrayList<>();
     public final ArrayList<Key> pressedKeys = new ArrayList<>();
@@ -31,6 +35,7 @@ public class AHKInterface extends JFrame {
     private EventHandler<ActionEvent> btNextAction;
     private EventHandler<ActionEvent> btDetectAction;
 
+    private Point point = new Point();
 
     public AHKInterface(){
         this.add(mainJfxPane);
@@ -45,17 +50,41 @@ public class AHKInterface extends JFrame {
         Scene scene = createScene();
         jfxPanel.setScene(scene);
     }
+    /*
+    * Remember to run these methods in following order or the code will not work. Because they relay on the other variables in the other methods.
+    * reateListeners();
+        createStepBar();
+        createComponents(actionsData.getActions());
+        createButtons();
+        setListeners();
+     */
     private Scene createScene() {
         Scene scene = new Scene(rootPane,1000,600);
+        createKeyListeners();
+        createStepBar();
         try {
             createKeyboard();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         createButtons(scene);
-        createKeyListeners();
         setKeyListeners();
         return (scene);
+    }
+    private void createStepBar(){
+        HBox centeredHBox = new HBox(35);
+        Button firstStep = new Button("1");
+        Button secondStep = new Button("2");
+        secondStep.setOnAction(btNextAction);
+        Button thirdStep = new Button("3");
+        centeredHBox.getChildren().addAll(firstStep,secondStep,thirdStep);
+        centeredHBox.setAlignment(Pos.CENTER);
+        String stepPaneCss = this.getClass().getResource("Css/stepPane.css").toExternalForm();
+        stepPane.getStylesheets().add(stepPaneCss);
+        firstStep.setStyle("-fx-background-color:#A9A9A9");
+        stepPane.setCenter(centeredHBox);
+        stepPane.setStyle("-fx-background-color:#F5F5F5");
+        rootPane.getChildren().add(stepPane);
     }
     private void createKeyListeners(){
         AHKInterface mainFrame = this;
@@ -71,6 +100,12 @@ public class AHKInterface extends JFrame {
                 add(browseJfxPane.giveView());
             }
         };
+        btDetectAction = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        };
     }
     private void setKeyListeners(){
         for (int i = 0; i < bottomRowButtons.size(); i++) {
@@ -78,8 +113,8 @@ public class AHKInterface extends JFrame {
                 case 2:
                     Button btDetect = bottomRowButtons.get(2);
                     btDetect.setOnAction(btDetectAction);
-                case 7:
-                    Button btNext = bottomRowButtons.get(7);
+                case 6:
+                    Button btNext = bottomRowButtons.get(6);
                     btNext.setOnAction(btNextAction);
             }
         }
@@ -87,17 +122,17 @@ public class AHKInterface extends JFrame {
     private void createButtons(Scene scene){
         HBox buttonRow = new HBox();
 
-        Button btScripts = new Button("Scripts");
+        Button btBack = new Button("Back to menu");
+        buttonRow.setHgrow(btBack, Priority.ALWAYS);
+        btBack.setMaxWidth(Double.MAX_VALUE);
+        btBack.setMaxHeight(Double.MAX_VALUE);
+        bottomRowButtons.add(btBack);
+
+        Button btScripts = new Button("Your Scripts");
         buttonRow.setHgrow(btScripts, Priority.ALWAYS);
         btScripts.setMaxWidth(Double.MAX_VALUE);
         btScripts.setMaxHeight(Double.MAX_VALUE);
         bottomRowButtons.add(btScripts);
-
-        Button btSignin = new Button("Sign in");
-        buttonRow.setHgrow(btSignin, Priority.ALWAYS);
-        btSignin.setMaxWidth(Double.MAX_VALUE);
-        btSignin.setMaxHeight(Double.MAX_VALUE);
-        bottomRowButtons.add(btSignin);
 
         Button btDetect = new Button("Detect");
         buttonRow.setHgrow(btDetect, Priority.ALWAYS);
@@ -111,17 +146,12 @@ public class AHKInterface extends JFrame {
         btUndo.setMaxWidth(Double.MAX_VALUE);
         bottomRowButtons.add(btUndo);
 
-        Button btBrowse = new Button("Browse");
+        Button btBrowse = new Button("Browse Scripts");
         buttonRow.setHgrow(btBrowse,Priority.ALWAYS);
         btBrowse.setMaxWidth(Double.MAX_VALUE);
         btBrowse.setMaxHeight(Double.MAX_VALUE);
         bottomRowButtons.add(btBrowse);
 
-        Button btCommit = new Button("Commit");
-        buttonRow.setHgrow(btCommit,Priority.ALWAYS);
-        btCommit.setMaxHeight(Double.MAX_VALUE);
-        btCommit.setMaxWidth(Double.MAX_VALUE);
-        bottomRowButtons.add(btCommit);
 
         Button btHelp = new Button("Help");
         buttonRow.setHgrow(btHelp,Priority.ALWAYS);
@@ -131,11 +161,11 @@ public class AHKInterface extends JFrame {
 
         Button btNext = new Button("Next");
         buttonRow.setHgrow(btNext,Priority.ALWAYS);
-        buttonRow.getChildren().addAll(btScripts,btSignin,btDetect,btUndo,btBrowse,btCommit,btHelp,btNext);
+        buttonRow.getChildren().addAll(btBack,btScripts,btDetect,btUndo,btBrowse,btHelp,btNext);
         buttonRow.setAlignment(Pos.BOTTOM_LEFT);
         bottomRowButtons.add(btNext);
 
-        String buttonRowCss = this.getClass().getResource("Css/ahk_main_bottombtns_css.css").toExternalForm();
+        String buttonRowCss = this.getClass().getResource("Css/main_btns.css").toExternalForm();
         buttonRow.getStylesheets().add(buttonRowCss);
         rootPane.getChildren().add(buttonRow);
     }

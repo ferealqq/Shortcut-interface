@@ -1,10 +1,9 @@
 .button {  
-   -fx-background-color: -fx-inner-border, -fx-outer-border, -fx-body-color;
-   -fx-background-insets: 0 0 0 0, 0, 1, 2;
-   -fx-background-color: #708090;
-   -fx-padding: 5 22 5 22;
-   -fx-border-width: 2;
-   -fx-background-radius: 1;
+   -fx-background-color: #999999;
+   -fx-border-width: .5;
+   -fx-border-height: .5;
+   -fx-border-color: #383838;
+   -fx-background-radius: 2;
    -fx-text-fill: black;
 }
 .button:hover{

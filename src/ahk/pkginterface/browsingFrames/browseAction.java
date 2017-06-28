@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.input.KeyEvent;
@@ -27,34 +28,64 @@ import javafx.scene.control.TextField;
 public class browseAction{
     public final JFXPanel jfxPanel = new JFXPanel();
     public final BorderPane rootPane = new BorderPane();
+    public final BorderPane stepPane = new BorderPane();
     public AHKInterface mainFrame;
+
 
     private final Button btBack = new Button("Back");
     private final Button btNext = new Button("Next");
     private final TextField searchField = new TextField("Search");
     private final ActionsData actionsData = new ActionsData();
     private ArrayList<Label> currentComponentArchive = new ArrayList<>();
-    public VBox labelPane = new VBox(5);
+    public final VBox labelPane = new VBox(5);
+    public final VBox topPane = new VBox(5);
 
+    private EventHandler<ActionEvent> btNextAction;
     private ChangeListener<Boolean> focusListener;
     private EventHandler<KeyEvent> keyReleasedAL;
     private EventHandler<ActionEvent> btBackAction;
     public browseAction(AHKInterface mainForm) {
         mainFrame = mainForm;
-        mainFrame.add(new JScrollPane(jfxPanel));
+        mainFrame.add(jfxPanel);
         initComponents(jfxPanel);
     }
     private void initComponents(JFXPanel jfxPanel){
         Scene scene = createScene();
         jfxPanel.setScene(scene);
     }
-    private Scene createScene(  ) {
-        Scene scene = new Scene(rootPane,800,500);
+    /*
+    * Remember to run these methods in following order or the code will not work. Because they relay on the other variables in the other methods.
+    * reateListeners();
+        createStepBar();
         createComponents(actionsData.getActions());
         createButtons();
+        setListeners();
+     */
+    private Scene createScene() {
+        Scene scene = new Scene(rootPane,800,500);
         createListeners();
+        createStepBar();
+        createComponents(actionsData.getActions());
+        createButtons();
         setListeners();
         return (scene);
+    }
+    private void createStepBar(){
+        HBox centeredHBox = new HBox(35);
+        Button firstStep = new Button("1");
+        firstStep.setOnAction(btBackAction);
+        Button secondStep = new Button("2");
+        Button thirdStep = new Button("3");
+        thirdStep.setOnAction(btNextAction);
+        centeredHBox.getChildren().addAll(firstStep,secondStep,thirdStep);
+        centeredHBox.setAlignment(Pos.CENTER);
+        String stepPaneCss = this.getClass().getResource("stepPane.css").toExternalForm();
+        stepPane.getStylesheets().add(stepPaneCss);
+        secondStep.setStyle("-fx-background-color:#A9A9A9");
+        stepPane.setCenter(centeredHBox);
+        stepPane.setStyle("-fx-background-color:#F5F5F5");
+        topPane.getChildren().add(stepPane);
+        rootPane.setTop(topPane);
     }
     private void setListeners(){
         btBack.setOnAction(btBackAction);
@@ -62,6 +93,12 @@ public class browseAction{
         searchField.focusedProperty().addListener(focusListener);
     }
     public void createListeners(){
+        btNextAction = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        };
         focusListener = new ChangeListener<Boolean>()
         {
             public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
@@ -73,6 +110,8 @@ public class browseAction{
 
         keyReleasedAL = new EventHandler<KeyEvent>() {
             public void handle(KeyEvent ke) {
+                System.out.println(ke.getEventType());
+                System.out.println(ke.getCode());
                 for (Label removethis:currentComponentArchive) {
                     labelPane.getChildren().remove(removethis);
                 }
@@ -93,9 +132,9 @@ public class browseAction{
     private void createButtons(){
         BorderPane bottomPane = new BorderPane();
         String searchFieldCss = this.getClass().getResource("search_field_css.css").toExternalForm();
-        String btCss = this.getClass().getResource("ahk_main_bottombtns_css.css").toExternalForm();
+        String btCss = this.getClass().getResource("main_btns.css").toExternalForm();
         searchField.getStylesheets().add(searchFieldCss);
-        rootPane.setTop(searchField);
+        topPane.getChildren().add(searchField);
 
         BorderPane.setAlignment(btNext, Pos.BOTTOM_RIGHT);
         btNext.getStylesheets().add(btCss);
@@ -128,5 +167,6 @@ public class browseAction{
     }
 
     public static void main(String[] args) {
+        new browseAction(new AHKInterface());
     }
 }

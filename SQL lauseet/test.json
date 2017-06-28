@@ -1,0 +1,110 @@
+{
+	"firstrow":[
+	  {
+        "key": "Esc",
+        "keysynonyminahk": "Esc"
+      },
+      {
+        "key": "F1",
+        "keysynonyminahk": "f1"
+      },
+      {
+        "key": "F2",
+        "keysynonyminahk": "f2"
+      },
+      {
+        "key": "F3",
+        "keysynonyminahk": "f3"
+      },
+      {
+        "key": "F4",
+        "keysynonyminahk": "f4"
+      },	
+      {
+        "key": "F5",
+        "keysynonyminahk": "f5"
+      },
+      {
+        "key": "F6",
+        "keysynonyminahk": "f6"
+      },
+      {
+        "key": "F7",
+        "keysynonyminahk": "f7"
+      },
+      {
+        "key": "F8",
+        "keysynonyminahk": "f8"
+      },
+      {
+        "key": "F9",
+        "keysynonyminahk": "f9"
+      },
+      {
+        "key": "F10",
+        "keysynonyminahk": "f10"
+      },
+      {
+        "key": "F11",
+        "keysynonyminahk": "f11"
+      },
+      {
+        "key": "F12",
+        "keysynonyminahk": "f12"
+      },
+	],
+	"secondrow":[
+	{
+        "key": "Esc",
+        "keysynonyminahk": "Esc"
+      },
+      {
+        "key": "F1",
+        "keysynonyminahk": "f1"
+      },
+      {
+        "key": "F2",
+        "keysynonyminahk": "f2"
+      },
+      {
+        "key": "F3",
+        "keysynonyminahk": "f3"
+      },
+      {
+        "key": "F4",
+        "keysynonyminahk": "f4"
+      },
+      {
+        "key": "F5",
+        "keysynonyminahk": "f5"
+      },
+      {
+        "key": "F6",
+        "keysynonyminahk": "f6"
+      },
+      {
+        "key": "F7",
+        "keysynonyminahk": "f7"
+      },
+      {
+        "key": "F8",
+        "keysynonyminahk": "f8"
+      },
+      {
+        "key": "F9",
+        "keysynonyminahk": "f9"
+      },
+      {
+        "key": "F10",
+        "keysynonyminahk": "f10"
+      },
+      {
+        "key": "F11",
+        "keysynonyminahk": "f11"
+      },
+      {
+        "key": "F12",
+        "keysynonyminahk": "f12"
+      }
+    ]
+}
