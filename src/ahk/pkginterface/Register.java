@@ -2,140 +2,122 @@ package ahk.pkginterface;
 
 import ahk.pkginterface.commentFrames.commentFrame;
 import ahk.pkginterface.database.ProfilesData;
+import javafx.embed.swing.JFXPanel;
+import javafx.event.EventHandler;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Border;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 
 import javax.swing.*;
+import javax.xml.soap.Text;
 import java.awt.*;
-import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-public class Register extends JFrame{
-    private JPanel rootPane = new JPanel(new GridLayout(5, 1));
-    private JPanel usernamePane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    private JPanel pwPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    private JPanel pwPane2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    private JPanel emailPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    private JPanel registerPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-    private JLabel lbUsername = new JLabel("Username");
-    private JLabel lbEmail = new JLabel("     Email     ");
-    private JLabel lbPassword = new JLabel("Password");
-    private JLabel lbPassword2 = new JLabel("Re-enter password");
+public class Register{
+    public final JFXPanel jfxPanel = new JFXPanel();
+    private VBox rootPane = new VBox();
 
-    private JTextField tfUsername = new JTextField(15);
-    private JTextField tfEmail = new JTextField(15);
-    private JPasswordField tfPw = new JPasswordField(15);
-    private JPasswordField tfPw2 = new JPasswordField(15);
-
-    private JButton btRegister = new JButton("Register");
-    private JButton btBack = new JButton("Back");
-
-    private AHKInterface mainFrame;
-    private SignIn signInFrame;
+    private JFrame mainFrame;
     private ProfilesData db = new ProfilesData();
 
     private String commentMsg;
     private commentFrame comment = new commentFrame();
 
-    private MouseAdapter setHover = new MouseAdapter() {
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            comment.comment.setText(commentMsg);
-            comment.addText();
-            comment.setVisible(true);
-        }
-        @Override
-        public void mouseExited(MouseEvent e) {
-            comment.setVisible(false);
+    private final HashMap<String,TextField> textFieldComponentArchive = new HashMap<>();
+    private final HashMap<String,EventHandler> eventHandlerArchive = new HashMap<>();
 
-        }
-    };
-
-    public Register(AHKInterface mainForm,SignIn signInForm) {
+    public Register(JFrame mainForm) {
         mainFrame = mainForm;
-        signInFrame = signInForm;
-        this.setSize(250, 350);
-        this.setLocationRelativeTo(null);
-        btRegister.setPreferredSize(new Dimension(90, 30));
-        btBack.setPreferredSize(new Dimension(90, 30));
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setComponents();
-        tfUsername.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
+        initComponents(jfxPanel);
+    }
+    private void initComponents(JFXPanel jfxPanel){
+        Scene scene = createScene();
+        jfxPanel.setScene(scene);
+    }
+    private Scene createScene(){
+        Scene scene = new Scene(rootPane,800,500);
+        //Tee menu
+        createComponents();
+        createListeners();
+        return (scene);
+    }
+    private void createComponents(){
+        ArrayList<components> labelandfieldStorage = new ArrayList<>();
+        Label lbUsername = new Label("Username");
+        lbUsername.setWrapText(true);
+        TextField tfUsername = new TextField();
+        textFieldComponentArchive.put("tfUsername",tfUsername);
+        labelandfieldStorage.add(new components(tfUsername,lbUsername));
+        Label lbEmail = new Label("Email");
+        TextField tfEmail = new TextField();
+        labelandfieldStorage.add(new components(tfEmail,lbEmail));
+        textFieldComponentArchive.put("tfEmail",tfEmail);
+        Label lbPassword = new Label("Password");
+        PasswordField tfPassword = new PasswordField();
+        labelandfieldStorage.add(new components(tfPassword,lbPassword));
+        Label lbPassword2 = new Label("Password again!");
+        textFieldComponentArchive.put("tfPassword",tfPassword);
+        PasswordField tfPassword2 = new PasswordField();
+        textFieldComponentArchive.put("tfPassword2",tfPassword2);
+        labelandfieldStorage.add(new components(tfPassword2,lbPassword2));
+        for (int i = 0; i < labelandfieldStorage.size(); i++) {
+            BorderPane.setAlignment(labelandfieldStorage.get(i).getLb(),Pos.CENTER);
+            BorderPane.setAlignment(labelandfieldStorage.get(i).getTf(),Pos.CENTER);
+            labelandfieldStorage.get(i).getLb().setFont(new Font("Cambria", 32));
+            labelandfieldStorage.get(i).getTf().setFont(new Font("Cambria", 20));
+            labelandfieldStorage.get(i).getTf().setPrefHeight(40);
+            labelandfieldStorage.get(i).getTf().setMaxWidth(300);
+            rootPane.getChildren().addAll(new BorderPane(labelandfieldStorage.get(i).getLb()), new BorderPane(labelandfieldStorage.get(i).getTf()));
+        }
+        }
+        public JFXPanel giveView(){
+            return jfxPanel;
+        }
+    class components{
+        public Label lb;
+        public TextField tf;
+        public components(TextField tfield, Label lbel){
+            lb = lbel;
+            tf = tfield;
+        }
+        public Label getLb(){
+            return lb;
+        }
+        public TextField getTf(){
+            return tf;
+        }
+    }
+    private void createListeners(){
+        EventHandler tfUsernameKeyReleased = new EventHandler<javafx.scene.input.KeyEvent>() {
+            public void handle(javafx.scene.input.KeyEvent keyEvent) {
+                TextField tfUsername = textFieldComponentArchive.get("tfUsername");
                 if(!db.checkUsername(tfUsername.getText())){
                     commentMsg = "Username taken! Try something else.";
                     comment.comment.setText(commentMsg);
                     comment.addText();
                     comment.setVisible(true);
-                    tfUsername.setForeground(Color.red);
-                    comment.setLocation(getX()+210,getY()+57);
-                    tfUsername.addMouseListener(setHover);
+                    //tfUsername.setForeground(Color.red);
+                    //comment.setLocation(getX()+210,getY()+57);
+                    //tfUsername.addMouseListener(setHover);
                 }else{
-                    tfUsername.setForeground(Color.BLACK);
-                    tfUsername.removeMouseListener(setHover);
+                    //tfUsername.setForeground(Color.BLACK);
+                    //tfUsername.removeMouseListener(setHover);
                     commentMsg ="";
                     comment.comment.setText("");
                 }
             }
-        });
-        btRegister.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (tfPw.getText().equals(tfPw2.getText())) {
-                    if(!db.createUser(tfUsername.getText(), tfPw.getText(), tfEmail.getText())) {
-                        JOptionPane.showMessageDialog(rootPane,"Something went wrong!");
-                        tfPw.setText("");
-                        tfPw2.setText("");
-                        tfEmail.setText("");
-                        tfUsername.setText("");
-                        return;
-                    }
-                    /*if(mainFrame.currentUserId==0){
-                        mainFrame.setCurrentUserId(db.getProileIdByUsername(tfUsername.getText()));
-                        System.out.println(mainFrame.currentUserId);
-                    }
-                    dispose();
-                    mainFrame.setVisible(true);
-                */
-                    JOptionPane.showMessageDialog(rootPane,"Successful!");
-
-                }
-            }
-        });
-        btBack.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                signInFrame.setVisible(true);
-                dispose();
-            }
-        });
+        };
+        eventHandlerArchive.put("tfUsernameKeyReleased",tfUsernameKeyReleased);
     }
-
     public static void main(String[] args) {
-        new Register(new AHKInterface(),new SignIn(new AHKInterface())).setVisible(true);
-    }
-
-    private void setComponents() {
-        usernamePane.add(lbUsername);
-        usernamePane.add(tfUsername);
-
-        emailPane.add(lbEmail);
-        emailPane.add(tfEmail);
-
-        pwPane.add(lbPassword);
-        pwPane.add(tfPw);
-
-        pwPane2.add(lbPassword2);
-        pwPane2.add(tfPw2);
-
-        registerPane.add(btBack);
-        registerPane.add(btRegister);
-
-        rootPane.add(usernamePane);
-        rootPane.add(emailPane);
-        rootPane.add(pwPane);
-        rootPane.add(pwPane2);
-        rootPane.add(registerPane);
-
-        this.add(rootPane);
     }
 }

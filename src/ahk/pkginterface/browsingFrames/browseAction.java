@@ -46,7 +46,6 @@ public class browseAction{
     private EventHandler<ActionEvent> btBackAction;
     public browseAction(AHKInterface mainForm) {
         mainFrame = mainForm;
-        mainFrame.add(jfxPanel);
         initComponents(jfxPanel);
     }
     private void initComponents(JFXPanel jfxPanel){

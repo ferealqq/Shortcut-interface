@@ -18,26 +18,32 @@ import javafx.scene.layout.VBox;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 
-import java.awt.*;
-import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 
 public class AHKInterface extends JFrame {
     public final JFXPanel mainJfxPane = new JFXPanel();
     private final VBox rootPane = new VBox();
     public final BorderPane stepPane = new BorderPane();
-
     private final ArrayList<Button> bottomRowButtons = new ArrayList<>();
     public final ArrayList<Key> pressedKeys = new ArrayList<>();
 
     private EventHandler<ActionEvent> btNextAction;
     private EventHandler<ActionEvent> btDetectAction;
-
-    private Point point = new Point();
-
+    public final LinkedList<JFXPanel> viewHistory = new LinkedList<>();
+    private final browseAction browseJfxPane = new browseAction(this);
+    public int currentUserId;
+    public AHKInterface(int id){
+        currentUserId = id;
+        constructAHK();
+    }
     public AHKInterface(){
+        constructAHK();
+    }
+    private void constructAHK(){
+        viewHistory.add(mainJfxPane);
         this.add(mainJfxPane);
         this.setVisible(true);
         this.setSize(800,500);
@@ -60,6 +66,7 @@ public class AHKInterface extends JFrame {
      */
     private Scene createScene() {
         Scene scene = new Scene(rootPane,1000,600);
+        MenuSetup k = new MenuSetup(this,viewHistory,rootPane,0);
         createKeyListeners();
         createStepBar();
         try {
@@ -87,7 +94,6 @@ public class AHKInterface extends JFrame {
         rootPane.getChildren().add(stepPane);
     }
     private void createKeyListeners(){
-        AHKInterface mainFrame = this;
         btNextAction = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -96,7 +102,6 @@ public class AHKInterface extends JFrame {
                     return;
                 }
                 mainJfxPane.hide();
-                browseAction browseJfxPane = new browseAction(mainFrame);
                 add(browseJfxPane.giveView());
             }
         };
@@ -109,12 +114,12 @@ public class AHKInterface extends JFrame {
     }
     private void setKeyListeners(){
         for (int i = 0; i < bottomRowButtons.size(); i++) {
-            switch(i){
-                case 2:
-                    Button btDetect = bottomRowButtons.get(2);
+            switch(bottomRowButtons.get(i).getText()){
+                case "Detect":
+                    Button btDetect = bottomRowButtons.get(i);
                     btDetect.setOnAction(btDetectAction);
-                case 6:
-                    Button btNext = bottomRowButtons.get(6);
+                case "Next":
+                    Button btNext = bottomRowButtons.get(i);
                     btNext.setOnAction(btNextAction);
             }
         }
@@ -153,15 +158,10 @@ public class AHKInterface extends JFrame {
         bottomRowButtons.add(btBrowse);
 
 
-        Button btHelp = new Button("Help");
-        buttonRow.setHgrow(btHelp,Priority.ALWAYS);
-        btHelp.setMaxWidth(Double.MAX_VALUE);
-        btHelp.setMaxHeight(Double.MAX_VALUE);
-        bottomRowButtons.add(btHelp);
 
         Button btNext = new Button("Next");
         buttonRow.setHgrow(btNext,Priority.ALWAYS);
-        buttonRow.getChildren().addAll(btBack,btScripts,btDetect,btUndo,btBrowse,btHelp,btNext);
+        buttonRow.getChildren().addAll(btBack,btScripts,btDetect,btUndo,btBrowse,btNext);
         buttonRow.setAlignment(Pos.BOTTOM_LEFT);
         bottomRowButtons.add(btNext);
 
@@ -215,6 +215,6 @@ public class AHKInterface extends JFrame {
     }
     public static void main(String[] args) {
 
-        AHKInterface k = new AHKInterface();
+        AHKInterface k = new AHKInterface(0);
     }
 }

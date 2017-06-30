@@ -27,7 +27,7 @@ public class SignIn extends JFrame {
 
 
     public SignIn(AHKInterface mainFrame) {
-        registerFrame = new Register(mainFrame,this);
+        //registerFrame = new Register(mainFrame,this);
         this.setTitle("SignIn");
         this.setSize(230, 260);
         this.setLocationRelativeTo(null);
@@ -63,7 +63,6 @@ public class SignIn extends JFrame {
         Register.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                registerFrame.setVisible(true);
                 setVisible(false);
             }
         });

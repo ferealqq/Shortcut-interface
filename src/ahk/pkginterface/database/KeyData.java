@@ -23,7 +23,7 @@ public class KeyData {
         Gson gson = new Gson();
         final Type type = new TypeToken<Collection<Keys>>() {
         }.getType();
-        JsonReader jsonReader = new JsonReader(new FileReader("SQL lauseet/test-keyboard-layout.json"));
+        JsonReader jsonReader = new JsonReader(new FileReader("SQL lauseet/US-keyboard-layout.json"));
         Keys keys = gson.fromJson(jsonReader, Keys.class);
         return keys;
     }
@@ -38,7 +38,7 @@ public class KeyData {
     * this function can be exploited to ruin the databse which the code is connected to
      */
     public void writeRowsUS() throws SQLException, FileNotFoundException {
-        if(!checkIfDataExistsAlready()){
+        if(checkIfDataExistsAlready()){
             Keys keys = readKeyboardLayoutUSToKeys();
             keys.addRowsToArrayListRows();
             ArrayList<ArrayList> rows = keys.rows;
@@ -139,6 +139,7 @@ public class KeyData {
 
     public static void main(String[] args) throws FileNotFoundException, SQLException {
         KeyData keydata =new KeyData();
+        keydata.writeRowsUS();
     }
 
     public static void closeConnection(Connection con) {
