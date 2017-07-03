@@ -82,6 +82,9 @@ public class Register{
         public JFXPanel giveView(){
             return jfxPanel;
         }
+        /*
+        * a quick shadowclass to store components in. To make code cleaner and easier to undestand by others.s
+         */
     class components{
         public Label lb;
         public TextField tf;
