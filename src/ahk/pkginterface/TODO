@@ -1,12 +1,27 @@
 Open:
     hakee sekä tietokoneelta löytyneet ahk ohjelmat että käyttäjälle tallennetut ohjelmat.
 
+
+How to get current view (jfxpanel)  ((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1))
+
 Käyttöliittymä:
     Tee oma frame holder. Eli laita setUndecorated frame ja tee omat exit ja close nappulat. Oikeaan ylä kulmaan.
     Menu:
+        Errori:
+            Menubar forwards ja backwards on clickit eivät toimi. kaksi bugia
+            Eka bugi:
+                Kuin painat useamman kerran kuin yksi on click ei reagoi.
+            Toka bugi:
+                on click ei toimi muissa formeissa.
+          
         Backwards ja forwards mekaniikkaa. Joka kerta kuin saat uuden näkymän se lisätään linkd listaan.
         Idea:
             Älä tee koko ajan uutta menua vaan jaa vanhaa. Tätä kautta sinun ei tarvitse antaa viewhistory linkedlistaa joka frameen. Vain ainoastaa menubaariin.
+
+            Kirjoita sisäiseen muistiin (json,xml) menubaarin data jns niin että kutsut näkymää niin kuin kutsut databasea.
+
+            Tee hashmap joka sisältää kaikki jfxpanelit ja kaikki paneelit ovat ädättynä mainjframeen.
+            kuin haluat vaihtaa formia sinun ei pidä muuta kuin getcontains("register").show()
 
 Database:
     Tee table joka pitää sisällään jokaiseen nappulaan vastaavan nimen ahk ohjelmointi kielessä.

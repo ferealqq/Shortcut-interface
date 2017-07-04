@@ -26,17 +26,16 @@ public class Register{
     public final JFXPanel jfxPanel = new JFXPanel();
     private VBox rootPane = new VBox();
 
-    private JFrame mainFrame;
-    private ProfilesData db = new ProfilesData();
-
+    private ProfilesData profilesDb = new ProfilesData();
+    private MenuSetup menuSetup;
     private String commentMsg;
     private commentFrame comment = new commentFrame();
 
     private final HashMap<String,TextField> textFieldComponentArchive = new HashMap<>();
     private final HashMap<String,EventHandler> eventHandlerArchive = new HashMap<>();
 
-    public Register(JFrame mainForm) {
-        mainFrame = mainForm;
+    public Register(MenuSetup menu) {
+        menuSetup = menu;
         initComponents(jfxPanel);
     }
     private void initComponents(JFXPanel jfxPanel){
@@ -45,7 +44,7 @@ public class Register{
     }
     private Scene createScene(){
         Scene scene = new Scene(rootPane,800,500);
-        //Tee menu
+        menuSetup.setRootPane(rootPane);
         createComponents();
         createListeners();
         return (scene);
@@ -103,7 +102,7 @@ public class Register{
         EventHandler tfUsernameKeyReleased = new EventHandler<javafx.scene.input.KeyEvent>() {
             public void handle(javafx.scene.input.KeyEvent keyEvent) {
                 TextField tfUsername = textFieldComponentArchive.get("tfUsername");
-                if(!db.checkUsername(tfUsername.getText())){
+                if(!profilesDb.checkUsername(tfUsername.getText())){
                     commentMsg = "Username taken! Try something else.";
                     comment.comment.setText(commentMsg);
                     comment.addText();

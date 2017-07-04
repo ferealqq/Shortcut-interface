@@ -1,15 +1,14 @@
 package ahk.pkginterface.browsingFrames;
 
 import ahk.pkginterface.AHKInterface;
+import ahk.pkginterface.MenuSetup;
 import ahk.pkginterface.database.ActionsData;
 import ahk.pkginterface.database.Actions;
-import ahk.pkginterface.commentFrames.commentFrame;
 import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,40 +20,39 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.input.KeyEvent;
-import javax.swing.*;
+
 import java.util.ArrayList;
 import javafx.scene.control.TextField;
 
 public class browseAction{
-    public final JFXPanel jfxPanel = new JFXPanel();
+    public final JFXPanel browseActionView = new JFXPanel();
     public final BorderPane rootPane = new BorderPane();
     public final BorderPane stepPane = new BorderPane();
-    public AHKInterface mainFrame;
 
 
     private final Button btBack = new Button("Back");
     private final Button btNext = new Button("Next");
     private final TextField searchField = new TextField("Search");
     private final ActionsData actionsData = new ActionsData();
+    private final MenuSetup menuSetup;
+
     private ArrayList<Label> currentComponentArchive = new ArrayList<>();
     public final VBox labelPane = new VBox(5);
     public final VBox topPane = new VBox(5);
+
 
     private EventHandler<ActionEvent> btNextAction;
     private ChangeListener<Boolean> focusListener;
     private EventHandler<KeyEvent> keyReleasedAL;
     private EventHandler<ActionEvent> btBackAction;
-    public browseAction(AHKInterface mainForm) {
-        mainFrame = mainForm;
-        initComponents(jfxPanel);
-    }
-    private void initComponents(JFXPanel jfxPanel){
-        Scene scene = createScene();
-        jfxPanel.setScene(scene);
+    public browseAction(MenuSetup menu) {
+        menuSetup = menu;
+        initComponents(browseActionView);
     }
     /*
     * Remember to run these methods in following order or the code will not work. Because they relay on the other variables in the other methods.
-    * reateListeners();
+    * menuSetup.setRootPane(topPane);
+    * createListeners();
         createStepBar();
         createComponents(actionsData.getActions());
         createButtons();
@@ -62,6 +60,7 @@ public class browseAction{
      */
     private Scene createScene() {
         Scene scene = new Scene(rootPane,800,500);
+        menuSetup.setRootPane(topPane);
         createListeners();
         createStepBar();
         createComponents(actionsData.getActions());
@@ -86,6 +85,10 @@ public class browseAction{
         topPane.getChildren().add(stepPane);
         rootPane.setTop(topPane);
     }
+    private void initComponents(JFXPanel jfxPanel){
+        Scene scene = createScene();
+        jfxPanel.setScene(scene);
+    }
     private void setListeners(){
         btBack.setOnAction(btBackAction);
         searchField.setOnKeyReleased(keyReleasedAL);
@@ -95,7 +98,13 @@ public class browseAction{
         btNextAction = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                // eteen päin fukin dummy
+            }
+        };
+        btBackAction = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                menuSetup.hideSelectedAndShowSelected(browseActionView,menuSetup.viewHistory.getLast());
             }
         };
         focusListener = new ChangeListener<Boolean>()
@@ -118,15 +127,9 @@ public class browseAction{
                 createComponents(actionsData.searchAction(searchField.getText()));
             }
         };
-        btBackAction = new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent event){
-                jfxPanel.hide();
-                mainFrame.mainJfxPane.show();
-            }
-        };
     }
     public JFXPanel giveView(){
-        return jfxPanel;
+        return browseActionView;
     }
     private void createButtons(){
         BorderPane bottomPane = new BorderPane();
@@ -166,6 +169,5 @@ public class browseAction{
     }
 
     public static void main(String[] args) {
-        new browseAction(new AHKInterface());
     }
 }
