@@ -1,5 +1,6 @@
 package ahk.pkginterface.browsingFrames;
 
+import ahk.pkginterface.AHKInterface;
 import ahk.pkginterface.MenuSetup;
 import ahk.pkginterface.database.ActionsData;
 import ahk.pkginterface.database.Actions;
@@ -33,7 +34,7 @@ public class browseAction{
     private final Button btNext = new Button("Next");
     private final TextField searchField = new TextField("Search");
     private final ActionsData actionsData = new ActionsData();
-    private MenuSetup menuSetup;
+    private final MenuSetup menuSetup;
 
     private ArrayList<Label> currentComponentArchive = new ArrayList<>();
     public final VBox labelPane = new VBox(5);
@@ -59,6 +60,7 @@ public class browseAction{
      */
     private Scene createScene() {
         Scene scene = new Scene(rootPane,800,500);
+        menuSetup.setRootPane(topPane);
         createListeners();
         createStepBar();
         createComponents(actionsData.getActions());
@@ -80,7 +82,6 @@ public class browseAction{
         secondStep.setStyle("-fx-background-color:#A9A9A9");
         stepPane.setCenter(centeredHBox);
         stepPane.setStyle("-fx-background-color:#F5F5F5");
-        menuSetup.setRootPane(topPane);
         topPane.getChildren().add(stepPane);
         rootPane.setTop(topPane);
     }
@@ -103,7 +104,7 @@ public class browseAction{
         btBackAction = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                menuSetup.hideSelectedAndShowSelected(browseActionView,menuSetup.getLastView());
+                menuSetup.hideSelectedAndShowSelected(browseActionView,menuSetup.viewHistory.getLast());
             }
         };
         focusListener = new ChangeListener<Boolean>()

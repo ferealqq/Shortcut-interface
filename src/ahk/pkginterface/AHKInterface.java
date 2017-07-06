@@ -35,46 +35,43 @@ public class AHKInterface extends JFrame {
     private EventHandler<ActionEvent> btNextAction;
     private EventHandler<ActionEvent> btDetectAction;
     public final LinkedList<JFXPanel> viewHistory = new LinkedList<>();
-    public final HashMap<String, JFXPanel> viewMap = new HashMap<>();
+    public final HashMap<String,JFXPanel> viewMap = new HashMap<>();
     // siirä viewmap aloitus formiin sitten kuin se on tehty
     public int currentUserId;
     public final JFrame main = this;
-    public final MenuSetup menuSetup = new MenuSetup(this, viewMap, viewHistory, currentUserId);
-
-    public AHKInterface(int id) {
+    public final MenuSetup menuSetup = new MenuSetup(this,viewMap,viewHistory,currentUserId);
+    public AHKInterface(int id){
         currentUserId = id;
         constructAHK();
     }
-
-    public AHKInterface() {
+    public AHKInterface(){
         constructAHK();
     }
-
-    private void constructAHK() {
+    private void constructAHK(){
+        viewHistory.add(ahkinterfaceView); // siirrä tämä myös uuten aloitus ruutuun.
         createViews(); // siirä tämä metoi uuten main formiin kuin se on tehty
         this.add(ahkinterfaceView);
         this.setVisible(true);
-        this.setSize(800, 500);
+        this.setSize(800,500);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         initComponents(ahkinterfaceView);
     }
 
-    private void createViews() {
-            Register register = new Register(menuSetup);
+    private void createViews(){
+        Register register = new Register(menuSetup);
         JFXPanel registerView = register.giveView();
-        viewMap.put("register", registerView);
+        this.add(registerView);
+        viewMap.put("register",registerView);
         viewMap.put("ahkinterface", ahkinterfaceView);
         JFXPanel browseView = new browseAction(menuSetup).giveView();
-        viewMap.put("browseaction", browseView);
+        this.add(browseView);
+        viewMap.put("browseaction",browseView);
     }
-
-    private void initComponents(JFXPanel jfxPanel) {
+    private void initComponents(JFXPanel jfxPanel){
         Scene scene = createScene();
         jfxPanel.setScene(scene);
-        menuSetup.setMenuBar();
     }
-
     /*
     * Remember to run these methods in following order or the code will not work. Because they relay on the other variables in the other methods.
     * reateListeners();
@@ -84,7 +81,8 @@ public class AHKInterface extends JFrame {
         setListeners();
      */
     private Scene createScene() {
-        Scene scene = new Scene(rootPane, 1000, 600);
+        Scene scene = new Scene(rootPane,1000,600);
+        menuSetup.setRootPane(rootPane);
         createKeyListeners();
         createStepBar();
         try {
@@ -96,14 +94,13 @@ public class AHKInterface extends JFrame {
         setKeyListeners();
         return (scene);
     }
-
-    private void createStepBar() {
+    private void createStepBar(){
         HBox centeredHBox = new HBox(35);
         Button firstStep = new Button("1");
         Button secondStep = new Button("2");
         secondStep.setOnAction(btNextAction);
         Button thirdStep = new Button("3");
-        centeredHBox.getChildren().addAll(firstStep, secondStep, thirdStep);
+        centeredHBox.getChildren().addAll(firstStep,secondStep,thirdStep);
         centeredHBox.setAlignment(Pos.CENTER);
         String stepPaneCss = this.getClass().getResource("Css/stepPane.css").toExternalForm();
         stepPane.getStylesheets().add(stepPaneCss);
@@ -112,16 +109,15 @@ public class AHKInterface extends JFrame {
         stepPane.setStyle("-fx-background-color:#F5F5F5");
         rootPane.getChildren().add(stepPane);
     }
-
-    private void createKeyListeners() {
+    private void createKeyListeners(){
         btNextAction = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (pressedKeys.isEmpty()) {
-                    JOptionPane.showMessageDialog(AHKInterface.super.rootPane, "You havent selected any keys try again later!");
+                if(pressedKeys.isEmpty()) {
+                    JOptionPane.showMessageDialog(AHKInterface.super.rootPane,"You havent selected any keys try again later!");
                     return;
                 }
-                menuSetup.hideSelectedAndShowSelected(ahkinterfaceView, menuSetup.viewMap.get("browseaction"));
+                menuSetup.hideSelectedAndShowSelected(ahkinterfaceView,menuSetup.viewMap.get("browseaction"));
             }
         };
         btDetectAction = new EventHandler<ActionEvent>() {
@@ -131,10 +127,9 @@ public class AHKInterface extends JFrame {
             }
         };
     }
-
-    private void setKeyListeners() {
+    private void setKeyListeners(){
         for (int i = 0; i < bottomRowButtons.size(); i++) {
-            switch (bottomRowButtons.get(i).getText()) {
+            switch(bottomRowButtons.get(i).getText()){
                 case "Detect":
                     Button btDetect = bottomRowButtons.get(i);
                     btDetect.setOnAction(btDetectAction);
@@ -144,8 +139,7 @@ public class AHKInterface extends JFrame {
             }
         }
     }
-
-    private void createButtons(Scene scene) {
+    private void createButtons(Scene scene){
         HBox buttonRow = new HBox();
 
         Button btBack = new Button("Back to menu");
@@ -173,15 +167,16 @@ public class AHKInterface extends JFrame {
         bottomRowButtons.add(btUndo);
 
         Button btBrowse = new Button("Browse Scripts");
-        buttonRow.setHgrow(btBrowse, Priority.ALWAYS);
+        buttonRow.setHgrow(btBrowse,Priority.ALWAYS);
         btBrowse.setMaxWidth(Double.MAX_VALUE);
         btBrowse.setMaxHeight(Double.MAX_VALUE);
         bottomRowButtons.add(btBrowse);
 
 
+
         Button btNext = new Button("Next");
-        buttonRow.setHgrow(btNext, Priority.ALWAYS);
-        buttonRow.getChildren().addAll(btBack, btScripts, btDetect, btUndo, btBrowse, btNext);
+        buttonRow.setHgrow(btNext,Priority.ALWAYS);
+        buttonRow.getChildren().addAll(btBack,btScripts,btDetect,btUndo,btBrowse,btNext);
         buttonRow.setAlignment(Pos.BOTTOM_LEFT);
         bottomRowButtons.add(btNext);
 
@@ -189,26 +184,27 @@ public class AHKInterface extends JFrame {
         buttonRow.getStylesheets().add(buttonRowCss);
         rootPane.getChildren().add(buttonRow);
     }
-
     private void createKeyboard() throws FileNotFoundException {
         Keys keys = new KeyData().readKeyboardLayoutUSToKeys();
         keys.addRowsToArrayListRows();
-        for (ArrayList<Key> row : keys.rows) {
+        for (ArrayList<Key> row :keys.rows) {
             HBox rowPane = new HBox();
-            for (int i = 0; i < row.size(); i++) {
+            for (int i = 0; i <row.size();i++) {
                 Key currentkey = row.get(i);
                 Button btnKey = new Button(currentkey.getKey());
                 rowPane.setHgrow(btnKey, Priority.ALWAYS);
                 btnKey.setMaxWidth(Double.MAX_VALUE);
                 btnKey.setMaxHeight(Double.MAX_VALUE);
-                btnKey.setOnAction(new EventHandler<ActionEvent>() {
+                btnKey.setOnAction(new EventHandler<ActionEvent>(){
                     @Override
-                    public void handle(ActionEvent event) {
-                         if (pressedKeys.contains(currentkey)) {
+                    public void handle(ActionEvent event){
+                        if(pressedKeys.contains(currentkey)) {
                             pressedKeys.remove(currentkey);
                             btnKey.setStyle(null);
-                        } else {
+                            System.out.println("removed "+ currentkey.getKey());
+                        }else{
                             btnKey.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
+                            System.out.println("added " + currentkey.getKey());
                             pressedKeys.add(currentkey);
                         }
 
@@ -216,7 +212,7 @@ public class AHKInterface extends JFrame {
                 });
                 rowPane.getChildren().add(btnKey);
             }
-            rootPane.setVgrow(rowPane, Priority.ALWAYS);
+            rootPane.setVgrow(rowPane,Priority.ALWAYS);
             rootPane.getChildren().add(rowPane);
         }
 
@@ -233,6 +229,7 @@ public class AHKInterface extends JFrame {
         */
     }
     public static void main(String[] args) {
+
         AHKInterface k = new AHKInterface(0);
     }
 }
