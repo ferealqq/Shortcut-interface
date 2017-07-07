@@ -56,7 +56,13 @@ public class ViewStorage {
         if(!viewHistoryBackwards.isEmpty()){
             JFXPanel last = viewHistoryBackwards.getLast();
             viewHistoryBackwards.removeLast();
-
+            viewHistory.add((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1));
+            ((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1)).hide();
+            setMenubar(register.rootPane);
+            setMenubar(browseaction.topPane);
+            setMenubar(ahkinterface.rootPane);
+            last.show();
+            mainFrame.add(last);
         }
     }
     public void showBackwardsHideCurrent(){
@@ -65,6 +71,9 @@ public class ViewStorage {
             viewHistoryBackwards.add(((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1)));
             viewHistory.removeLast();
             ((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1)).hide();
+            setMenubar(register.rootPane);
+            setMenubar(browseaction.topPane);
+            setMenubar(ahkinterface.rootPane);
             // kuin hideet jotain sinun pitää refreshaa menubar muista
             System.out.println(viewHistory.isEmpty() + " "+ new Date().getSeconds());
             last.show();

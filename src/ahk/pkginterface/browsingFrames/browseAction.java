@@ -115,8 +115,6 @@ public class browseAction{
 
         keyReleasedAL = new EventHandler<KeyEvent>() {
             public void handle(KeyEvent ke) {
-                System.out.println(ke.getEventType());
-                System.out.println(ke.getCode());
                 for (Label removethis:currentComponentArchive) {
                     labelPane.getChildren().remove(removethis);
                 }

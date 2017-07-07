@@ -74,7 +74,6 @@ public class MenuSetup {
             loginItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-
                 }
             });
             MenuItem registerItem = new MenuItem("Register");
@@ -84,7 +83,7 @@ public class MenuSetup {
                     viewStorage.hideSelectedAndShowSelected(((JFXPanel)viewStorage.mainFrame.getContentPane().getComponent(viewStorage.mainFrame.getContentPane().getComponentCount() - 1)), viewStorage.viewMap.get("register"));
                 }
             });
-            profileMenu.getItems().add(registerItem);
+            profileMenu.getItems().addAll(loginItem,registerItem);
         }
     }
     public void disableOrEnable(){

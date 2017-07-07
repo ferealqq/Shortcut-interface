@@ -3,8 +3,10 @@ package ahk.pkginterface;
 import ahk.pkginterface.commentFrames.commentFrame;
 import ahk.pkginterface.database.ProfilesData;
 import javafx.embed.swing.JFXPanel;
+import javafx.embed.swing.SwingNode;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
@@ -12,7 +14,13 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -26,9 +34,6 @@ public class Register{
     private String commentMsg;
     private commentFrame comment = new commentFrame();
 
-    private final HashMap<String,TextField> textFieldComponentArchive = new HashMap<>();
-    private final HashMap<String,EventHandler> eventHandlerArchive = new HashMap<>();
-
     public Register(ViewStorage viewArchive) {
         viewStorage = viewArchive;
         initComponents(registerView);
@@ -41,7 +46,6 @@ public class Register{
         Scene scene = new Scene(rootPane,800,500);
         //viewStorage.menuSetup.setRootPane(rootPane);
         createComponents();
-        createListeners();
         return (scene);
     }
     private void createComponents(){
@@ -49,20 +53,17 @@ public class Register{
         Label lbUsername = new Label("Username");
         lbUsername.setWrapText(true);
         TextField tfUsername = new TextField();
-        textFieldComponentArchive.put("tfUsername",tfUsername);
         labelandfieldStorage.add(new components(tfUsername,lbUsername));
         Label lbEmail = new Label("Email");
         TextField tfEmail = new TextField();
         labelandfieldStorage.add(new components(tfEmail,lbEmail));
-        textFieldComponentArchive.put("tfEmail",tfEmail);
         Label lbPassword = new Label("Password");
         PasswordField tfPassword = new PasswordField();
         labelandfieldStorage.add(new components(tfPassword,lbPassword));
         Label lbPassword2 = new Label("Password again!");
-        textFieldComponentArchive.put("tfPassword",tfPassword);
         PasswordField tfPassword2 = new PasswordField();
-        textFieldComponentArchive.put("tfPassword2",tfPassword2);
         labelandfieldStorage.add(new components(tfPassword2,lbPassword2));
+        createListeners(tfUsername,tfEmail,tfPassword,tfPassword2);
         for (int i = 0; i < labelandfieldStorage.size(); i++) {
             BorderPane.setAlignment(labelandfieldStorage.get(i).getLb(),Pos.CENTER);
             BorderPane.setAlignment(labelandfieldStorage.get(i).getTf(),Pos.CENTER);
@@ -93,27 +94,32 @@ public class Register{
             return tf;
         }
     }
-    private void createListeners(){
-        EventHandler tfUsernameKeyReleased = new EventHandler<javafx.scene.input.KeyEvent>() {
+    private void createListeners(TextField tfUsername,TextField tfEmail,PasswordField tfPassword, PasswordField tfPassword2){
+         tfUsername.setOnKeyReleased(new EventHandler<javafx.scene.input.KeyEvent>() {
             public void handle(javafx.scene.input.KeyEvent keyEvent) {
-                TextField tfUsername = textFieldComponentArchive.get("tfUsername");
                 if(!profilesDb.checkUsername(tfUsername.getText())){
-                    commentMsg = "Username taken! Try something else.";
-                    comment.comment.setText(commentMsg);
-                    comment.addText();
-                    comment.setVisible(true);
-                    //tfUsername.setForeground(Color.red);
-                    //comment.setLocation(getX()+210,getY()+57);
+                    Stage dialog = createMessage("Username taken! Try something new!");
+                    dialog.show();
+                    dialog.setY(tfUsername.getTranslateY()+tfUsername.getLayoutY()+tfUsername.gety);
+                    dialog.setX(tfUsername.getTranslateX()+viewStorage.mainFrame.getAlignmentX());
+                    tfUsername.setStyle("-fx-text-fil: red;");
                     //tfUsername.addMouseListener(setHover);
                 }else{
                     //tfUsername.setForeground(Color.BLACK);
                     //tfUsername.removeMouseListener(setHover);
-                    commentMsg ="";
-                    comment.comment.setText("");
                 }
             }
-        };
-        eventHandlerArchive.put("tfUsernameKeyReleased",tfUsernameKeyReleased);
+        });
+    }
+    public Stage createMessage(String message){
+        final Stage dialog = new Stage();
+        dialog.initStyle(StageStyle.UNDECORATED);
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        BorderPane dialogPane = new BorderPane();
+        dialogPane.setCenter(new Text(message));
+        Scene dialogScene = new Scene(dialogPane);
+        dialog.setScene(dialogScene);
+        return dialog;
     }
     public static void main(String[] args) {
     }

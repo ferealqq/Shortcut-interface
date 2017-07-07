@@ -4,6 +4,9 @@ Open:
 
 How to get current view (jfxpanel)  ((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1))
 
+Note
+    Kuin hideet jfxpanelin sinun pitää muistaa refreshaa menubaarit muuten se voi näyttää väärin edes ja taakse päin.
+
 Käyttöliittymä:
     Tee oma frame holder. Eli laita setUndecorated frame ja tee omat exit ja close nappulat. Oikeaan ylä kulmaan.
     Menu:
@@ -16,7 +19,7 @@ Käyttöliittymä:
 
         Backwards ja forwards mekaniikkaa. Joka kerta kuin saat uuden näkymän se lisätään linkd listaan.
         Idea:
-            Älä tee koko ajan uutta menua vaan jaa vanhaa. Tätä kautta sinun ei tarvitse antaa viewhistory linkedlistaa joka frameen. Vain ainoastaa menubaariin.
+            Älä tee koko ajan uutta menua vaan jaa vanhaa. Tätä kautta sinun ei tar     vitse antaa viewhistory linkedlistaa joka frameen. Vain ainoastaa menubaariin.
 
             Kirjoita sisäiseen muistiin (json,xml) menubaarin data jns niin että kutsut näkymää niin kuin kutsut databasea.
 
