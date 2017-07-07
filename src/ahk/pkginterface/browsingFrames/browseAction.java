@@ -31,7 +31,6 @@ public class browseAction{
     public final BorderPane stepPane = new BorderPane();
 
 
-    private final Button btBack = new Button("Back");
     private final Button btNext = new Button("Next");
     private final TextField searchField = new TextField("Search");
     private final ActionsData actionsData = new ActionsData();
@@ -71,7 +70,12 @@ public class browseAction{
     private void createStepBar(){
         HBox centeredHBox = new HBox(35);
         Button firstStep = new Button("1");
-        firstStep.setOnAction(btBackAction);
+        firstStep.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                viewStorage.hideSelectedAndShowSelected((JFXPanel)viewStorage.mainFrame.getContentPane().getComponent(viewStorage.mainFrame.getComponentCount()-1),viewStorage.viewMap.get("ahkinterface"));
+            }
+        });
         Button secondStep = new Button("2");
         Button thirdStep = new Button("3");
         thirdStep.setOnAction(btNextAction);
@@ -90,7 +94,6 @@ public class browseAction{
         jfxPanel.setScene(scene);
     }
     private void setListeners(){
-        btBack.setOnAction(btBackAction);
         searchField.setOnKeyReleased(keyReleasedAL);
         searchField.focusedProperty().addListener(focusListener);
     }
@@ -99,12 +102,6 @@ public class browseAction{
             @Override
             public void handle(ActionEvent event) {
                 // eteen päin fukin dummy
-            }
-        };
-        btBackAction = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                viewStorage.hideSelectedAndShowSelected(browseActionView,viewStorage.viewHistory.getLast());
             }
         };
         focusListener = new ChangeListener<Boolean>()
@@ -143,9 +140,6 @@ public class browseAction{
         bottomPane.setRight(btNext);
 
 
-        BorderPane.setAlignment(btBack, Pos.BOTTOM_LEFT);
-        btBack.getStylesheets().add(btCss);
-        bottomPane.setLeft(btBack);
         rootPane.setBottom(bottomPane);
 
     }

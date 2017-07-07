@@ -3,18 +3,11 @@ package ahk.pkginterface;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 
-import javax.swing.*;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Objects;
+import java.util.Date;
 
 public class MenuSetup {
     public Pane rootPane;
@@ -31,11 +24,11 @@ public class MenuSetup {
     }
 
     public MenuBar createMenuBar() {
+        menuBar = new MenuBar();
         forwardsMenuButton = new Button(">");
         backwardsMenuButton = new Button("<");
         backAndForthActions();
         disableOrEnable();
-        menuBar = new MenuBar();
         Menu forwardsMenu = new Menu();
         forwardsMenu.setGraphic(forwardsMenuButton);
         Menu backwardsMenu = new Menu();
@@ -55,13 +48,13 @@ public class MenuSetup {
         this.forwardsMenuButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                viewStorage.hideSelectedAndShowSelected(((JFXPanel)viewStorage.mainFrame.getContentPane().getComponent(viewStorage.mainFrame.getContentPane().getComponentCount()-1)),viewStorage.viewHistoryBackwards.getLast());
+                viewStorage.showForwardHideCurrent();
             }
         });
         this.backwardsMenuButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                viewStorage.hideSelectedAndShowSelected(((JFXPanel)viewStorage.mainFrame.getContentPane().getComponent(viewStorage.mainFrame.getContentPane().getComponentCount()-1)),viewStorage.getLastView());
+                viewStorage.showBackwardsHideCurrent();
             }
         });
     }
@@ -96,6 +89,7 @@ public class MenuSetup {
     }
     public void disableOrEnable(){
         this.backwardsMenuButton.setDisable(viewStorage.viewHistory.isEmpty());
+        System.out.println(viewStorage.viewHistory.isEmpty() + " " + new Date().getSeconds());
         this.forwardsMenuButton.setDisable(viewStorage.viewHistoryBackwards.isEmpty());
     }
     public static void main(String[] args) {

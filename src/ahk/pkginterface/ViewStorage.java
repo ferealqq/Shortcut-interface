@@ -12,7 +12,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 import javax.swing.*;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class ViewStorage {
@@ -42,6 +44,7 @@ public class ViewStorage {
      */
     public void setAhkinterface(AHKInterface ahkinterface){
         this.ahkinterface = ahkinterface;
+        viewMap.put("ahkinterface",this.ahkinterface.ahkinterfaceView);
     }
     public void createViewMap(){
         viewMap.put("register",register.giveView());
@@ -49,14 +52,24 @@ public class ViewStorage {
         viewMap.put("browseaction",browseaction.giveView());
         mainFrame.add(browseaction.giveView());
     }
-    public JFXPanel getLastView(){
+    public void showForwardHideCurrent(){
+        if(!viewHistoryBackwards.isEmpty()){
+            JFXPanel last = viewHistoryBackwards.getLast();
+            viewHistoryBackwards.removeLast();
+
+        }
+    }
+    public void showBackwardsHideCurrent(){
         if(!viewHistory.isEmpty()){
             JFXPanel last = viewHistory.getLast();
             viewHistoryBackwards.add(((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1)));
             viewHistory.removeLast();
-            return last;
+            ((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1)).hide();
+            // kuin hideet jotain sinun pitää refreshaa menubar muista
+            System.out.println(viewHistory.isEmpty() + " "+ new Date().getSeconds());
+            last.show();
+            mainFrame.add(last);
         }
-        return null;
     }
     public void hideSelectedAndShowSelected(JFXPanel hidethis, JFXPanel showthis) {
         hidethis.hide();
@@ -64,16 +77,17 @@ public class ViewStorage {
         viewHistory.add(hidethis);
         mainFrame.add(showthis);
         setMenubar(register.rootPane);
-        setMenubar(browseaction.rootPane);
+        setMenubar(browseaction.topPane);
         setMenubar(ahkinterface.rootPane);
     }
     public void setMenubar(Pane currentViewsRootPane){
-        for (Node node: currentViewsRootPane.getChildren()) {
-            if(node.getClass().equals(MenuBar.class)){
-                currentViewsRootPane.getChildren().remove(node);
+        Iterator<Node> nodeIterator = currentViewsRootPane.getChildren().iterator();
+        while(nodeIterator.hasNext()){
+            if(nodeIterator.next().getClass().equals(MenuBar.class)){
+                nodeIterator.remove();
             }
         }
-        currentViewsRootPane.getChildren().add(menuSetup.createMenuBar());
+        currentViewsRootPane.getChildren().add(0,menuSetup.createMenuBar());
         //register.rootPane.getChildren() sinun pitää hakea oikea rootPane original muodossa että voit muokata sitä
     }
     private void createStepBar(Pane stepbarToThisPane){

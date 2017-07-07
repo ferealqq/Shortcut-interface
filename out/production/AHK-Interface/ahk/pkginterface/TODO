@@ -48,3 +48,8 @@ Search building tip.
 
             JPanel removal idea
                 ota talteen arraylistaan kaikki componentit mitä haluaisit poistaa ja postane fore lauseella ja jätä searchField paikalleen.
+
+
+Miksi poistin getLastView.
+    Poistin getlastview koska se ei ollut käytännölinnen. Kuin käytit getlastview hide and show metodissa poistit näkymän josta halusit pois ja hideandshow metodi addasi sen suoraan takasin.
+        Joten tein uuden metodin joka ottaa vanhan näkymän laittaa sen esille ja piilottaa vanhan. Samalla kuin se poistaa vanhan näkymän viwhistorystä ja lisää sen viewhistorybackwardsiin.

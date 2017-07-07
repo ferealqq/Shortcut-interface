@@ -4,6 +4,9 @@ Open:
 
 How to get current view (jfxpanel)  ((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1))
 
+Note
+    Kuin hideet jfxpanelin sinun pitää muistaa refreshaa menubaarit muuten se voi näyttää väärin edes ja taakse päin.
+
 Käyttöliittymä:
     Tee oma frame holder. Eli laita setUndecorated frame ja tee omat exit ja close nappulat. Oikeaan ylä kulmaan.
     Menu:
@@ -48,3 +51,8 @@ Search building tip.
 
             JPanel removal idea
                 ota talteen arraylistaan kaikki componentit mitä haluaisit poistaa ja postane fore lauseella ja jätä searchField paikalleen.
+
+
+Miksi poistin getLastView.
+    Poistin getlastview koska se ei ollut käytännölinnen. Kuin käytit getlastview hide and show metodissa poistit näkymän josta halusit pois ja hideandshow metodi addasi sen suoraan takasin.
+        Joten tein uuden metodin joka ottaa vanhan näkymän laittaa sen esille ja piilottaa vanhan. Samalla kuin se poistaa vanhan näkymän viwhistorystä ja lisää sen viewhistorybackwardsiin.
