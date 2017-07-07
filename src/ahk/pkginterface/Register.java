@@ -9,21 +9,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
-import javax.swing.*;
-import javax.xml.soap.Text;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
 public class Register{
-    public final JFXPanel jfxPanel = new JFXPanel();
+    public final JFXPanel registerView = new JFXPanel();
     private VBox rootPane = new VBox();
 
     private ProfilesData profilesDb = new ProfilesData();
@@ -36,7 +31,7 @@ public class Register{
 
     public Register(MenuSetup menu) {
         menuSetup = menu;
-        initComponents(jfxPanel);
+        initComponents(registerView);
     }
     private void initComponents(JFXPanel jfxPanel){
         Scene scene = createScene();
@@ -79,7 +74,7 @@ public class Register{
         }
         }
         public JFXPanel giveView(){
-            return jfxPanel;
+            return registerView;
         }
         /*
         * a quick shadowclass to store components in. To make code cleaner and easier to undestand by others.s

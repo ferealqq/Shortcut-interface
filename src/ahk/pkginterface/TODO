@@ -23,6 +23,10 @@ Käyttöliittymä:
             Tee hashmap joka sisältää kaikki jfxpanelit ja kaikki paneelit ovat ädättynä mainjframeen.
             kuin haluat vaihtaa formia sinun ei pidä muuta kuin getcontains("register").show()
 
+            Tee uusi luokka nimeltä ViewStorage jonka sisälle laitat kaikki jpanelit ja pää jframen. Myös kaikki luokat niin kuin register login browseaction kaikki.
+            Tämä luokka tekee koodista puhtaamman ja onglema että et voi muokata menubaari poistuu koska sinulla on kaikkien luokkien rootit.
+            Lisää tähän luokkaan tällä hetkelle olevia menusetup metodeja esim. hideselectedandshowselected ja getlastview
+
 Database:
     Tee table joka pitää sisällään jokaiseen nappulaan vastaavan nimen ahk ohjelmointi kielessä.
 

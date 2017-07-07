@@ -4,10 +4,7 @@ import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -29,6 +26,8 @@ public class MenuSetup {
     public HashMap<String, JFXPanel> viewMap;
 
     private MenuBar menuBar;
+    private Button forwardsMenuButton;
+    private Button backwardsMenuButton;
 
     public MenuSetup(JFrame main, HashMap viewmap, LinkedList viewHis, int id) {
         mainFrame = main;
@@ -51,16 +50,16 @@ public class MenuSetup {
         rootPane = root;
         createMenuBar();
     }
-
     public void createMenuBar() {
-        Label forwardsMenuLabel = new Label(">");
-        Label backwardsMenuLabel = new Label("<");
-        backAndForthActions(forwardsMenuLabel,backwardsMenuLabel);
+        forwardsMenuButton = new Button(">");
+        backwardsMenuButton = new Button("<");
+        backAndForthActions();
+        disableOrEnable();
         menuBar = new MenuBar();
         Menu forwardsMenu = new Menu();
-        forwardsMenu.setGraphic(forwardsMenuLabel);
+        forwardsMenu.setGraphic(forwardsMenuButton);
         Menu backwardsMenu = new Menu();
-        backwardsMenu.setGraphic(backwardsMenuLabel);
+        backwardsMenu.setGraphic(backwardsMenuButton);
         final Menu menuProfile = new Menu("Profile");
         menuItemsForProfile(menuProfile);
         final Menu menuHelp = new Menu("Help");
@@ -70,18 +69,28 @@ public class MenuSetup {
         String menuBarCss = this.getClass().getResource("Css/main_menu_bar.css").toExternalForm();
         menuBar.getStylesheets().add(menuBarCss);
     }
+    public JFXPanel getLastView(){
+        if(!viewHistory.isEmpty()){
+            JFXPanel last = viewHistory.getLast();
+            viewHistoryBackwards.add(((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1)));
+            viewHistory.removeLast();
+            return last;
+        }
+        return null;
+    }
 
-    private void backAndForthActions(Label forwards, Label backwards) {
-        forwards.setOnMouseClicked(new EventHandler<MouseEvent>() {
+    private void backAndForthActions() {
+        disableOrEnable();
+        this.forwardsMenuButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                System.out.println("forwards");
+                hideSelectedAndShowSelected(((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1)),viewHistoryBackwards.getLast());
             }
         });
-        backwards.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        this.backwardsMenuButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                System.out.println("backwards");
+                hideSelectedAndShowSelected(((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1)),getLastView());
             }
         });
     }
@@ -114,11 +123,22 @@ public class MenuSetup {
             profileMenu.getItems().add(registerItem);
         }
     }
-
+    public void disableOrEnable(){
+        this.backwardsMenuButton.setDisable(viewHistory.isEmpty());
+        this.forwardsMenuButton.setDisable(viewHistoryBackwards.isEmpty());
+    }
     public void hideSelectedAndShowSelected(JFXPanel hidethis, JFXPanel showthis) {
         hidethis.hide();
         showthis.show();
-        viewHistoryBackwards.add(showthis);
+        System.out.println("hide");
+        for (Node node:showthis.getScene().getRoot().getChildrenUnmodifiable()) {
+            if(node.getClass().equals(MenuBar.class)){
+                // keksi miten saat poistettua vanhan menubaarin
+                // idea tee sillain että kuin käyttäjä on uudessa ruudussa ja liikuttaa hiirtä tai painaa näppäintä tai hoveraa. käytänössä tekee mitä vain. niin uudelleen runnat methodin disableorenable
+            }
+        }
+        if(showthis.getScene().getRoot().getChildrenUnmodifiable().contains(MenuBar.class)) System.out.println("contains");
+        //setRootPane((VBox)showthis.getScene().getRoot());
         viewHistory.add(hidethis);
         mainFrame.add(showthis);
     }
