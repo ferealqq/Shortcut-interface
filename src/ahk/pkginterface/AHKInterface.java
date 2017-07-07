@@ -26,7 +26,7 @@ import java.util.LinkedList;
 
 public class AHKInterface extends JFrame {
     public final JFXPanel ahkinterfaceView = new JFXPanel();
-    private final VBox rootPane = new VBox();
+    public final VBox rootPane = new VBox();
     public final BorderPane stepPane = new BorderPane();
     private final ArrayList<Button> bottomRowButtons = new ArrayList<>();
     public final ArrayList<Key> pressedKeys = new ArrayList<>();
@@ -34,15 +34,14 @@ public class AHKInterface extends JFrame {
 
     private EventHandler<ActionEvent> btNextAction;
     private EventHandler<ActionEvent> btDetectAction;
-    public final LinkedList<JFXPanel> viewHistory = new LinkedList<>();
-    public final HashMap<String, JFXPanel> viewMap = new HashMap<>();
-    // siirä viewmap aloitus formiin sitten kuin se on tehty
     public int currentUserId;
     public final JFrame main = this;
-    public final MenuSetup menuSetup = new MenuSetup(this, viewMap, viewHistory, currentUserId);
+    public ViewStorage viewStorage;// siirä viewmap aloitus formiin sitten kuin se on tehty
 
     public AHKInterface(int id) {
         currentUserId = id;
+        viewStorage = new ViewStorage(main,currentUserId);
+        viewStorage.setAhkinterface(this);
         constructAHK();
     }
 
@@ -51,22 +50,12 @@ public class AHKInterface extends JFrame {
     }
 
     private void constructAHK() {
-        createViews(); // siirä tämä metoi uuten main formiin kuin se on tehty
         this.add(ahkinterfaceView);
         this.setVisible(true);
         this.setSize(800, 500);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
         initComponents(ahkinterfaceView);
-    }
-
-    private void createViews() {
-        Register register = new Register(menuSetup);
-        JFXPanel registerView = register.giveView();
-        viewMap.put("register", registerView);
-        viewMap.put("ahkinterface", ahkinterfaceView);
-        JFXPanel browseView = new browseAction(menuSetup).giveView();
-        viewMap.put("browseaction", browseView);
     }
 
     private void initComponents(JFXPanel jfxPanel) {
@@ -84,7 +73,7 @@ public class AHKInterface extends JFrame {
      */
     private Scene createScene() {
         Scene scene = new Scene(rootPane, 1000, 600);
-        menuSetup.setRootPane(rootPane);
+        rootPane.getChildren().add(viewStorage.menuSetup.createMenuBar()); // poista kuin uusi mainform on tehty
         createKeyListeners();
         createStepBar();
                 try {
@@ -121,7 +110,7 @@ public class AHKInterface extends JFrame {
                     JOptionPane.showMessageDialog(AHKInterface.super.rootPane, "You havent selected any keys try again later!");
                     return;
                 }
-                menuSetup.hideSelectedAndShowSelected(ahkinterfaceView, menuSetup.viewMap.get("browseaction"));
+                viewStorage.hideSelectedAndShowSelected(ahkinterfaceView, viewStorage.viewMap.get("browseaction"));
             }
         };
         btDetectAction = new EventHandler<ActionEvent>() {

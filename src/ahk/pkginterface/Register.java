@@ -19,18 +19,18 @@ import java.util.HashMap;
 
 public class Register{
     public final JFXPanel registerView = new JFXPanel();
-    private VBox rootPane = new VBox();
+    public final VBox rootPane = new VBox();
 
     private ProfilesData profilesDb = new ProfilesData();
-    private MenuSetup menuSetup;
+    public final ViewStorage viewStorage;
     private String commentMsg;
     private commentFrame comment = new commentFrame();
 
     private final HashMap<String,TextField> textFieldComponentArchive = new HashMap<>();
     private final HashMap<String,EventHandler> eventHandlerArchive = new HashMap<>();
 
-    public Register(MenuSetup menu) {
-        menuSetup = menu;
+    public Register(ViewStorage viewArchive) {
+        viewStorage = viewArchive;
         initComponents(registerView);
     }
     private void initComponents(JFXPanel jfxPanel){
@@ -39,7 +39,7 @@ public class Register{
     }
     private Scene createScene(){
         Scene scene = new Scene(rootPane,800,500);
-        menuSetup.setRootPane(rootPane);
+        //viewStorage.menuSetup.setRootPane(rootPane);
         createComponents();
         createListeners();
         return (scene);

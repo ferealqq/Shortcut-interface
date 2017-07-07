@@ -16,9 +16,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 public class ViewStorage {
-
-    //public final Register register;
-    //public final browseAction browseaction;
+    public AHKInterface ahkinterface;
+    public final Register register;
+    public final browseAction browseaction;
     public final JFrame mainFrame;
     public final MenuSetup menuSetup;
     public final LinkedList<JFXPanel> viewHistory;
@@ -32,14 +32,22 @@ public class ViewStorage {
         viewHistory = new LinkedList<>();
         viewMap = new HashMap<>();
         viewHistoryBackwards = new LinkedList<>();
-        menuSetup = new MenuSetup(mainFrame,viewMap,viewHistory,currentUserId);
-        //register = new Register();
-        //browseaction = new browseAction();
+        menuSetup = new MenuSetup(this,currentUserId);
+        register = new Register(this);
+        browseaction = new browseAction(this);
         createViewMap();
     }
+    /*
+    * kuin uusi main form on valmis lisää tänne ahkinterface = new AHKinterface();
+     */
+    public void setAhkinterface(AHKInterface ahkinterface){
+        this.ahkinterface = ahkinterface;
+    }
     public void createViewMap(){
-        //viewMap.put("register",register.giveView());
-        //viewMap.put("browseaction",browseaction.giveView());
+        viewMap.put("register",register.giveView());
+        mainFrame.add(register.giveView());
+        viewMap.put("browseaction",browseaction.giveView());
+        mainFrame.add(browseaction.giveView());
     }
     public JFXPanel getLastView(){
         if(!viewHistory.isEmpty()){
@@ -53,17 +61,20 @@ public class ViewStorage {
     public void hideSelectedAndShowSelected(JFXPanel hidethis, JFXPanel showthis) {
         hidethis.hide();
         showthis.show();
-        System.out.println("hide");
-        for (Node node:showthis.getScene().getRoot().getChildrenUnmodifiable()) {
-            if(node.getClass().equals(MenuBar.class)){
-                // keksi miten saat poistettua vanhan menubaarin
-                // idea tee sillain että kuin käyttäjä on uudessa ruudussa ja liikuttaa hiirtä tai painaa näppäintä tai hoveraa. käytänössä tekee mitä vain. niin uudelleen runnat methodin disableorenable
-            }
-        }
-        if(showthis.getScene().getRoot().getChildrenUnmodifiable().contains(MenuBar.class)) System.out.println("contains");
-        //setRootPane((VBox)showthis.getScene().getRoot());
         viewHistory.add(hidethis);
         mainFrame.add(showthis);
+        setMenubar(register.rootPane);
+        setMenubar(browseaction.rootPane);
+        setMenubar(ahkinterface.rootPane);
+    }
+    public void setMenubar(Pane currentViewsRootPane){
+        for (Node node: currentViewsRootPane.getChildren()) {
+            if(node.getClass().equals(MenuBar.class)){
+                currentViewsRootPane.getChildren().remove(node);
+            }
+        }
+        currentViewsRootPane.getChildren().add(menuSetup.createMenuBar());
+        //register.rootPane.getChildren() sinun pitää hakea oikea rootPane original muodossa että voit muokata sitä
     }
     private void createStepBar(Pane stepbarToThisPane){
         BorderPane stepPane = new BorderPane();

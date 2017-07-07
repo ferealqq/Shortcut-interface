@@ -19,38 +19,18 @@ import java.util.Objects;
 public class MenuSetup {
     public Pane rootPane;
     public int currentUserId;
-    public Register registerFrame;
-    public LinkedList<JFXPanel> viewHistory;
-    public LinkedList<JFXPanel> viewHistoryBackwards = new LinkedList<>();
-    public JFrame mainFrame;
-    public HashMap<String, JFXPanel> viewMap;
+    public final ViewStorage viewStorage;
 
     private MenuBar menuBar;
     private Button forwardsMenuButton;
     private Button backwardsMenuButton;
 
-    public MenuSetup(JFrame main, HashMap viewmap, LinkedList viewHis, int id) {
-        mainFrame = main;
-        viewHistory = viewHis;
-        viewMap = viewmap;
+    public MenuSetup(ViewStorage viewArchive, int id) {
+        viewStorage = viewArchive;
         currentUserId = id;
     }
 
-    public void setRootPane(BorderPane root) {
-        rootPane = root;
-        createMenuBar();
-    }
-
-    public void setRootPane(VBox root) {
-        rootPane = root;
-        createMenuBar();
-    }
-
-    public void setRootPane(HBox root) {
-        rootPane = root;
-        createMenuBar();
-    }
-    public void createMenuBar() {
+    public MenuBar createMenuBar() {
         forwardsMenuButton = new Button(">");
         backwardsMenuButton = new Button("<");
         backAndForthActions();
@@ -65,18 +45,9 @@ public class MenuSetup {
         final Menu menuHelp = new Menu("Help");
         final Menu menuView = new Menu("View");
         menuBar.getMenus().addAll(backwardsMenu, forwardsMenu, menuProfile, menuHelp, menuView);
-        rootPane.getChildren().addAll(menuBar);
         String menuBarCss = this.getClass().getResource("Css/main_menu_bar.css").toExternalForm();
         menuBar.getStylesheets().add(menuBarCss);
-    }
-    public JFXPanel getLastView(){
-        if(!viewHistory.isEmpty()){
-            JFXPanel last = viewHistory.getLast();
-            viewHistoryBackwards.add(((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1)));
-            viewHistory.removeLast();
-            return last;
-        }
-        return null;
+        return menuBar;
     }
 
     private void backAndForthActions() {
@@ -84,13 +55,13 @@ public class MenuSetup {
         this.forwardsMenuButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                hideSelectedAndShowSelected(((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1)),viewHistoryBackwards.getLast());
+                viewStorage.hideSelectedAndShowSelected(((JFXPanel)viewStorage.mainFrame.getContentPane().getComponent(viewStorage.mainFrame.getContentPane().getComponentCount()-1)),viewStorage.viewHistoryBackwards.getLast());
             }
         });
         this.backwardsMenuButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                hideSelectedAndShowSelected(((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1)),getLastView());
+                viewStorage.hideSelectedAndShowSelected(((JFXPanel)viewStorage.mainFrame.getContentPane().getComponent(viewStorage.mainFrame.getContentPane().getComponentCount()-1)),viewStorage.getLastView());
             }
         });
     }
@@ -117,32 +88,16 @@ public class MenuSetup {
             registerItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    hideSelectedAndShowSelected(((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount() - 1)), viewMap.get("register"));
+                    viewStorage.hideSelectedAndShowSelected(((JFXPanel)viewStorage.mainFrame.getContentPane().getComponent(viewStorage.mainFrame.getContentPane().getComponentCount() - 1)), viewStorage.viewMap.get("register"));
                 }
             });
             profileMenu.getItems().add(registerItem);
         }
     }
     public void disableOrEnable(){
-        this.backwardsMenuButton.setDisable(viewHistory.isEmpty());
-        this.forwardsMenuButton.setDisable(viewHistoryBackwards.isEmpty());
+        this.backwardsMenuButton.setDisable(viewStorage.viewHistory.isEmpty());
+        this.forwardsMenuButton.setDisable(viewStorage.viewHistoryBackwards.isEmpty());
     }
-    public void hideSelectedAndShowSelected(JFXPanel hidethis, JFXPanel showthis) {
-        hidethis.hide();
-        showthis.show();
-        System.out.println("hide");
-        for (Node node:showthis.getScene().getRoot().getChildrenUnmodifiable()) {
-            if(node.getClass().equals(MenuBar.class)){
-                // keksi miten saat poistettua vanhan menubaarin
-                // idea tee sillain että kuin käyttäjä on uudessa ruudussa ja liikuttaa hiirtä tai painaa näppäintä tai hoveraa. käytänössä tekee mitä vain. niin uudelleen runnat methodin disableorenable
-            }
-        }
-        if(showthis.getScene().getRoot().getChildrenUnmodifiable().contains(MenuBar.class)) System.out.println("contains");
-        //setRootPane((VBox)showthis.getScene().getRoot());
-        viewHistory.add(hidethis);
-        mainFrame.add(showthis);
-    }
-
     public static void main(String[] args) {
     }
 }

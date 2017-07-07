@@ -2,6 +2,7 @@ package ahk.pkginterface.browsingFrames;
 
 import ahk.pkginterface.AHKInterface;
 import ahk.pkginterface.MenuSetup;
+import ahk.pkginterface.ViewStorage;
 import ahk.pkginterface.database.ActionsData;
 import ahk.pkginterface.database.Actions;
 import javafx.beans.binding.Bindings;
@@ -34,8 +35,7 @@ public class browseAction{
     private final Button btNext = new Button("Next");
     private final TextField searchField = new TextField("Search");
     private final ActionsData actionsData = new ActionsData();
-    private final MenuSetup menuSetup;
-
+    public final ViewStorage viewStorage;
     private ArrayList<Label> currentComponentArchive = new ArrayList<>();
     public final VBox labelPane = new VBox(5);
     public final VBox topPane = new VBox(5);
@@ -45,8 +45,8 @@ public class browseAction{
     private ChangeListener<Boolean> focusListener;
     private EventHandler<KeyEvent> keyReleasedAL;
     private EventHandler<ActionEvent> btBackAction;
-    public browseAction(MenuSetup menu) {
-        menuSetup = menu;
+    public browseAction(ViewStorage viewArchive) {
+        viewStorage = viewArchive;
         initComponents(browseActionView);
     }
     /*
@@ -60,7 +60,7 @@ public class browseAction{
      */
     private Scene createScene() {
         Scene scene = new Scene(rootPane,800,500);
-        menuSetup.setRootPane(topPane);
+        //viewStorage.menuSetup.setRootPane(topPane);
         createListeners();
         createStepBar();
         createComponents(actionsData.getActions());
@@ -104,7 +104,7 @@ public class browseAction{
         btBackAction = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                menuSetup.hideSelectedAndShowSelected(browseActionView,menuSetup.viewHistory.getLast());
+                viewStorage.hideSelectedAndShowSelected(browseActionView,viewStorage.viewHistory.getLast());
             }
         };
         focusListener = new ChangeListener<Boolean>()
@@ -163,8 +163,7 @@ public class browseAction{
         labelPane.getChildren().addAll(currentComponentArchive);
         scrollPane.setContent(labelPane);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        labelPane.minWidthProperty().bind(Bindings.createDoubleBinding(() ->
-                scrollPane.getViewportBounds().getWidth(), scrollPane.viewportBoundsProperty()));
+        labelPane.minWidthProperty().bind(Bindings.createDoubleBinding(() -> scrollPane.getViewportBounds().getWidth(), scrollPane.viewportBoundsProperty()));
         rootPane.setCenter(scrollPane);
     }
 
