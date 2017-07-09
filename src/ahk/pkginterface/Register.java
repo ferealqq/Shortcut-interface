@@ -100,7 +100,7 @@ public class Register{
                 if(!profilesDb.checkUsername(tfUsername.getText())){
                     Stage dialog = createMessage("Username taken! Try something new!");
                     dialog.show();
-                    dialog.setY(tfUsername.getTranslateY()+tfUsername.getLayoutY()+tfUsername.gety);
+                    dialog.setY(tfUsername.getTranslateY()+tfUsername.getLayoutY());
                     dialog.setX(tfUsername.getTranslateX()+viewStorage.mainFrame.getAlignmentX());
                     tfUsername.setStyle("-fx-text-fil: red;");
                     //tfUsername.addMouseListener(setHover);
