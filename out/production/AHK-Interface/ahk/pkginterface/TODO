@@ -9,6 +9,10 @@ Note
 
 Käyttöliittymä:
     Tee oma frame holder. Eli laita setUndecorated frame ja tee omat exit ja close nappulat. Oikeaan ylä kulmaan.
+    Register:
+        Register älä tee popup commentia jos username on otettu
+        vaan laita se hoveriksi kuin tekstistä on tullut punainen.
+        
     Menu:
         Errori:
             Menubar forwards ja backwards on clickit eivät toimi. kaksi bugia

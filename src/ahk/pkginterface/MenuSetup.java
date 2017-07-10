@@ -88,7 +88,6 @@ public class MenuSetup {
     }
     public void disableOrEnable(){
         this.backwardsMenuButton.setDisable(viewStorage.viewHistory.isEmpty());
-        System.out.println(viewStorage.viewHistory.isEmpty() + " " + new Date().getSeconds());
         this.forwardsMenuButton.setDisable(viewStorage.viewHistoryBackwards.isEmpty());
     }
     public static void main(String[] args) {

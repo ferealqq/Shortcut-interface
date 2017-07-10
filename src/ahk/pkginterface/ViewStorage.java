@@ -1,17 +1,22 @@
 package ahk.pkginterface;
 
 import ahk.pkginterface.browsingFrames.browseAction;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.embed.swing.JFXPanel;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 
 import javax.swing.*;
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -52,6 +57,27 @@ public class ViewStorage {
         viewMap.put("browseaction",browseaction.giveView());
         mainFrame.add(browseaction.giveView());
     }
+    public Tooltip createTooltip(String message){
+        final Tooltip tooltip = new Tooltip(message);
+        hackTooltipStartTiming(tooltip);
+        return tooltip;
+    }
+    private static void hackTooltipStartTiming(Tooltip tooltip) {
+        try {
+            Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
+            fieldBehavior.setAccessible(true);
+            Object objBehavior = fieldBehavior.get(tooltip);
+
+            Field fieldTimer = objBehavior.getClass().getDeclaredField("activationTimer");
+            fieldTimer.setAccessible(true);
+            Timeline objTimer = (Timeline) fieldTimer.get(objBehavior);
+
+            objTimer.getKeyFrames().clear();
+            objTimer.getKeyFrames().add(new KeyFrame(new Duration(1)));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public void showForwardHideCurrent(){
         if(!viewHistoryBackwards.isEmpty()){
             JFXPanel last = viewHistoryBackwards.getLast();
@@ -75,7 +101,6 @@ public class ViewStorage {
             setMenubar(browseaction.topPane);
             setMenubar(ahkinterface.rootPane);
             // kuin hideet jotain sinun pitää refreshaa menubar muista
-            System.out.println(viewHistory.isEmpty() + " "+ new Date().getSeconds());
             last.show();
             mainFrame.add(last);
         }

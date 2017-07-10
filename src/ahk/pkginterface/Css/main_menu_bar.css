@@ -5,6 +5,16 @@
 .menu .label{
     -fx-text-fill: black;
 }
+.menu:pressed{
+	-fx-background-color:
+        -fx-shadow-highlight-color,
+        linear-gradient(to bottom, derive(-fx-color,-90%) 0%, derive(-fx-color,-60%) 100%),
+        linear-gradient(to bottom, derive(-fx-color,-60%) 0%, derive(-fx-color,-35%) 50%, derive(-fx-color,-30%) 98%, derive(-fx-color,-50%) 100%),
+        linear-gradient(to right, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 10%, rgba(0,0,0,0) 90%, rgba(0,0,0,0.3) 100%);
+    -fx-background-insets: 0 0 -1 0, 0, 1, 1;
+    /* TODO: -fx-text-fill should be derived */
+    -fx-text-fill: -fx-light-text-color;
+}
 .menu-bar{
 	-fx-background-color:#F5F5F5;
 	-fx-border-width: .5;

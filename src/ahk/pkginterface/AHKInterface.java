@@ -11,6 +11,7 @@ import javafx.scene.control.Button;
 
 import javax.swing.*;
 
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
