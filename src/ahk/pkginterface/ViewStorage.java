@@ -32,8 +32,7 @@ public class ViewStorage {
     public final HashMap<String,JFXPanel> viewMap;
     public int currentUserId;
 
-    public ViewStorage(JFrame main,int userid){
-        currentUserId = userid;
+    public ViewStorage(JFrame main){
         mainFrame = main;
         viewHistory = new LinkedList<>();
         viewMap = new HashMap<>();

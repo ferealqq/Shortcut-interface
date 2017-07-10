@@ -35,18 +35,12 @@ public class AHKInterface extends JFrame {
 
     private EventHandler<ActionEvent> btNextAction;
     private EventHandler<ActionEvent> btDetectAction;
-    public int currentUserId;
     public final JFrame main = this;
     public ViewStorage viewStorage;// siirä viewmap aloitus formiin sitten kuin se on tehty
 
-    public AHKInterface(int id) {
-        currentUserId = id;
-        viewStorage = new ViewStorage(main,currentUserId);
-        viewStorage.setAhkinterface(this);
-        constructAHK();
-    }
-
     public AHKInterface() {
+        viewStorage = new ViewStorage(main);
+        viewStorage.setAhkinterface(this);
         constructAHK();
     }
 
@@ -171,6 +165,11 @@ public class AHKInterface extends JFrame {
 
         Button btNext = new Button("Next");
         buttonRow.setHgrow(btNext, Priority.ALWAYS);
+        if(pressedKeys.isEmpty()){
+            btNext.setDisable(true);
+        }else{
+            btNext.setDisable(false);
+        }
         buttonRow.getChildren().addAll(btBack, btScripts, btDetect, btUndo, btBrowse, btNext);
         buttonRow.setAlignment(Pos.BOTTOM_LEFT);
         bottomRowButtons.add(btNext);
@@ -196,12 +195,18 @@ public class AHKInterface extends JFrame {
                     public void handle(ActionEvent event) {
                          if (pressedKeys.contains(currentkey)) {
                             pressedKeys.remove(currentkey);
+                            if(pressedKeys.isEmpty()){
+                                bottomRowButtons.get(bottomRowButtons.size()-1).setDisable(true);
+                            }else{
+                                bottomRowButtons.get(bottomRowButtons.size()-1).setDisable(false);
+                            }
                             btnKey.setStyle(null);
                         } else {
-
                             btnKey.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
                             pressedKeys.add(currentkey);
-                        }
+                            System.out.println(!pressedKeys.isEmpty());
+                            if(!pressedKeys.isEmpty()) bottomRowButtons.get(bottomRowButtons.size()-1).setDisable(false);
+                         }
 
                     }
                 });
@@ -224,6 +229,6 @@ public class AHKInterface extends JFrame {
         */
     }
     public static void main(String[] args) {
-        AHKInterface k = new AHKInterface(0);
+        AHKInterface k = new AHKInterface();
     }
 }

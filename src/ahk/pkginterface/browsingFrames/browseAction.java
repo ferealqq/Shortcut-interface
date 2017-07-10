@@ -73,7 +73,7 @@ public class browseAction{
         firstStep.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                viewStorage.hideSelectedAndShowSelected((JFXPanel)viewStorage.mainFrame.getContentPane().getComponent(viewStorage.mainFrame.getComponentCount()-1),viewStorage.viewMap.get("ahkinterface"));
+                viewStorage.hideSelectedAndShowSelected((JFXPanel)viewStorage.mainFrame.getContentPane().getComponent(viewStorage.mainFrame.getContentPane().getComponentCount()-1),viewStorage.viewMap.get("ahkinterface"));
             }
         });
         Button secondStep = new Button("2");
@@ -132,11 +132,9 @@ public class browseAction{
         String btCss = this.getClass().getResource("main_btns.css").toExternalForm();
         searchField.getStylesheets().add(searchFieldCss);
         topPane.getChildren().add(searchField);
-
         BorderPane.setAlignment(btNext, Pos.BOTTOM_RIGHT);
         btNext.getStylesheets().add(btCss);
         bottomPane.setRight(btNext);
-
 
         rootPane.setBottom(bottomPane);
 
@@ -157,8 +155,5 @@ public class browseAction{
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         labelPane.minWidthProperty().bind(Bindings.createDoubleBinding(() -> scrollPane.getViewportBounds().getWidth(), scrollPane.viewportBoundsProperty()));
         rootPane.setCenter(scrollPane);
-    }
-
-    public static void main(String[] args) {
     }
 }
