@@ -2,138 +2,152 @@ package ahk.pkginterface;
 
 import ahk.pkginterface.commentFrames.commentFrame;
 import ahk.pkginterface.database.ProfilesData;
+import javafx.embed.swing.JFXPanel;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.*;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.Tooltip;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.util.ArrayList;
 
-public class Register extends JFrame{
-    private JPanel rootPane = new JPanel(new GridLayout(5, 1));
-    private JPanel usernamePane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    private JPanel pwPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    private JPanel pwPane2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    private JPanel emailPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    private JPanel registerPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-    private JLabel lbUsername = new JLabel("Username");
-    private JLabel lbEmail = new JLabel("     Email     ");
-    private JLabel lbPassword = new JLabel("Password");
-    private JLabel lbPassword2 = new JLabel("Re-enter password");
+public class Register{
+    public final JFXPanel registerView = new JFXPanel();
+    public final VBox rootPane = new VBox();
 
-    private JTextField tfUsername = new JTextField(15);
-    private JTextField tfEmail = new JTextField(15);
-    private JPasswordField tfPw = new JPasswordField(15);
-    private JPasswordField tfPw2 = new JPasswordField(15);
-
-    private JButton btRegister = new JButton("Register");
-    private JButton btBack = new JButton("Back");
-
-    private AHKInterface mainFrame;
-    private SignIn signInFrame;
-    private ProfilesData db = new ProfilesData();
-
+    private ProfilesData profilesDb = new ProfilesData();
+    public final ViewStorage viewStorage;
+    private final Tooltip tooltip;
     private String commentMsg;
     private commentFrame comment = new commentFrame();
 
-    private MouseAdapter setHover = new MouseAdapter() {
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            comment.comment.setText(commentMsg);
-            comment.addText();
-            comment.setVisible(true);
+    public Register(ViewStorage viewArchive) {
+        viewStorage = viewArchive;
+        initComponents(registerView);
+        tooltip = viewArchive.createTooltip("");
+    }
+    private void initComponents(JFXPanel jfxPanel){
+        Scene scene = createScene();
+        jfxPanel.setScene(scene);
+    }
+    private Scene createScene(){
+        Scene scene = new Scene(rootPane,800,500);
+        createComponents();
+        return (scene);
+    }
+    private void createComponents(){
+        String registerCss = this.getClass().getResource("Css/register_and_login_style.css").toExternalForm();
+        ArrayList<components> labelandfieldStorage = new ArrayList<>();
+        Label lbUsername = new Label("Username");
+        lbUsername.setWrapText(true);
+        TextField tfUsername = new TextField();
+        labelandfieldStorage.add(new components(tfUsername,lbUsername));
+        Label lbEmail = new Label("Email");
+        TextField tfEmail = new TextField();
+        labelandfieldStorage.add(new components(tfEmail,lbEmail));
+        Label lbPassword = new Label("Password");
+        PasswordField tfPassword = new PasswordField();
+        labelandfieldStorage.add(new components(tfPassword,lbPassword));
+        Label lbPassword2 = new Label("Password again!");
+        PasswordField tfPassword2 = new PasswordField();
+        labelandfieldStorage.add(new components(tfPassword2,lbPassword2));
+        for (int i = 0; i < labelandfieldStorage.size(); i++) {
+            BorderPane.setAlignment(labelandfieldStorage.get(i).getLb(),Pos.CENTER);
+            BorderPane.setAlignment(labelandfieldStorage.get(i).getTf(),Pos.CENTER);
+            labelandfieldStorage.get(i).getLb().setFont(new Font("Cambria", 32));
+            labelandfieldStorage.get(i).getTf().setFont(new Font("Cambria", 20));
+            labelandfieldStorage.get(i).getTf().setPrefHeight(40);
+            labelandfieldStorage.get(i).getTf().setMaxWidth(300);
+            BorderPane labelPane = new BorderPane(labelandfieldStorage.get(i).getLb());
+            BorderPane textfieldPane = new BorderPane(labelandfieldStorage.get(i).getTf());
+            labelPane.getStylesheets().add(registerCss);
+            textfieldPane.getStylesheets().add(registerCss);
+            rootPane.getChildren().addAll(labelPane,textfieldPane);
         }
-        @Override
-        public void mouseExited(MouseEvent e) {
-            comment.setVisible(false);
-
+        Button btnRegister = new Button("Register");
+        btnRegister.getStylesheets().add(this.getClass().getResource("Css/ahk_main_bottombtns_css.css").toExternalForm());
+        BorderPane.setAlignment(btnRegister,Pos.CENTER);
+        btnRegister.setMaxSize(150,50);
+        BorderPane btnPane = new BorderPane(btnRegister);
+        btnPane.setPadding(new Insets(35,35,35,35));
+        rootPane.getChildren().addAll(btnPane);
+        createListeners(tfUsername,tfEmail,tfPassword,tfPassword2,btnRegister);
+    }
+        public JFXPanel giveView(){
+            return registerView;
         }
-    };
-
-    public Register(AHKInterface mainForm,SignIn signInForm) {
-        mainFrame = mainForm;
-        signInFrame = signInForm;
-        this.setSize(250, 350);
-        this.setLocationRelativeTo(null);
-        btRegister.setPreferredSize(new Dimension(90, 30));
-        btBack.setPreferredSize(new Dimension(90, 30));
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setComponents();
-        tfUsername.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                if(!db.checkUsername(tfUsername.getText())){
-                    commentMsg = "Username taken! Try something else.";
-                    comment.comment.setText(commentMsg);
-                    comment.addText();
-                    comment.setVisible(true);
-                    tfUsername.setForeground(Color.red);
-                    comment.setLocation(getX()+210,getY()+57);
-                    tfUsername.addMouseListener(setHover);
+        /*
+        * a quick shadowclass to store components in. To make code cleaner and easier to undestand by others.s
+         */
+    class components{
+        public Label lb;
+        public TextField tf;
+        public components(TextField tfield, Label lbel){
+            lb = lbel;
+            tf = tfield;
+        }
+        public Label getLb(){
+            return lb;
+        }
+        public TextField getTf(){
+            return tf;
+        }
+    }
+    private void createListeners(TextField tfUsername,TextField tfEmail,PasswordField tfPassword, PasswordField tfPassword2,Button btnRegister){
+         tfUsername.setOnKeyReleased(new EventHandler<javafx.scene.input.KeyEvent>() {
+            public void handle(javafx.scene.input.KeyEvent keyEvent) {
+                if(!profilesDb.checkUsername(tfUsername.getText())){
+                    tfUsername.setStyle("-fx-text-inner-color: red;");
+                    tooltip.setText("Username taken! Try something new!");
+                    tfUsername.setTooltip(tooltip);
                 }else{
-                    tfUsername.setForeground(Color.BLACK);
-                    tfUsername.removeMouseListener(setHover);
-                    commentMsg ="";
-                    comment.comment.setText("");
+                    tfUsername.setStyle("-fx-text-inner-color: black;");
+                    Tooltip.uninstall(tfUsername,tooltip);
                 }
             }
         });
-        btRegister.addActionListener(new ActionListener() {
+        tfEmail.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if (tfPw.getText().equals(tfPw2.getText())) {
-                    if(!db.createUser(tfUsername.getText(), tfPw.getText(), tfEmail.getText())) {
-                        JOptionPane.showMessageDialog(rootPane,"Something went wrong!");
-                        tfPw.setText("");
-                        tfPw2.setText("");
-                        tfEmail.setText("");
-                        tfUsername.setText("");
-                        return;
-                    }
-                    if(mainFrame.currentUserId==0){
-                        mainFrame.setCurrentUserId(db.getProileIdByUsername(tfUsername.getText()));
-                        System.out.println(mainFrame.currentUserId);
-                    }
-                    dispose();
-                    mainFrame.setVisible(true);
-                    JOptionPane.showMessageDialog(rootPane,"Successful!");
+            public void handle(KeyEvent event) {
+                if(!profilesDb.checkEmail(tfEmail.getText())){
+                    tfEmail.setStyle("-fx-text-inner-color: red;");
+                    tooltip.setText("Email taken! Try something new!");
+                    tfEmail.setTooltip(tooltip);
+                }else{
+                    tfEmail.setStyle("-fx-text-inner-color: black;");
+                    Tooltip.uninstall(tfEmail,tooltip);
                 }
             }
         });
-        btBack.addActionListener(new ActionListener() {
+        btnRegister.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                signInFrame.setVisible(true);
-                dispose();
+            public void handle(ActionEvent event) {
+                if(tfPassword.getText().equals(tfPassword2.getText())){
+                    if(!profilesDb.createUser(tfUsername.getText(),tfEmail.getText(),tfPassword.getText())) {
+                        JOptionPane.showMessageDialog(viewStorage.mainFrame,"Something went wrong!");
+                    }else{
+                        JOptionPane.showMessageDialog(viewStorage.mainFrame,"Successful!");
+                        viewStorage.showBackwardsHideCurrent();
+                    }   
+                }else{
+                    JOptionPane.showMessageDialog(viewStorage.mainFrame,"Passwords won't match!");
+                }
             }
         });
     }
-
     public static void main(String[] args) {
-        new Register(new AHKInterface(),new SignIn(new AHKInterface())).setVisible(true);
-    }
-
-    private void setComponents() {
-        usernamePane.add(lbUsername);
-        usernamePane.add(tfUsername);
-
-        emailPane.add(lbEmail);
-        emailPane.add(tfEmail);
-
-        pwPane.add(lbPassword);
-        pwPane.add(tfPw);
-
-        pwPane2.add(lbPassword2);
-        pwPane2.add(tfPw2);
-
-        registerPane.add(btBack);
-        registerPane.add(btRegister);
-
-        rootPane.add(usernamePane);
-        rootPane.add(emailPane);
-        rootPane.add(pwPane);
-        rootPane.add(pwPane2);
-        rootPane.add(registerPane);
-
-        this.add(rootPane);
     }
 }

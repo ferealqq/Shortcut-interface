@@ -1,4 +1,4 @@
-package ahk.pkginterface.database;
+ package ahk.pkginterface.database;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,7 +23,7 @@ public class KeyData {
         Gson gson = new Gson();
         final Type type = new TypeToken<Collection<Keys>>() {
         }.getType();
-        JsonReader jsonReader = new JsonReader(new FileReader("SQL lauseet/test-keyboard-layout.json"));
+        JsonReader jsonReader = new JsonReader(new FileReader("SQL lauseet/US-keyboard-layout.json"));
         Keys keys = gson.fromJson(jsonReader, Keys.class);
         return keys;
     }
@@ -34,11 +34,11 @@ public class KeyData {
 
     /*
     * writes the rows to the database.
-    * remember to delete this method before the release of the program
-    * this can be exploited to ruin the databse the program is running on.
+    * remember to delete this method before the release of this program
+    * this function can be exploited to ruin the databse which the code is connected to
      */
     public void writeRowsUS() throws SQLException, FileNotFoundException {
-        if(!checkIfDataExistsAlready()){
+        if(checkIfDataExistsAlready()){
             Keys keys = readKeyboardLayoutUSToKeys();
             keys.addRowsToArrayListRows();
             ArrayList<ArrayList> rows = keys.rows;
@@ -47,12 +47,12 @@ public class KeyData {
             for (int keyCount = 0; keyCount <= longestRow; keyCount++) {
                 String sql = "insert into rowsus (firstrow,secondrow,thirdrow,fourthrow,fifthrow,sixthrow) values (?,?,?,?,?,?)";
                 prepStatement = connection.prepareStatement(sql);
-                writeFirstrow(prepStatement,keys,keyCount);
-                writeSecondrow(prepStatement,keys,keyCount);
-                writeThridrow(prepStatement,keys,keyCount);
-                writeFourthrow(prepStatement,keys,keyCount);
-                writeFifthrow(prepStatement,keys,keyCount);
-                writeSixthrow(prepStatement,keys,keyCount);
+                setFirstrow(prepStatement,keys,keyCount);
+                setSecondrow(prepStatement,keys,keyCount);
+                setThirdrow(prepStatement,keys,keyCount);
+                setFourthrow(prepStatement,keys,keyCount);
+                setFifthrow(prepStatement,keys,keyCount);
+                setSixthrow(prepStatement,keys,keyCount);
                 prepStatement.execute();
                 prepStatement.close();
             }
@@ -93,14 +93,14 @@ public class KeyData {
         return longest;
     }
 
-    public void writeFirstrow(PreparedStatement prepst, Keys keys, int i) throws SQLException {
+    private void setFirstrow(PreparedStatement prepst, Keys keys, int i) throws SQLException {
         if(keys.firstrow.size() <= i) {
             prepst.setString(1," ");
             return;
         }
         prepst.setString(1, keys.firstrow.get(i).toString());
     }
-    public void writeSecondrow(PreparedStatement prepst,Keys keys,int i) throws SQLException {
+    private void setSecondrow(PreparedStatement prepst, Keys keys, int i) throws SQLException {
         if(keys.secondrow.size() <= i) {
             prepst.setString(2," ");
             return;
@@ -108,28 +108,28 @@ public class KeyData {
         prepst.setString(2, keys.secondrow.get(i).toString());
     }
 
-    public void writeThridrow(PreparedStatement prepst, Keys keys, int i) throws SQLException {
+    private void setThirdrow(PreparedStatement prepst, Keys keys, int i) throws SQLException {
         if(keys.thirdrow.size() <= i) {
             prepst.setString(3," ");
             return;
         }
         prepst.setString(3, keys.thirdrow.get(i).toString());
     }
-    public void writeFourthrow(PreparedStatement prepst, Keys keys, int i) throws SQLException{
+    private void setFourthrow(PreparedStatement prepst, Keys keys, int i) throws SQLException{
         if(keys.fourthrow.size() <= i) {
             prepst.setString(4," ");
             return;
         }
         prepst.setString(4,keys.fourthrow.get(i).toString());
     }
-    public void writeFifthrow(PreparedStatement prepst, Keys keys, int i) throws  SQLException{
+    private void setFifthrow(PreparedStatement prepst, Keys keys, int i) throws  SQLException{
         if(keys.fifthrow.size() <= i) {
             prepst.setString(5," ");
             return;
         }
         prepst.setString(5,keys.fifthrow.get(i).toString());
     }
-    public void writeSixthrow(PreparedStatement prepst, Keys keys, int i) throws SQLException{
+    private void setSixthrow(PreparedStatement prepst, Keys keys, int i) throws SQLException{
         if(keys.sixthrow.size() <= i) {
             prepst.setString(6," ");
             return;
@@ -139,6 +139,7 @@ public class KeyData {
 
     public static void main(String[] args) throws FileNotFoundException, SQLException {
         KeyData keydata =new KeyData();
+        keydata.writeRowsUS();
     }
 
     public static void closeConnection(Connection con) {

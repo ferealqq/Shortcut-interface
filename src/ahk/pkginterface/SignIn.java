@@ -27,7 +27,7 @@ public class SignIn extends JFrame {
 
 
     public SignIn(AHKInterface mainFrame) {
-        registerFrame = new Register(mainFrame,this);
+        //registerFrame = new Register(mainFrame,this);
         this.setTitle("SignIn");
         this.setSize(230, 260);
         this.setLocationRelativeTo(null);
@@ -39,7 +39,7 @@ public class SignIn extends JFrame {
             public void keyPressed(KeyEvent keyEvent) {
                 if(keyEvent.getKeyCode()==KeyEvent.VK_ENTER){
                     if(db.checkPassword(tfPw.getText(),tfUsername.getText())) {
-                        mainFrame.setCurrentUserId(db.getProileIdByUsername(tfUsername.getText()));
+                        //mainFrame.setCurrentUserId(db.getProileIdByUsername(tfUsername.getText()));
                         setVisible(false);
                         dispose();
                     }else{
@@ -52,7 +52,7 @@ public class SignIn extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(db.checkPassword(tfPw.getText(),tfUsername.getText())) {
-                    mainFrame.setCurrentUserId(db.getProileIdByUsername(tfUsername.getText()));
+                    //mainFrame.setCurrentUserId(db.getProileIdByUsername(tfUsername.getText()));
                     setVisible(false);
                     dispose();
                 }else{
@@ -63,14 +63,13 @@ public class SignIn extends JFrame {
         Register.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                registerFrame.setVisible(true);
                 setVisible(false);
             }
         });
         lbBack.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                mainFrame.setVisible(true);
+                //mainFrame.setVisible(true);
                 setVisible(false);
             }
         });

@@ -19,9 +19,10 @@ public class ProfilesData {
         return "jdbc:postgresql://localhost:5432/ahk-interface?user=postgres&password=pekka";
     }
 
-    public boolean createUser(String username, String password, String email){
+    public boolean createUser(String username, String email, String password){
         if(!isValidEmailAddress(email)) return false;
         password = BCrypt.hashpw(password, BCrypt.gensalt());
+        System.out.println("?");
         try{
             connection = DriverManager.getConnection(setConnectionStrings());
             String sqlquery = "Insert into profile (username,password,email) values (?,?,?)";
@@ -30,8 +31,9 @@ public class ProfilesData {
             prepStatement.setString(2,password);
             prepStatement.setString(3,email);
             prepStatement.executeUpdate();
+            System.out.println("?");
             prepStatement.close();
-            return false;
+            return true;
         }catch (SQLException ex){
             System.out.println("Error in createUser : "+ ex);
             return false;
@@ -56,7 +58,24 @@ public class ProfilesData {
         }finally {
             closeConnection(connection);
         }
-
+    }
+    public boolean checkEmail(String email) {
+        // gets data from database to check if the email is taken or not. If the email is taken returns false; if not return true;
+        try {
+            connection = DriverManager.getConnection(setConnectionStrings());
+            String sqlquery = "select email from profile where email = ?";
+            prepStatement = connection.prepareStatement(sqlquery);
+            prepStatement.setString(1, email);
+            resultSet = prepStatement.executeQuery();
+            if (resultSet.next()) return false;
+            prepStatement.close();
+            return true;
+        } catch (Exception ex) {
+            System.out.println("Error in checkEmail : " + ex);
+            return false;
+        } finally {
+            closeConnection(connection);
+        }
     }
     public boolean checkPassword(String password,String username){
         try{
@@ -108,6 +127,6 @@ public class ProfilesData {
         }
     }
     public static void main(String[] args) {
-        System.out.println(new ProfilesData().checkUsername("pekka"));
+        System.out.println(new ProfilesData().createUser("peke","peke@peke.fi","peke"));
     }
 }

@@ -1,4 +1,7 @@
 package ahk.pkginterface.database;
+
+import java.util.ArrayList;
+
 public class Actions {
     /*
     * @param action the action thats in the folder of the path.
@@ -6,8 +9,10 @@ public class Actions {
      */
     public final String path;
     public final String action;
-
-    public Actions(String p,String a){
+    //public final ArrayList<String> keyWords = new ArrayList<>();
+    public String[] keyWords;
+    public Actions(String p,String a,String[] keywords){
+        keyWords = keywords;
         path = p;
         action = a;
     }

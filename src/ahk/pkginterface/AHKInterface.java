@@ -4,148 +4,225 @@ import ahk.pkginterface.browsingFrames.browseAction;
 import ahk.pkginterface.database.Key;
 import ahk.pkginterface.database.KeyData;
 import ahk.pkginterface.database.Keys;
+import javafx.embed.swing.JFXPanel;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
 
-import java.awt.Color;
-
-import java.awt.BorderLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import java.util.Objects;
 import javax.swing.*;
 
+import javafx.scene.control.Tooltip;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
+import javafx.event.EventHandler;
+import javafx.event.ActionEvent;
+
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+
+
 public class AHKInterface extends JFrame {
+    public final JFXPanel ahkinterfaceView = new JFXPanel();
+    public final VBox rootPane = new VBox();
+    public final BorderPane stepPane = new BorderPane();
+    private final ArrayList<Button> bottomRowButtons = new ArrayList<>();
+    public final ArrayList<Key> pressedKeys = new ArrayList<>();
 
-    private JPanel rootPane = new JPanel(new BorderLayout());
-    private JPanel keyboard = new JPanel(new GridLayout(6, 1));
-    private JPanel bottomPane = new JPanel(new GridLayout(1,6));
 
-    private SignIn signInFrame;
-
-    private ActionListener alLogout;
-    private ActionListener alSignIn;
-
-    private JButton btscripts = new JButton("Open");
-    private JButton btsignin = new JButton("Sign in");
-    private JButton btdetect = new JButton("Detect");
-    private JButton btundo = new JButton("Undo");
-    private JButton btbrowse = new JButton("Browse");
-    private JButton btcommit = new JButton("Publish");
-    private JButton bthelp = new JButton("Help");
-    private JButton btnext = new JButton("Next");
-
-    private browseAction bAction = new browseAction();
-    private JFrame mainFrame;
-
-    private ArrayList<String> newhotkeys;
+    private EventHandler<ActionEvent> btNextAction;
+    private EventHandler<ActionEvent> btDetectAction;
     public int currentUserId;
+    public final JFrame main = this;
+    public ViewStorage viewStorage;// siirä viewmap aloitus formiin sitten kuin se on tehty
+
+    public AHKInterface(int id) {
+        currentUserId = id;
+        viewStorage = new ViewStorage(main,currentUserId);
+        viewStorage.setAhkinterface(this);
+        constructAHK();
+    }
 
     public AHKInterface() {
-        signInFrame  = new SignIn(this);
-        this.setTitle("AHK-Interface");
-        mainFrame = this;
-        this.setSize(1000, 600);
+        constructAHK();
+    }
+
+    private void constructAHK() {
+        this.add(ahkinterfaceView);
+        this.setVisible(true);
+        this.setSize(800, 500);
         this.setLocationRelativeTo(null);
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        asetteleKomponentit();
-        this.setResizable(false);
-        try {
-            setKeyboard();
+        this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
+        initComponents(ahkinterfaceView);
+    }
+
+    private void initComponents(JFXPanel jfxPanel) {
+        Scene scene = createScene();
+        jfxPanel.setScene(scene);
+    }
+
+    /*
+    * Remember to run these methods in following order or the code will not work. Because they relay on the other variables in the other methods.
+    * reateListeners();
+        createStepBar();
+        createComponents(actionsData.getActions());
+        createButtons();
+        setListeners();
+     */
+    private Scene createScene() {
+        Scene scene = new Scene(rootPane, 1000, 600);
+        rootPane.getChildren().add(viewStorage.menuSetup.createMenuBar()); // poista kuin uusi mainform on tehty
+        createKeyListeners();
+        createStepBar();
+                try {
+            createKeyboard();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        alSignIn = new ActionListener() {
+        createButtons(scene);
+        setKeyListeners();
+        return (scene);
+    }
+
+    private void createStepBar() {
+        HBox centeredHBox = new HBox(35);
+        Button firstStep = new Button("1");
+        Button secondStep = new Button("2");
+            secondStep.setOnAction(btNextAction);
+        Button thirdStep = new Button("3");
+        centeredHBox.getChildren().addAll(firstStep, secondStep, thirdStep);
+        centeredHBox.setAlignment(Pos.CENTER);
+        String stepPaneCss = this.getClass().getResource("Css/stepPane.css").toExternalForm();
+        stepPane.getStylesheets().add(stepPaneCss);
+        firstStep.setStyle("-fx-background-color:#A9A9A9");
+        stepPane.setCenter(centeredHBox);
+        stepPane.setStyle("-fx-background-color:#F5F5F5");
+        rootPane.getChildren().add(stepPane);
+    }
+
+    private void createKeyListeners() {
+        btNextAction = new EventHandler<ActionEvent>() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                signInFrame.setVisible(true);
-            }
-        };
-        btsignin.addActionListener(alSignIn);
-        alLogout = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                currentUserId = 0;
-                btsignin.removeActionListener(alLogout);
-                btsignin.addActionListener(alSignIn);
-                btsignin.setText("Sign in");
-            }
-        };
-        btnext.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseReleased(MouseEvent e) {
-                if(!Objects.isNull(newhotkeys)) {
-                    bAction.setVisible(true);
-                    System.out.println(newhotkeys);
-                    bAction.setLocation(mainFrame.getX() + mainFrame.getWidth(), mainFrame.getY());
-                }else{
-                    JOptionPane.showMessageDialog(rootPane,"You haven't selected a key");
+            public void handle(ActionEvent event) {
+                if (pressedKeys.isEmpty()) {
+                    JOptionPane.showMessageDialog(AHKInterface.super.rootPane, "You havent selected any keys try again later!");
+                    return;
                 }
+                viewStorage.hideSelectedAndShowSelected(ahkinterfaceView, viewStorage.viewMap.get("browseaction"));
             }
-        });
+        };
+        btDetectAction = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        };
     }
 
-    public void setCurrentUserId(int id) { currentUserId = id; changeToLogout(); }
-    private void changeToLogout(){
-        btsignin.setText("Log out");
-        btsignin.removeActionListener(alSignIn);
-        btsignin.addActionListener(alLogout);
-    }
-
-    private void setKeyboard() throws FileNotFoundException {
-        int row = 0;
-        Keys keys = new KeyData().readKeyboardLayoutUSToKeys();
-        keys.addRowsToArrayListRows();
-        while (row <= keys.rows.size() - 1) {
-            JPanel rowPane = new JPanel(new GridLayout(1, keys.rows.get(row).size()));
-            ArrayList<Key> listofCurrentKeys = keys.rows.get(row);
-            for (Key currentKey : listofCurrentKeys) {
-                JButton btkey = new JButton(currentKey.getKey());
-                btkey.setForeground(Color.GRAY);
-                btkey.setBackground(Color.black);
-                btkey.addMouseListener(new MouseAdapter() {
-                    public void mouseClicked(MouseEvent e) {
-                        if (e.getButton() == MouseEvent.BUTTON1) {
-                            if (!btkey.getBackground().equals(Color.white)) {
-                                btkey.setBackground(Color.white);
-                                if(Objects.isNull(newhotkeys)) newhotkeys = new ArrayList<>();
-                                newhotkeys.add(currentKey.getKey());
-                            } else {
-                                btkey.setBackground(Color.BLACK);
-                                newhotkeys.remove(currentKey.getKey());
-                                if(newhotkeys.isEmpty()) newhotkeys = null;
-                            }
-                        }
-                    }
-                });
-                rowPane.add(btkey);
+    private void setKeyListeners() {
+        for (int i = 0; i < bottomRowButtons.size(); i++) {
+            switch (bottomRowButtons.get(i).getText()) {
+                case "Detect":
+                    Button btDetect = bottomRowButtons.get(i);
+                    btDetect.setOnAction(btDetectAction);
+                case "Next":
+                    Button btNext = bottomRowButtons.get(i);
+                    btNext.setOnAction(btNextAction);
             }
-            keyboard.add(rowPane);
-            row++;
         }
     }
 
+    private void createButtons(Scene scene) {
+        HBox buttonRow = new HBox();
 
-    public static void main(String[] args) {
-        new AHKInterface().setVisible(true);
+        Button btBack = new Button("Back to menu");
+        buttonRow.setHgrow(btBack, Priority.ALWAYS);
+        btBack.setMaxWidth(Double.MAX_VALUE);
+        btBack.setMaxHeight(Double.MAX_VALUE);
+        bottomRowButtons.add(btBack);
+
+        Button btScripts = new Button("Your Scripts");
+        buttonRow.setHgrow(btScripts, Priority.ALWAYS);
+        btScripts.setMaxWidth(Double.MAX_VALUE);
+        btScripts.setMaxHeight(Double.MAX_VALUE);
+        bottomRowButtons.add(btScripts);
+
+        Button btDetect = new Button("Detect");
+        buttonRow.setHgrow(btDetect, Priority.ALWAYS);
+        btDetect.setMaxWidth(Double.MAX_VALUE);
+        btDetect.setMaxHeight(Double.MAX_VALUE);
+        bottomRowButtons.add(btDetect);
+
+        Button btUndo = new Button("Undo");
+        buttonRow.setHgrow(btUndo, Priority.ALWAYS);
+        btUndo.setMaxHeight(Double.MAX_VALUE);
+        btUndo.setMaxWidth(Double.MAX_VALUE);
+        bottomRowButtons.add(btUndo);
+
+        Button btBrowse = new Button("Browse Scripts");
+        buttonRow.setHgrow(btBrowse, Priority.ALWAYS);
+        btBrowse.setMaxWidth(Double.MAX_VALUE);
+        btBrowse.setMaxHeight(Double.MAX_VALUE);
+        bottomRowButtons.add(btBrowse);
+
+
+        Button btNext = new Button("Next");
+        buttonRow.setHgrow(btNext, Priority.ALWAYS);
+        buttonRow.getChildren().addAll(btBack, btScripts, btDetect, btUndo, btBrowse, btNext);
+        buttonRow.setAlignment(Pos.BOTTOM_LEFT);
+        bottomRowButtons.add(btNext);
+
+        String buttonRowCss = this.getClass().getResource("Css/main_btns.css").toExternalForm();
+        buttonRow.getStylesheets().add(buttonRowCss);
+        rootPane.getChildren().add(buttonRow);
     }
 
-    private void asetteleKomponentit() {
-        bottomPane.add(btscripts);
-        bottomPane.add(btsignin);
-        bottomPane.add(btdetect);
-        bottomPane.add(btundo);
-        bottomPane.add(btbrowse);
-        bottomPane.add(btcommit);
-        bottomPane.add(bthelp);
-        bottomPane.add(btnext);
+    private void createKeyboard() throws FileNotFoundException {
+        Keys keys = new KeyData().readKeyboardLayoutUSToKeys();
+        keys.addRowsToArrayListRows();
+        for (ArrayList<Key> row : keys.rows) {
+            HBox rowPane = new HBox();
+            for (int i = 0; i < row.size(); i++) {
+                Key currentkey = row.get(i);
+                Button btnKey = new Button(currentkey.getKey());
+                rowPane.setHgrow(btnKey, Priority.ALWAYS);
+                btnKey.setMaxWidth(Double.MAX_VALUE);
+                btnKey.setMaxHeight(Double.MAX_VALUE);
+                btnKey.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+                         if (pressedKeys.contains(currentkey)) {
+                            pressedKeys.remove(currentkey);
+                            btnKey.setStyle(null);
+                        } else {
+                            btnKey.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
+                            pressedKeys.add(currentkey);
+                        }
 
-        rootPane.add(keyboard, BorderLayout.CENTER);
-        rootPane.add(bottomPane, BorderLayout.PAGE_END);
-        this.add(rootPane);
-        //setKeyboard();
+                    }
+                });
+                rowPane.getChildren().add(btnKey);
+            }
+            rootPane.setVgrow(rowPane, Priority.ALWAYS);
+            rootPane.getChildren().add(rowPane);
+        }
+
+        /*
+        * If you want something out of rootPane use this.
+        Node nodeOut = rootPane.getChildren().get(1);
+        if(nodeOut instanceof HBox){
+            for(Node nodeIn:((HBox)nodeOut).getChildren()){
+                if(nodeIn instanceof Button){
+                    System.out.println(((Button)nodeIn).getText());
+                }
+            }
+        }
+        */
+    }
+    public static void main(String[] args) {
+        AHKInterface k = new AHKInterface(0);
     }
 }
