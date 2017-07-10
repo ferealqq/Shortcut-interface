@@ -12,12 +12,10 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import javax.swing.*;
 import java.lang.reflect.Field;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -26,12 +24,13 @@ public class ViewStorage {
     public AHKInterface ahkinterface;
     public final Register register;
     public final browseAction browseaction;
+    public final SignIn signIn;
     public final JFrame mainFrame;
     public final MenuSetup menuSetup;
     public final LinkedList<JFXPanel> viewHistory;
     public final LinkedList<JFXPanel> viewHistoryBackwards;
     public final HashMap<String,JFXPanel> viewMap;
-    public final int currentUserId;
+    public int currentUserId;
 
     public ViewStorage(JFrame main,int userid){
         currentUserId = userid;
@@ -42,6 +41,7 @@ public class ViewStorage {
         menuSetup = new MenuSetup(this,currentUserId);
         register = new Register(this);
         browseaction = new browseAction(this);
+        signIn = new SignIn(this);
         createViewMap();
     }
     /*
@@ -56,6 +56,8 @@ public class ViewStorage {
         mainFrame.add(register.giveView());
         viewMap.put("browseaction",browseaction.giveView());
         mainFrame.add(browseaction.giveView());
+        viewMap.put("signin",signIn.giveView());
+        mainFrame.add(signIn.giveView());
     }
     public Tooltip createTooltip(String message){
         final Tooltip tooltip = new Tooltip(message);
@@ -87,6 +89,7 @@ public class ViewStorage {
             setMenubar(register.rootPane);
             setMenubar(browseaction.topPane);
             setMenubar(ahkinterface.rootPane);
+            setMenubar(signIn.rootPane);
             last.show();
             mainFrame.add(last);
         }
@@ -100,6 +103,7 @@ public class ViewStorage {
             setMenubar(register.rootPane);
             setMenubar(browseaction.topPane);
             setMenubar(ahkinterface.rootPane);
+            setMenubar(signIn.rootPane);
             // kuin hideet jotain sinun pitää refreshaa menubar muista
             last.show();
             mainFrame.add(last);
@@ -113,6 +117,7 @@ public class ViewStorage {
         setMenubar(register.rootPane);
         setMenubar(browseaction.topPane);
         setMenubar(ahkinterface.rootPane);
+        setMenubar(signIn.rootPane);
     }
     public void setMenubar(Pane currentViewsRootPane){
         Iterator<Node> nodeIterator = currentViewsRootPane.getChildren().iterator();
@@ -122,7 +127,7 @@ public class ViewStorage {
             }
         }
         currentViewsRootPane.getChildren().add(0,menuSetup.createMenuBar());
-        //register.rootPane.getChildren() sinun pitää hakea oikea rootPane original muodossa että voit muokata sitä
+        //register.mainPane.getChildren() sinun pitää hakea oikea mainPane original muodossa että voit muokata sitä
     }
     private void createStepBar(Pane stepbarToThisPane){
         BorderPane stepPane = new BorderPane();

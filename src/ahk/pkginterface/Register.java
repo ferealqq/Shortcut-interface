@@ -141,13 +141,12 @@ public class Register{
                     }else{
                         JOptionPane.showMessageDialog(viewStorage.mainFrame,"Successful!");
                         viewStorage.showBackwardsHideCurrent();
+                        viewStorage.currentUserId = profilesDb.getProileIdByUsername(tfUsername.getText());
                     }   
                 }else{
                     JOptionPane.showMessageDialog(viewStorage.mainFrame,"Passwords won't match!");
                 }
             }
         });
-    }
-    public static void main(String[] args) {
     }
 }

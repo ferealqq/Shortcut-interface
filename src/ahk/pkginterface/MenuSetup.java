@@ -70,10 +70,11 @@ public class MenuSetup {
             });
             profileMenu.getItems().add(logoutItem);
         } else {
-            MenuItem loginItem = new MenuItem("Log in");
-            loginItem.setOnAction(new EventHandler<ActionEvent>() {
+            MenuItem signInItem = new MenuItem("Sign in");
+            signInItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
+                    viewStorage.hideSelectedAndShowSelected(((JFXPanel)viewStorage.mainFrame.getContentPane().getComponent(viewStorage.mainFrame.getContentPane().getComponentCount() - 1)), viewStorage.viewMap.get("signin"));
                 }
             });
             MenuItem registerItem = new MenuItem("Register");
@@ -83,13 +84,11 @@ public class MenuSetup {
                     viewStorage.hideSelectedAndShowSelected(((JFXPanel)viewStorage.mainFrame.getContentPane().getComponent(viewStorage.mainFrame.getContentPane().getComponentCount() - 1)), viewStorage.viewMap.get("register"));
                 }
             });
-            profileMenu.getItems().addAll(loginItem,registerItem);
+            profileMenu.getItems().addAll(signInItem,registerItem);
         }
     }
     public void disableOrEnable(){
         this.backwardsMenuButton.setDisable(viewStorage.viewHistory.isEmpty());
         this.forwardsMenuButton.setDisable(viewStorage.viewHistoryBackwards.isEmpty());
-    }
-    public static void main(String[] args) {
     }
 }

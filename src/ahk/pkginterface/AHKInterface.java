@@ -91,7 +91,7 @@ public class AHKInterface extends JFrame {
         HBox centeredHBox = new HBox(35);
         Button firstStep = new Button("1");
         Button secondStep = new Button("2");
-            secondStep.setOnAction(btNextAction);
+        secondStep.setOnAction(btNextAction);
         Button thirdStep = new Button("3");
         centeredHBox.getChildren().addAll(firstStep, secondStep, thirdStep);
         centeredHBox.setAlignment(Pos.CENTER);
@@ -198,6 +198,7 @@ public class AHKInterface extends JFrame {
                             pressedKeys.remove(currentkey);
                             btnKey.setStyle(null);
                         } else {
+
                             btnKey.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
                             pressedKeys.add(currentkey);
                         }
@@ -211,8 +212,8 @@ public class AHKInterface extends JFrame {
         }
 
         /*
-        * If you want something out of rootPane use this.
-        Node nodeOut = rootPane.getChildren().get(1);
+        * If you want something out of mainPane use this.
+        Node nodeOut = mainPane.getChildren().get(1);
         if(nodeOut instanceof HBox){
             for(Node nodeIn:((HBox)nodeOut).getChildren()){
                 if(nodeIn instanceof Button){

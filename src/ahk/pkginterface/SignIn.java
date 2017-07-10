@@ -1,97 +1,111 @@
 package ahk.pkginterface;
 
 import ahk.pkginterface.database.ProfilesData;
+import javafx.embed.swing.JFXPanel;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.*;
+import javafx.scene.Scene;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.util.ArrayList;
 
-public class SignIn extends JFrame {
-    private JPanel rootPane = new JPanel(new GridLayout(4, 1));
-    private JPanel labelPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    private JPanel pwPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    private JPanel loginPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
-    private JPanel bottomPane = new JPanel(new FlowLayout(FlowLayout.CENTER));
+public class SignIn {
+    public final JFXPanel signInView = new JFXPanel();
+    public final BorderPane mainPane = new BorderPane();
+    public final VBox rootPane = new VBox();
 
-    private JLabel lbUsername = new JLabel("Username");
-    private JLabel lbPassword = new JLabel("Password");
-    private JLabel Register = new JLabel("                        Register                        ");
-    private JLabel lbBack = new JLabel("Back");
+    private ProfilesData profilesDb = new ProfilesData();
+    public final ViewStorage viewStorage;
 
-    private JTextField tfUsername = new JTextField(15);
-    private JPasswordField tfPw = new JPasswordField(15);
-    private JButton signin = new JButton("Sign in");
-
-    private Register registerFrame;
-    private ProfilesData db = new ProfilesData();
-
-
-    public SignIn(AHKInterface mainFrame) {
-        //registerFrame = new Register(mainFrame,this);
-        this.setTitle("SignIn");
-        this.setSize(230, 260);
-        this.setLocationRelativeTo(null);
-        signin.setPreferredSize(new Dimension(80, 30));
-        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setComponents();
-        tfPw.addKeyListener(new KeyAdapter() {
+    public SignIn(ViewStorage viewArchive) {
+        viewStorage = viewArchive;
+        initComponents(signInView);
+    }
+    private void initComponents(JFXPanel jfxPanel){
+        Scene scene = createScene();
+        jfxPanel.setScene(scene);
+    }
+    private Scene createScene(){
+        Scene scene = new Scene(rootPane,800,500);
+        mainPane.maxHeight(Double.MAX_VALUE);
+        mainPane.maxWidth(Double.MAX_VALUE);
+        mainPane.setPadding(new Insets(50,0,50,0));
+        rootPane.setVgrow(mainPane, Priority.ALWAYS);
+        rootPane.getChildren().add(mainPane);
+        createComponents();
+        return (scene);
+    }
+    private void createComponents(){
+        String signInCss = this.getClass().getResource("Css/register_and_login_style.css").toExternalForm();
+        ArrayList<components> labelandfieldStorage = new ArrayList<>();
+        javafx.scene.control.Label lbUsername = new javafx.scene.control.Label("Username / Email");
+        javafx.scene.control.TextField tfUsername = new javafx.scene.control.TextField();
+        labelandfieldStorage.add(new components(tfUsername,lbUsername));
+        javafx.scene.control.Label lbPassword = new javafx.scene.control.Label("Password");
+        PasswordField tfPassword = new PasswordField();
+        labelandfieldStorage.add(new components(tfPassword,lbPassword));
+        for (int i = 0; i < labelandfieldStorage.size(); i++) {
+            labelandfieldStorage.get(i).getLb().setFont(new javafx.scene.text.Font("Cambria", 32));
+            labelandfieldStorage.get(i).getTf().setFont(new javafx.scene.text.Font("Cambria", 20));
+            labelandfieldStorage.get(i).getTf().setPrefHeight(40);
+            labelandfieldStorage.get(i).getTf().setMaxWidth(300);
+            VBox connectPane = new VBox(10);
+            connectPane.setAlignment(Pos.CENTER);
+            connectPane.setAlignment(Pos.CENTER);
+            connectPane.getChildren().addAll(labelandfieldStorage.get(i).getLb(),labelandfieldStorage.get(i).getTf());
+            if(i == 0) {
+                mainPane.setTop(connectPane);
+            }else if(i == 1){
+                mainPane.setCenter(connectPane);
+            }
+        }
+        javafx.scene.control.Button btnSignin = new javafx.scene.control.Button("Sign In");
+        btnSignin.getStylesheets().add(this.getClass().getResource("Css/ahk_main_bottombtns_css.css").toExternalForm());
+        BorderPane.setAlignment(btnSignin,Pos.CENTER);
+        btnSignin.setMaxSize(150,50);
+        BorderPane btnPane = new BorderPane(btnSignin);
+        btnPane.setPadding(new javafx.geometry.Insets(35,35,35,35));
+        mainPane.setBottom(btnPane);
+        createListeners(btnSignin,tfUsername,tfPassword);
+    }
+    public JFXPanel giveView(){
+        return signInView;
+    }
+    /*
+    * a quick shadowclass to store components in. To make code cleaner and easier to undestand by others.s
+     */
+    class components{
+        public javafx.scene.control.Label lb;
+        public javafx.scene.control.TextField tf;
+        public components(javafx.scene.control.TextField tfield, javafx.scene.control.Label lbel){
+            lb = lbel;
+            tf = tfield;
+        }
+        public javafx.scene.control.Label getLb(){
+            return lb;
+        }
+        public javafx.scene.control.TextField getTf(){
+            return tf;
+        }
+    }
+    private void createListeners(Button btnSignin, TextField tfUsername, PasswordField tfPassword){
+        btnSignin.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void keyPressed(KeyEvent keyEvent) {
-                if(keyEvent.getKeyCode()==KeyEvent.VK_ENTER){
-                    if(db.checkPassword(tfPw.getText(),tfUsername.getText())) {
-                        //mainFrame.setCurrentUserId(db.getProileIdByUsername(tfUsername.getText()));
-                        setVisible(false);
-                        dispose();
-                    }else{
-                        JOptionPane.showMessageDialog(rootPane,"Something went wrong try again!");
-                    }
+            public void handle(ActionEvent event) {
+                if(profilesDb.checkPassword(tfUsername.getText(),tfPassword.getText())){
+                    JOptionPane.showMessageDialog(viewStorage.mainFrame,"Successful!");
+                    viewStorage.showBackwardsHideCurrent();
+                    viewStorage.currentUserId = profilesDb.getProileIdByUsername(tfUsername.getText());
                 }
             }
         });
-        signin.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(db.checkPassword(tfPw.getText(),tfUsername.getText())) {
-                    //mainFrame.setCurrentUserId(db.getProileIdByUsername(tfUsername.getText()));
-                    setVisible(false);
-                    dispose();
-                }else{
-                    JOptionPane.showMessageDialog(rootPane,"Something went wrong try again!");
-                }
-            }
-        });
-        Register.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                setVisible(false);
-            }
-        });
-        lbBack.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                //mainFrame.setVisible(true);
-                setVisible(false);
-            }
-        });
-    }
-
-    public static void main(String[] args) {
-        new SignIn(new AHKInterface()).setVisible(true);
-    }
-
-    private void setComponents() {
-        //lbBack.setSize(new Dimension());
-        labelPane.add(lbUsername);
-        labelPane.add(tfUsername);
-        pwPane.add(lbPassword);
-        pwPane.add(tfPw);
-        loginPane.add(signin);
-        loginPane.add(Register);
-        bottomPane.add(lbBack);
-        rootPane.add(labelPane);
-        rootPane.add(pwPane);
-        rootPane.add(loginPane);
-        rootPane.add(bottomPane);
-        this.add(rootPane);
     }
 }

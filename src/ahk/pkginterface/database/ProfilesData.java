@@ -77,12 +77,13 @@ public class ProfilesData {
             closeConnection(connection);
         }
     }
-    public boolean checkPassword(String password,String username){
+    public boolean checkPassword(String username,String password){
         try{
             connection=DriverManager.getConnection(setConnectionStrings());
-            String sqlquery = "select password from profile where username=?";
+            String sqlquery = "select password from profile where username=? or email=?";
             prepStatement = connection.prepareStatement(sqlquery);
             prepStatement.setString(1,username);
+            prepStatement.setString(2,username);
             resultSet = prepStatement.executeQuery();
             String hashed ="";
             if(resultSet.next()) hashed = resultSet.getString("password");
@@ -105,9 +106,10 @@ public class ProfilesData {
     public int getProileIdByUsername(String username){
         try{
             connection = DriverManager.getConnection(setConnectionStrings());
-            String sqlquery = "select profile_id from profile where username = ?";
+            String sqlquery = "select profile_id from profile where username = ? or email = ?";
             prepStatement = connection.prepareStatement(sqlquery);
             prepStatement.setString(1,username);
+            prepStatement.setString(2,username);
             resultSet = prepStatement.executeQuery();
             if(resultSet.next()) return resultSet.getInt("profile_id");
             prepStatement.close();
@@ -127,6 +129,6 @@ public class ProfilesData {
         }
     }
     public static void main(String[] args) {
-        System.out.println(new ProfilesData().createUser("peke","peke@peke.fi","peke"));
+        System.out.println(new ProfilesData().checkPassword("pekka@pekkas.fi","pekka"));
     }
 }
