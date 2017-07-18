@@ -1,8 +1,6 @@
 package ahk.pkginterface.browsingFrames;
 
-import ahk.pkginterface.AHKInterface;
-import ahk.pkginterface.MenuSetup;
-import ahk.pkginterface.ViewStorage;
+import ahk.pkginterface.ViewManagement.ComponentStorage;
 import ahk.pkginterface.database.ActionsData;
 import ahk.pkginterface.database.Actions;
 import javafx.beans.binding.Bindings;
@@ -34,7 +32,7 @@ public class browseAction{
     private final Button btNext = new Button("Next");
     private final TextField searchField = new TextField("Search");
     private final ActionsData actionsData = new ActionsData();
-    public final ViewStorage viewStorage;
+    public final ComponentStorage componentStorage;
     private ArrayList<Label> currentComponentArchive = new ArrayList<>();
     public final VBox labelPane = new VBox(5);
     public final VBox topPane = new VBox(5);
@@ -44,8 +42,8 @@ public class browseAction{
     private ChangeListener<Boolean> focusListener;
     private EventHandler<KeyEvent> keyReleasedAL;
     private EventHandler<ActionEvent> btBackAction;
-    public browseAction(ViewStorage viewArchive) {
-        viewStorage = viewArchive;
+    public browseAction(ComponentStorage viewArchive) {
+        componentStorage = viewArchive;
         initComponents(browseActionView);
     }
     /*
@@ -59,7 +57,7 @@ public class browseAction{
      */
     private Scene createScene() {
         Scene scene = new Scene(rootPane,800,500);
-        //viewStorage.menuSetup.setRootPane(topPane);
+        //componentStorage.menuSetup.setRootPane(topPane);
         createListeners();
         createStepBar();
         createComponents(actionsData.getActions());
@@ -73,7 +71,7 @@ public class browseAction{
         firstStep.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                viewStorage.hideSelectedAndShowSelected((JFXPanel)viewStorage.mainFrame.getContentPane().getComponent(viewStorage.mainFrame.getContentPane().getComponentCount()-1),viewStorage.viewMap.get("ahkinterface"));
+                componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1), componentStorage.viewMap.get("ahkinterface"));
             }
         });
         Button secondStep = new Button("2");

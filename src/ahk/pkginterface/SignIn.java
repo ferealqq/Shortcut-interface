@@ -1,5 +1,6 @@
 package ahk.pkginterface;
 
+import ahk.pkginterface.ViewManagement.ComponentStorage;
 import ahk.pkginterface.database.ProfilesData;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
@@ -10,7 +11,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
@@ -23,10 +23,10 @@ public class SignIn {
     public final VBox rootPane = new VBox();
 
     private ProfilesData profilesDb = new ProfilesData();
-    public final ViewStorage viewStorage;
+    public final ComponentStorage componentStorage;
 
-    public SignIn(ViewStorage viewArchive) {
-        viewStorage = viewArchive;
+    public SignIn(ComponentStorage viewArchive) {
+        componentStorage = viewArchive;
         initComponents(signInView);
     }
     private void initComponents(JFXPanel jfxPanel){
@@ -101,9 +101,9 @@ public class SignIn {
             @Override
             public void handle(ActionEvent event) {
                 if(profilesDb.checkPassword(tfUsername.getText(),tfPassword.getText())){
-                    JOptionPane.showMessageDialog(viewStorage.mainFrame,"Successful!");
-                    viewStorage.showBackwardsHideCurrent();
-                    viewStorage.currentUserId = profilesDb.getProileIdByUsername(tfUsername.getText());
+                    JOptionPane.showMessageDialog(componentStorage.mainFrame,"Successful!");
+                    componentStorage.showBackwardsHideCurrent();
+                    componentStorage.currentUserId = profilesDb.getProileIdByUsername(tfUsername.getText());
                 }
             }
         });

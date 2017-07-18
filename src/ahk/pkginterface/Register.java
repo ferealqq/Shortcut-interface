@@ -1,5 +1,6 @@
 package ahk.pkginterface;
 
+import ahk.pkginterface.ViewManagement.ComponentStorage;
 import ahk.pkginterface.commentFrames.commentFrame;
 import ahk.pkginterface.database.ProfilesData;
 import javafx.embed.swing.JFXPanel;
@@ -17,10 +18,9 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
-import jdk.nashorn.internal.scripts.JO;
 
 import javax.swing.*;
-import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -29,13 +29,13 @@ public class Register{
     public final VBox rootPane = new VBox();
 
     private ProfilesData profilesDb = new ProfilesData();
-    public final ViewStorage viewStorage;
+    public final ComponentStorage componentStorage;
     private final Tooltip tooltip;
     private String commentMsg;
     private commentFrame comment = new commentFrame();
 
-    public Register(ViewStorage viewArchive) {
-        viewStorage = viewArchive;
+    public Register(ComponentStorage viewArchive) {
+        componentStorage = viewArchive;
         initComponents(registerView);
         tooltip = viewArchive.createTooltip("");
     }
@@ -137,16 +137,25 @@ public class Register{
             public void handle(ActionEvent event) {
                 if(tfPassword.getText().equals(tfPassword2.getText())){
                     if(!profilesDb.createUser(tfUsername.getText(),tfEmail.getText(),tfPassword.getText())) {
-                        JOptionPane.showMessageDialog(viewStorage.mainFrame,"Something went wrong!");
+                        JOptionPane.showMessageDialog(componentStorage.mainFrame,"Something went wrong!");
                     }else{
-                        JOptionPane.showMessageDialog(viewStorage.mainFrame,"Successful!");
-                        viewStorage.showBackwardsHideCurrent();
-                        viewStorage.currentUserId = profilesDb.getProileIdByUsername(tfUsername.getText());
+                        JOptionPane.showMessageDialog(componentStorage.mainFrame,"Successful!");
+                        componentStorage.showBackwardsHideCurrent();
+                        componentStorage.currentUserId = profilesDb.getProileIdByUsername(tfUsername.getText());
                     }   
                 }else{
-                    JOptionPane.showMessageDialog(viewStorage.mainFrame,"Passwords won't match!");
+                    JOptionPane.showMessageDialog(componentStorage.mainFrame,"Passwords won't match!");
                 }
             }
         });
+    }
+
+    public static void main(String[] args) {
+        try {
+            Process p = Runtime.getRuntime().exec("cmd /c start E:\\AHK-Interface\\test.bat");
+            System.out.println("?");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -1,5 +1,8 @@
-package ahk.pkginterface;
+package ahk.pkginterface.ViewManagement;
 
+import ahk.pkginterface.AHKInterface;
+import ahk.pkginterface.Register;
+import ahk.pkginterface.SignIn;
 import ahk.pkginterface.browsingFrames.browseAction;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -20,7 +23,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class ViewStorage {
+public class ComponentStorage {
     public AHKInterface ahkinterface;
     public final Register register;
     public final browseAction browseaction;
@@ -32,7 +35,7 @@ public class ViewStorage {
     public final HashMap<String,JFXPanel> viewMap;
     public int currentUserId;
 
-    public ViewStorage(JFrame main){
+    public ComponentStorage(JFrame main){
         mainFrame = main;
         viewHistory = new LinkedList<>();
         viewMap = new HashMap<>();

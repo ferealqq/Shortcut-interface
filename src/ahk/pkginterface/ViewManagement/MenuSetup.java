@@ -1,5 +1,6 @@
-package ahk.pkginterface;
+package ahk.pkginterface.ViewManagement;
 
+import ahk.pkginterface.ViewManagement.ComponentStorage;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -7,19 +8,17 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
-import java.util.Date;
-
 public class MenuSetup {
     public Pane rootPane;
     public int currentUserId;
-    public final ViewStorage viewStorage;
+    public final ComponentStorage componentStorage;
 
     private MenuBar menuBar;
     private Button forwardsMenuButton;
     private Button backwardsMenuButton;
 
-    public MenuSetup(ViewStorage viewArchive, int id) {
-        viewStorage = viewArchive;
+    public MenuSetup(ComponentStorage viewArchive, int id) {
+        componentStorage = viewArchive;
         currentUserId = id;
     }
 
@@ -48,24 +47,24 @@ public class MenuSetup {
         this.forwardsMenuButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                viewStorage.showForwardHideCurrent();
+                componentStorage.showForwardHideCurrent();
             }
         });
         this.backwardsMenuButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                viewStorage.showBackwardsHideCurrent();
+                componentStorage.showBackwardsHideCurrent();
             }
         });
     }
 
     private void menuItemsForProfile(Menu profileMenu) {
-        if (0 < currentUserId) {
+        if (0 < componentStorage.currentUserId) {
             MenuItem logoutItem = new MenuItem("Log Out");
             logoutItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    currentUserId = 0;
+                    componentStorage.currentUserId = 0;
                 }
             });
             profileMenu.getItems().add(logoutItem);
@@ -74,21 +73,22 @@ public class MenuSetup {
             signInItem.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    viewStorage.hideSelectedAndShowSelected(((JFXPanel)viewStorage.mainFrame.getContentPane().getComponent(viewStorage.mainFrame.getContentPane().getComponentCount() - 1)), viewStorage.viewMap.get("signin"));
+                    componentStorage.hideSelectedAndShowSelected(((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1)), componentStorage.viewMap.get("signin"));
                 }
             });
-            MenuItem registerItem = new MenuItem("Register");
-            registerItem.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    viewStorage.hideSelectedAndShowSelected(((JFXPanel)viewStorage.mainFrame.getContentPane().getComponent(viewStorage.mainFrame.getContentPane().getComponentCount() - 1)), viewStorage.viewMap.get("register"));
-                }
-            });
-            profileMenu.getItems().addAll(signInItem,registerItem);
+            profileMenu.getItems().add(signInItem);
         }
+        MenuItem registerItem = new MenuItem("Register");
+        registerItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                componentStorage.hideSelectedAndShowSelected(((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1)), componentStorage.viewMap.get("register"));
+            }
+        });
+        profileMenu.getItems().add(registerItem);
     }
     public void disableOrEnable(){
-        this.backwardsMenuButton.setDisable(viewStorage.viewHistory.isEmpty());
-        this.forwardsMenuButton.setDisable(viewStorage.viewHistoryBackwards.isEmpty());
+        this.backwardsMenuButton.setDisable(componentStorage.viewHistory.isEmpty());
+        this.forwardsMenuButton.setDisable(componentStorage.viewHistoryBackwards.isEmpty());
     }
 }

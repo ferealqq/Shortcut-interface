@@ -1,6 +1,6 @@
 package ahk.pkginterface;
 
-import ahk.pkginterface.browsingFrames.browseAction;
+import ahk.pkginterface.ViewManagement.ComponentStorage;
 import ahk.pkginterface.database.Key;
 import ahk.pkginterface.database.KeyData;
 import ahk.pkginterface.database.Keys;
@@ -11,7 +11,6 @@ import javafx.scene.control.Button;
 
 import javax.swing.*;
 
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -21,8 +20,6 @@ import javafx.event.ActionEvent;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 
 
 public class AHKInterface extends JFrame {
@@ -36,11 +33,11 @@ public class AHKInterface extends JFrame {
     private EventHandler<ActionEvent> btNextAction;
     private EventHandler<ActionEvent> btDetectAction;
     public final JFrame main = this;
-    public ViewStorage viewStorage;// siirä viewmap aloitus formiin sitten kuin se on tehty
+    public ComponentStorage componentStorage;// siirä viewmap aloitus formiin sitten kuin se on tehty
 
     public AHKInterface() {
-        viewStorage = new ViewStorage(main);
-        viewStorage.setAhkinterface(this);
+        componentStorage = new ComponentStorage(main);
+        componentStorage.setAhkinterface(this);
         constructAHK();
     }
 
@@ -68,7 +65,7 @@ public class AHKInterface extends JFrame {
      */
     private Scene createScene() {
         Scene scene = new Scene(rootPane, 1000, 600);
-        rootPane.getChildren().add(viewStorage.menuSetup.createMenuBar()); // poista kuin uusi mainform on tehty
+        rootPane.getChildren().add(componentStorage.menuSetup.createMenuBar()); // poista kuin uusi mainform on tehty
         createKeyListeners();
         createStepBar();
                 try {
@@ -105,7 +102,7 @@ public class AHKInterface extends JFrame {
                     JOptionPane.showMessageDialog(AHKInterface.super.rootPane, "You havent selected any keys try again later!");
                     return;
                 }
-                viewStorage.hideSelectedAndShowSelected(ahkinterfaceView, viewStorage.viewMap.get("browseaction"));
+                componentStorage.hideSelectedAndShowSelected(ahkinterfaceView, componentStorage.viewMap.get("browseaction"));
             }
         };
         btDetectAction = new EventHandler<ActionEvent>() {
