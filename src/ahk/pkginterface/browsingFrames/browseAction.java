@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -99,13 +100,12 @@ public class browseAction{
         btNextAction = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                // eteen päin fukin dummy
+                componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1), componentStorage.viewMap.get("taskscheduler"));
             }
         };
         focusListener = new ChangeListener<Boolean>()
         {
-            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue)
-            {
+            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
                 if (newPropertyValue)
                     searchField.setText("");
             }
@@ -146,6 +146,20 @@ public class browseAction{
             actionLabel.setText(action.getAction());
             actionLabel.getStylesheets().add(actionlabelsCss);
             actionLabel.setMaxWidth(Double.MAX_VALUE);
+            actionLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if(!componentStorage.choosenActionPath.contains(action.getPath())){
+                        componentStorage.choosenActionPath.add(action.getPath());
+                        actionLabel.setStyle("-fx-background-color: #404040;");
+                        System.out.println("added");
+                    }else{
+                        componentStorage.choosenActionPath.remove(action.getPath());
+                        actionLabel.setStyle("-fx-background-color: transparent;");
+                        System.out.println("removed");
+                    }
+                }
+            });
             currentComponentArchive.add(actionLabel);
         }
         labelPane.getChildren().addAll(currentComponentArchive);

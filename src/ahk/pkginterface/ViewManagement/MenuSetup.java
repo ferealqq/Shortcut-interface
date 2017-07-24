@@ -10,16 +10,14 @@ import javafx.scene.layout.Pane;
 
 public class MenuSetup {
     public Pane rootPane;
-    public int currentUserId;
     public final ComponentStorage componentStorage;
 
     private MenuBar menuBar;
     private Button forwardsMenuButton;
     private Button backwardsMenuButton;
 
-    public MenuSetup(ComponentStorage viewArchive, int id) {
+    public MenuSetup(ComponentStorage viewArchive) {
         componentStorage = viewArchive;
-        currentUserId = id;
     }
 
     public MenuBar createMenuBar() {
@@ -34,7 +32,7 @@ public class MenuSetup {
         backwardsMenu.setGraphic(backwardsMenuButton);
         final Menu menuProfile = new Menu("Profile");
         menuItemsForProfile(menuProfile);
-        final Menu menuHelp = new Menu("Help");
+        final Menu menuHelp = new Menu("Help"); 
         final Menu menuView = new Menu("View");
         menuBar.getMenus().addAll(backwardsMenu, forwardsMenu, menuProfile, menuHelp, menuView);
         String menuBarCss = this.getClass().getResource("Css/main_menu_bar.css").toExternalForm();
@@ -59,24 +57,11 @@ public class MenuSetup {
     }
 
     private void menuItemsForProfile(Menu profileMenu) {
+        System.out.println(componentStorage.currentUserId);
         if (0 < componentStorage.currentUserId) {
-            MenuItem logoutItem = new MenuItem("Log Out");
-            logoutItem.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    componentStorage.currentUserId = 0;
-                }
-            });
-            profileMenu.getItems().add(logoutItem);
+            createLogoutItem(profileMenu);
         } else {
-            MenuItem signInItem = new MenuItem("Sign in");
-            signInItem.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    componentStorage.hideSelectedAndShowSelected(((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1)), componentStorage.viewMap.get("signin"));
-                }
-            });
-            profileMenu.getItems().add(signInItem);
+            createSigninitem(profileMenu);
         }
         MenuItem registerItem = new MenuItem("Register");
         registerItem.setOnAction(new EventHandler<ActionEvent>() {
@@ -87,6 +72,30 @@ public class MenuSetup {
         });
         profileMenu.getItems().add(registerItem);
     }
+
+    private void createSigninitem(Menu profileMenu) {
+        MenuItem signInItem = new MenuItem("Sign in");
+        signInItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                componentStorage.hideSelectedAndShowSelected(((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1)), componentStorage.viewMap.get("signin"));
+            }
+        });
+        profileMenu.getItems().add(0,signInItem);
+    }
+    private void createLogoutItem(Menu profileMenu){
+        MenuItem logoutItem = new MenuItem("Log Out");
+        logoutItem.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                componentStorage.currentUserId = 0;
+                profileMenu.getItems().remove(logoutItem);
+                createSigninitem(profileMenu);
+            }
+        });
+        profileMenu.getItems().add(0,logoutItem);
+    }
+
     public void disableOrEnable(){
         this.backwardsMenuButton.setDisable(componentStorage.viewHistory.isEmpty());
         this.forwardsMenuButton.setDisable(componentStorage.viewHistoryBackwards.isEmpty());

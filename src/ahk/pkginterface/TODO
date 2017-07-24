@@ -1,6 +1,9 @@
 Open:
     hakee sekä tietokoneelta löytyneet ahk ohjelmat että käyttäjälle tallennetut ohjelmat.
 
+    run bat //Process p = Runtime.getRuntime().exec("cmd /c start E:\\AHK-Interface\\test.bat");
+
+    create a task via cmd https://www.howtogeek.com/51236/how-to-create-modify-and-delete-scheduled-tasks-from-the-command-line/
 
 How to get current view (jfxpanel)  ((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1))
 

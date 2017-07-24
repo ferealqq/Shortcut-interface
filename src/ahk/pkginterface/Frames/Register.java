@@ -1,4 +1,4 @@
-package ahk.pkginterface;
+package ahk.pkginterface.Frames;
 
 import ahk.pkginterface.ViewManagement.ComponentStorage;
 import ahk.pkginterface.commentFrames.commentFrame;
@@ -149,13 +149,5 @@ public class Register{
             }
         });
     }
-
-    public static void main(String[] args) {
-        try {
-            Process p = Runtime.getRuntime().exec("cmd /c start E:\\AHK-Interface\\test.bat");
-            System.out.println("?");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    //Process p = Runtime.getRuntime().exec("cmd /c start E:\\AHK-Interface\\test.bat");
 }

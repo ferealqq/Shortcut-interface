@@ -1,11 +1,13 @@
 package ahk.pkginterface.ViewManagement;
 
 import ahk.pkginterface.AHKInterface;
-import ahk.pkginterface.Register;
-import ahk.pkginterface.SignIn;
+import ahk.pkginterface.Frames.Register;
+import ahk.pkginterface.Frames.SignIn;
+import ahk.pkginterface.Frames.TaskScheduler;
 import ahk.pkginterface.browsingFrames.browseAction;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.concurrent.Task;
 import javafx.embed.swing.JFXPanel;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -19,6 +21,7 @@ import javafx.util.Duration;
 
 import javax.swing.*;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -26,6 +29,7 @@ import java.util.LinkedList;
 public class ComponentStorage {
     public AHKInterface ahkinterface;
     public final Register register;
+    public final TaskScheduler taskScheduler;
     public final browseAction browseaction;
     public final SignIn signIn;
     public final JFrame mainFrame;
@@ -35,13 +39,15 @@ public class ComponentStorage {
     public final HashMap<String,JFXPanel> viewMap;
     public int currentUserId;
 
+    public final ArrayList<String> choosenActionPath = new ArrayList<>();
     public ComponentStorage(JFrame main){
         mainFrame = main;
         viewHistory = new LinkedList<>();
         viewMap = new HashMap<>();
         viewHistoryBackwards = new LinkedList<>();
-        menuSetup = new MenuSetup(this,currentUserId);
+        menuSetup = new MenuSetup(this);
         register = new Register(this);
+        taskScheduler = new TaskScheduler(this);
         browseaction = new browseAction(this);
         signIn = new SignIn(this);
         createViewMap();
@@ -60,6 +66,8 @@ public class ComponentStorage {
         mainFrame.add(browseaction.giveView());
         viewMap.put("signin",signIn.giveView());
         mainFrame.add(signIn.giveView());
+        viewMap.put("taskscheduler",taskScheduler.giveView());
+        mainFrame.add(taskScheduler.giveView());
     }
     public Tooltip createTooltip(String message){
         final Tooltip tooltip = new Tooltip(message);
@@ -92,6 +100,7 @@ public class ComponentStorage {
             setMenubar(browseaction.topPane);
             setMenubar(ahkinterface.rootPane);
             setMenubar(signIn.rootPane);
+            setMenubar(taskScheduler.rootPane);
             last.show();
             mainFrame.add(last);
         }
@@ -106,6 +115,7 @@ public class ComponentStorage {
             setMenubar(browseaction.topPane);
             setMenubar(ahkinterface.rootPane);
             setMenubar(signIn.rootPane);
+            setMenubar(taskScheduler.rootPane);
             // kuin hideet jotain sinun pitää refreshaa menubar muista
             last.show();
             mainFrame.add(last);
@@ -120,6 +130,7 @@ public class ComponentStorage {
         setMenubar(browseaction.topPane);
         setMenubar(ahkinterface.rootPane);
         setMenubar(signIn.rootPane);
+        setMenubar(taskScheduler.rootPane);
     }
     public void setMenubar(Pane currentViewsRootPane){
         Iterator<Node> nodeIterator = currentViewsRootPane.getChildren().iterator();

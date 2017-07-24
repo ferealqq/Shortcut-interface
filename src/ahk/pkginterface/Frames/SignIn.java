@@ -1,4 +1,4 @@
-package ahk.pkginterface;
+package ahk.pkginterface.Frames;
 
 import ahk.pkginterface.ViewManagement.ComponentStorage;
 import ahk.pkginterface.database.ProfilesData;
@@ -102,8 +102,9 @@ public class SignIn {
             public void handle(ActionEvent event) {
                 if(profilesDb.checkPassword(tfUsername.getText(),tfPassword.getText())){
                     JOptionPane.showMessageDialog(componentStorage.mainFrame,"Successful!");
-                    componentStorage.showBackwardsHideCurrent();
                     componentStorage.currentUserId = profilesDb.getProileIdByUsername(tfUsername.getText());
+                    componentStorage.showBackwardsHideCurrent();
+                    System.out.println(componentStorage.currentUserId+"Sign in ");
                 }
             }
         });
