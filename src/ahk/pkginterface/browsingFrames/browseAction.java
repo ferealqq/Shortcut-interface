@@ -132,6 +132,7 @@ public class browseAction{
         topPane.getChildren().add(searchField);
         BorderPane.setAlignment(btNext, Pos.BOTTOM_RIGHT);
         btNext.getStylesheets().add(btCss);
+        btNext.setOnAction(btNextAction);
         bottomPane.setRight(btNext);
 
         rootPane.setBottom(bottomPane);

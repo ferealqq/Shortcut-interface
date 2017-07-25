@@ -5,6 +5,7 @@ import ahk.pkginterface.Frames.Register;
 import ahk.pkginterface.Frames.SignIn;
 import ahk.pkginterface.Frames.TaskScheduler;
 import ahk.pkginterface.browsingFrames.browseAction;
+import ahk.pkginterface.database.Key;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.concurrent.Task;
@@ -39,6 +40,7 @@ public class ComponentStorage {
     public final HashMap<String,JFXPanel> viewMap;
     public int currentUserId;
 
+    public final ArrayList<Key> pressedKeys = new ArrayList<>();
     public final ArrayList<String> choosenActionPath = new ArrayList<>();
     public ComponentStorage(JFrame main){
         mainFrame = main;

@@ -27,8 +27,6 @@ public class AHKInterface extends JFrame {
     public final VBox rootPane = new VBox();
     public final BorderPane stepPane = new BorderPane();
     private final ArrayList<Button> bottomRowButtons = new ArrayList<>();
-    public final ArrayList<Key> pressedKeys = new ArrayList<>();
-
 
     private EventHandler<ActionEvent> btNextAction;
     private EventHandler<ActionEvent> btDetectAction;
@@ -55,6 +53,28 @@ public class AHKInterface extends JFrame {
         jfxPanel.setScene(scene);
     }
 
+    private void createStepBar() {
+        HBox centeredHBox = new HBox(35);
+        Button firstStep = new Button("1");
+        Button secondStep = new Button("2");
+        secondStep.setOnAction(btNextAction);
+        Button thirdStep = new Button("3");
+        thirdStep.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1), componentStorage.viewMap.get("taskscheduler"));
+            }
+        });
+        centeredHBox.getChildren().addAll(firstStep, secondStep, thirdStep);
+        centeredHBox.setAlignment(Pos.CENTER);
+        String stepPaneCss = this.getClass().getResource("Css/stepPane.css").toExternalForm();
+        stepPane.getStylesheets().add(stepPaneCss);
+        firstStep.setStyle("-fx-background-color:#A9A9A9");
+        stepPane.setCenter(centeredHBox);
+        stepPane.setStyle("-fx-background-color:#F5F5F5");
+        rootPane.getChildren().add(stepPane);
+    }
+
     /*
     * Remember to run these methods in following order or the code will not work. Because they relay on the other variables in the other methods.
     * reateListeners();
@@ -78,27 +98,11 @@ public class AHKInterface extends JFrame {
         return (scene);
     }
 
-    private void createStepBar() {
-        HBox centeredHBox = new HBox(35);
-        Button firstStep = new Button("1");
-        Button secondStep = new Button("2");
-        secondStep.setOnAction(btNextAction);
-        Button thirdStep = new Button("3");
-        centeredHBox.getChildren().addAll(firstStep, secondStep, thirdStep);
-        centeredHBox.setAlignment(Pos.CENTER);
-        String stepPaneCss = this.getClass().getResource("Css/stepPane.css").toExternalForm();
-        stepPane.getStylesheets().add(stepPaneCss);
-        firstStep.setStyle("-fx-background-color:#A9A9A9");
-        stepPane.setCenter(centeredHBox);
-        stepPane.setStyle("-fx-background-color:#F5F5F5");
-        rootPane.getChildren().add(stepPane);
-    }
-
     private void createKeyListeners() {
         btNextAction = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (pressedKeys.isEmpty()) {
+                if (componentStorage.pressedKeys.isEmpty()) {
                     JOptionPane.showMessageDialog(AHKInterface.super.rootPane, "You havent selected any keys try again later!");
                     return;
                 }
@@ -162,7 +166,7 @@ public class AHKInterface extends JFrame {
 
         Button btNext = new Button("Next");
         buttonRow.setHgrow(btNext, Priority.ALWAYS);
-        if(pressedKeys.isEmpty()){
+        if(componentStorage.pressedKeys.isEmpty()){
             btNext.setDisable(true);
         }else{
             btNext.setDisable(false);
@@ -190,9 +194,9 @@ public class AHKInterface extends JFrame {
                 btnKey.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                         if (pressedKeys.contains(currentkey)) {
-                            pressedKeys.remove(currentkey);
-                            if(pressedKeys.isEmpty()){
+                         if (componentStorage.pressedKeys.contains(currentkey)) {
+                           componentStorage.pressedKeys.remove(currentkey);
+                            if(componentStorage.pressedKeys.isEmpty()){
                                 bottomRowButtons.get(bottomRowButtons.size()-1).setDisable(true);
                             }else{
                                 bottomRowButtons.get(bottomRowButtons.size()-1).setDisable(false);
@@ -200,9 +204,9 @@ public class AHKInterface extends JFrame {
                             btnKey.setStyle(null);
                         } else {
                             btnKey.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
-                            pressedKeys.add(currentkey);
-                            System.out.println(!pressedKeys.isEmpty());
-                            if(!pressedKeys.isEmpty()) bottomRowButtons.get(bottomRowButtons.size()-1).setDisable(false);
+                            componentStorage.pressedKeys.add(currentkey);
+                            System.out.println(!componentStorage.pressedKeys.isEmpty());
+                            if(!componentStorage.pressedKeys.isEmpty()) bottomRowButtons.get(bottomRowButtons.size()-1).setDisable(false);
                          }
 
                     }
