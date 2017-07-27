@@ -5,16 +5,14 @@ import ahk.pkginterface.database.Key;
 import ahk.pkginterface.database.KeyData;
 import ahk.pkginterface.database.Keys;
 import javafx.embed.swing.JFXPanel;
+import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import javax.swing.*;
 
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 
@@ -29,6 +27,7 @@ public class AHKInterface extends JFrame {
     private final ArrayList<Button> bottomRowButtons = new ArrayList<>();
 
     private EventHandler<ActionEvent> btNextAction;
+    private EventHandler<ActionEvent> LastStepAction;
     private EventHandler<ActionEvent> btDetectAction;
     public final JFrame main = this;
     public ComponentStorage componentStorage;// siirä viewmap aloitus formiin sitten kuin se on tehty
@@ -53,27 +52,7 @@ public class AHKInterface extends JFrame {
         jfxPanel.setScene(scene);
     }
 
-    private void createStepBar() {
-        HBox centeredHBox = new HBox(35);
-        Button firstStep = new Button("1");
-        Button secondStep = new Button("2");
-        secondStep.setOnAction(btNextAction);
-        Button thirdStep = new Button("3");
-        thirdStep.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1), componentStorage.viewMap.get("taskscheduler"));
-            }
-        });
-        centeredHBox.getChildren().addAll(firstStep, secondStep, thirdStep);
-        centeredHBox.setAlignment(Pos.CENTER);
-        String stepPaneCss = this.getClass().getResource("Css/stepPane.css").toExternalForm();
-        stepPane.getStylesheets().add(stepPaneCss);
-        firstStep.setStyle("-fx-background-color:#A9A9A9");
-        stepPane.setCenter(centeredHBox);
-        stepPane.setStyle("-fx-background-color:#F5F5F5");
-        rootPane.getChildren().add(stepPane);
-    }
+
 
     /*
     * Remember to run these methods in following order or the code will not work. Because they relay on the other variables in the other methods.
@@ -87,8 +66,9 @@ public class AHKInterface extends JFrame {
         Scene scene = new Scene(rootPane, 1000, 600);
         rootPane.getChildren().add(componentStorage.menuSetup.createMenuBar()); // poista kuin uusi mainform on tehty
         createKeyListeners();
-        createStepBar();
-                try {
+        componentStorage.createStepBar(rootPane);
+        componentStorage.highLightCurrentStep(1);
+        try {
             createKeyboard();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -107,6 +87,16 @@ public class AHKInterface extends JFrame {
                     return;
                 }
                 componentStorage.hideSelectedAndShowSelected(ahkinterfaceView, componentStorage.viewMap.get("browseaction"));
+            }
+        };
+        LastStepAction = new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event){
+                if(componentStorage.choosenActionPath.isEmpty()){
+                    JOptionPane.showMessageDialog(componentStorage.mainFrame,"You haven't selected any action go and  do that in the second step.");
+                    return;
+                }
+                componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1), componentStorage.viewMap.get("taskscheduler"));
             }
         };
         btDetectAction = new EventHandler<ActionEvent>() {
@@ -205,7 +195,7 @@ public class AHKInterface extends JFrame {
                         } else {
                             btnKey.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
                             componentStorage.pressedKeys.add(currentkey);
-                            System.out.println(!componentStorage.pressedKeys.isEmpty());
+                            System.out.println(componentStorage.pressedKeys.isEmpty());
                             if(!componentStorage.pressedKeys.isEmpty()) bottomRowButtons.get(bottomRowButtons.size()-1).setDisable(false);
                          }
 

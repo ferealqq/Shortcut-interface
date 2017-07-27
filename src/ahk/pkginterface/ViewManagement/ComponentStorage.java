@@ -10,6 +10,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.concurrent.Task;
 import javafx.embed.swing.JFXPanel;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -39,6 +41,10 @@ public class ComponentStorage {
     public final LinkedList<JFXPanel> viewHistoryBackwards;
     public final HashMap<String,JFXPanel> viewMap;
     public int currentUserId;
+
+    private Button firstStep;
+    private Button secondStep;
+    private Button thirdStep;
 
     public final ArrayList<Key> pressedKeys = new ArrayList<>();
     public final ArrayList<String> choosenActionPath = new ArrayList<>();
@@ -144,19 +150,66 @@ public class ComponentStorage {
         currentViewsRootPane.getChildren().add(0,menuSetup.createMenuBar());
         //register.mainPane.getChildren() sinun pitää hakea oikea mainPane original muodossa että voit muokata sitä
     }
-    private void createStepBar(Pane stepbarToThisPane){
+    public void createStepBar(Pane stepbarToThisPane){
         BorderPane stepPane = new BorderPane();
         HBox centeredHBox = new HBox(35);
-        Button firstStep = new Button("1");
-        Button secondStep = new Button("2");
-        Button thirdStep = new Button("3");
+        firstStep = new Button("1");
+        secondStep = new Button("2");
+        thirdStep = new Button("3");
+        createActionsToStepBar(firstStep,secondStep,thirdStep,stepbarToThisPane);
         centeredHBox.getChildren().addAll(firstStep,secondStep,thirdStep);
         centeredHBox.setAlignment(Pos.CENTER);
         String stepPaneCss = this.getClass().getResource("Css/stepPane.css").toExternalForm();
         stepPane.getStylesheets().add(stepPaneCss);
-        firstStep.setStyle("-fx-background-color:#A9A9A9");
         stepPane.setCenter(centeredHBox);
         stepPane.setStyle("-fx-background-color:#F5F5F5");
         stepbarToThisPane.getChildren().add(stepPane);
+    }
+    private void createActionsToStepBar(Button firstStep, Button secondStep, Button thirdStep,Pane rootPane){
+        firstStep.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                hideSelectedAndShowSelected((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1),viewMap.get("ahkinterface"));
+            }
+        });
+        secondStep.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (pressedKeys.isEmpty()) {
+                    JOptionPane.showMessageDialog(mainFrame, "You havent selected any keys try again later!");
+                    return;
+                }
+                hideSelectedAndShowSelected((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1),viewMap.get("browseaction"));
+            }
+        });
+        thirdStep.setOnAction(new EventHandler<ActionEvent>(){
+            @Override
+            public void handle(ActionEvent event){
+                if(choosenActionPath.isEmpty()){
+                    JOptionPane.showMessageDialog(mainFrame,"You haven't selected any action go and  do that in the second step.");
+                    return;
+                }
+                hideSelectedAndShowSelected((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1), viewMap.get("taskscheduler"));
+            }
+        });
+    }
+    public void highLightCurrentStep(int stepNumber){
+        switch(stepNumber){
+            case 1:
+                firstStep.setStyle("-fx-background-color:#A9A9A9");
+                secondStep.setStyle("-fx-background-color:#D3D3D3;");
+                thirdStep.setStyle("-fx-background-color:#D3D3D3;");
+                break;
+            case 2:
+                firstStep.setStyle("-fx-background-color:#D3D3D3;");
+                secondStep.setStyle("-fx-background-color:#A9A9A9");
+                thirdStep.setStyle("-fx-background-color:#D3D3D3;");
+                break;
+            case 3:
+                firstStep.setStyle("-fx-background-color:#D3D3D3;");
+                secondStep.setStyle("-fx-background-color:#D3D3D3;");
+                thirdStep.setStyle("-fx-background-color:#A9A9A9");
+                break;
+        }
     }
 }

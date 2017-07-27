@@ -1,1 +1,1 @@
-start chrome
+SchTasks /Create /SC DAILY /TN "MediaPause" /TR "E:AHK-Interface/Your scripts/mediapause.ahk" /ST 12:00

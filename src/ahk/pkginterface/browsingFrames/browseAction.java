@@ -67,24 +67,8 @@ public class browseAction{
         return (scene);
     }
     private void createStepBar(){
-        HBox centeredHBox = new HBox(35);
-        Button firstStep = new Button("1");
-        firstStep.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1), componentStorage.viewMap.get("ahkinterface"));
-            }
-        });
-        Button secondStep = new Button("2");
-        Button thirdStep = new Button("3");
-        thirdStep.setOnAction(btNextAction);
-        centeredHBox.getChildren().addAll(firstStep,secondStep,thirdStep);
-        centeredHBox.setAlignment(Pos.CENTER);
-        String stepPaneCss = this.getClass().getResource("stepPane.css").toExternalForm();
-        stepPane.getStylesheets().add(stepPaneCss);
-        secondStep.setStyle("-fx-background-color:#A9A9A9");
-        stepPane.setCenter(centeredHBox);
-        stepPane.setStyle("-fx-background-color:#F5F5F5");
+        componentStorage.createStepBar(topPane);
+        componentStorage.highLightCurrentStep(2);
         topPane.getChildren().add(stepPane);
         rootPane.setTop(topPane);
     }

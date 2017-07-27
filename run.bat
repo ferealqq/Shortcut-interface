@@ -1,0 +1,1 @@
+start YourScripts/kukkakeppi.ahk
