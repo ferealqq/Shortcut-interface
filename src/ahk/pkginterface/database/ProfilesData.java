@@ -31,7 +31,6 @@ public class ProfilesData {
             prepStatement.setString(2,password);
             prepStatement.setString(3,email);
             prepStatement.executeUpdate();
-            System.out.println("?");
             prepStatement.close();
             return true;
         }catch (SQLException ex){

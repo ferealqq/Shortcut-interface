@@ -1,1 +1,2 @@
-start YourScripts/kukkakeppi.ahk
+start E:\AHK-Interface\YourScripts\asdqwe.ahk
+exit

@@ -137,11 +137,9 @@ public class browseAction{
                     if(!componentStorage.choosenActionPath.contains(action.getPath())){
                         componentStorage.choosenActionPath.add(action.getPath());
                         actionLabel.setStyle("-fx-background-color: #404040;");
-                        System.out.println("added");
                     }else{
                         componentStorage.choosenActionPath.remove(action.getPath());
                         actionLabel.setStyle("-fx-background-color: transparent;");
-                        System.out.println("removed");
                     }
                 }
             });

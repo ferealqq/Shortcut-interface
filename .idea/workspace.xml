@@ -2,31 +2,45 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="34d685f4-faaa-4f25-bf49-6d691a0d0670" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Your scripts/mediapause.ahk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Your scripts/test123.ahk" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/browsingFrames/browseAction$5.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/testnewscript.ahk" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/YourScripts/jotain.ahk" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/YourScripts/kadsokdas.ahk" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/YourScripts/kukkakeppi.ahk" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/YourScripts/nameosdad.ahk" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/YourScripts/namethescript.ahk" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/YourScripts/namethis.ahk" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$4.class" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/test.bat" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$1.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$2.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$3.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$4.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$4.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/TaskScheduler$1.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/TaskScheduler$1.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/TaskScheduler$2.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/TaskScheduler$2.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/TaskScheduler$3.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/TaskScheduler$3.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/TaskScheduler.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/TaskScheduler.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/ComponentStorage$1.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/ComponentStorage$1.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/ComponentStorage$2.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/ComponentStorage$2.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/ComponentStorage$3.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/ComponentStorage$3.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/ComponentStorage.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/ComponentStorage.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/browsingFrames/browseAction$1.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/browsingFrames/browseAction$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/browsingFrames/browseAction$2.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/browsingFrames/browseAction$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/browsingFrames/browseAction$3.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/browsingFrames/browseAction$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/MenuSetup$3.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/MenuSetup$3.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/MenuSetup$4.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/MenuSetup$4.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/MenuSetup$5.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/MenuSetup$5.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/MenuSetup.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/MenuSetup.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/browsingFrames/browseAction$4.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/browsingFrames/browseAction$4.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/browsingFrames/browseAction.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/browsingFrames/browseAction.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/database/ProfilesData.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/database/ProfilesData.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Path/volume_down.ahk" afterPath="$PROJECT_DIR$/Path/volume_down.ahk" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Path/volume_up.ahk" afterPath="$PROJECT_DIR$/Path/volume_up.ahk" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/TaskSchedule.bat" afterPath="$PROJECT_DIR$/TaskSchedule.bat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/TODO" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/TODO" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/run.bat" afterPath="$PROJECT_DIR$/run.bat" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ahk/pkginterface/Frames/TaskScheduler.java" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/Frames/TaskScheduler.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ahk/pkginterface/TODO" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/TODO" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/ComponentStorage.java" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/ComponentStorage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/MenuSetup.java" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/MenuSetup.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ahk/pkginterface/browsingFrames/browseAction.java" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/browsingFrames/browseAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/test.bat" afterPath="$PROJECT_DIR$/test.bat" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ahk/pkginterface/database/ProfilesData.java" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/database/ProfilesData.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -41,24 +55,24 @@
       <content type="file-editors">
         <state>
           <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-            <file leaf-file-name="AHKInterface.java" pinned="false" current-in-tab="false">
-              <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java">
+            <file leaf-file-name="TaskScheduler.java" pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/Frames/TaskScheduler.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="-921">
-                    <caret line="112" column="30" lean-forward="false" selection-start-line="112" selection-start-column="30" selection-end-line="112" selection-end-column="30" />
-                    <folding />
+                  <state relative-caret-position="253">
+                    <caret line="247" column="17" lean-forward="false" selection-start-line="247" selection-start-column="17" selection-end-line="247" selection-end-column="17" />
+                    <folding>
+                      <element signature="imports" expanded="true" />
+                    </folding>
                   </state>
                 </provider>
               </entry>
             </file>
-            <file leaf-file-name="TaskScheduler.java" pinned="false" current-in-tab="true">
-              <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/Frames/TaskScheduler.java">
+            <file leaf-file-name="ScriptWriter.java" pinned="false" current-in-tab="false">
+              <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/Frames/Css/ScriptWriter.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="439">
-                    <caret line="65" column="42" lean-forward="false" selection-start-line="65" selection-start-column="42" selection-end-line="65" selection-end-column="42" />
-                    <folding>
-                      <element signature="imports" expanded="true" />
-                    </folding>
+                  <state relative-caret-position="255">
+                    <caret line="20" column="56" lean-forward="false" selection-start-line="20" selection-start-column="56" selection-end-line="20" selection-end-column="56" />
+                    <folding />
                   </state>
                 </provider>
               </entry>
@@ -74,48 +88,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MenuSetup.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/MenuSetup.java">
+      <file leaf-file-name="AHKInterface.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="578">
-              <caret line="36" column="87" lean-forward="false" selection-start-line="36" selection-start-column="87" selection-end-line="36" selection-end-column="87" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="browseAction.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/browsingFrames/browseAction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="86" column="123" lean-forward="false" selection-start-line="86" selection-start-column="122" selection-end-line="86" selection-end-column="123" />
+            <state relative-caret-position="287">
+              <caret line="179" column="34" lean-forward="false" selection-start-line="179" selection-start-column="34" selection-end-line="179" selection-end-column="34" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ComponentStorage.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/ComponentStorage.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="87">
-              <caret line="134" column="34" lean-forward="true" selection-start-line="134" selection-start-column="34" selection-end-line="134" selection-end-column="34" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ProfilesData.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/database/ProfilesData.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1649">
-              <caret line="99" column="51" lean-forward="false" selection-start-line="99" selection-start-column="51" selection-end-line="99" selection-end-column="51" />
-              <folding>
-                <element signature="imports" expanded="false" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -123,8 +101,8 @@
       <file leaf-file-name="TODO" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/TODO">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="0" lean-forward="false" selection-start-line="5" selection-start-column="26" selection-end-line="6" selection-end-column="0" />
+            <state relative-caret-position="170">
+              <caret line="10" column="128" lean-forward="false" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="128" />
               <folding />
             </state>
           </provider>
@@ -141,17 +119,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>createliste</find>
-      <find>System.</find>
-      <find>create</find>
-      <find>createLi</find>
-      <find>System.out.println</find>
-      <find>login</find>
-      <find>createmenu</find>
-      <find>valid</find>
-      <find>viewStorage</find>
-      <find>check</find>
-      <find>disa</find>
       <find>hides</find>
       <find>register</find>
       <find>css</find>
@@ -169,8 +136,19 @@
       <find>run now</find>
       <find>btnextAction</find>
       <find>hideCu</find>
-      <find>system</find>
       <find>your script</find>
+      <find>createTAsk</find>
+      <find>writeScript</find>
+      <find>writeScrip</find>
+      <find>componentStorage</find>
+      <find>close</find>
+      <find>createTask</find>
+      <find>undo</find>
+      <find>lastStep</find>
+      <find>getComponent</find>
+      <find>scrollbar</find>
+      <find>system</find>
+      <find>create</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -206,26 +184,28 @@
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/database/KeyData.java" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/ComponentArchive.java" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/commentFrames/commentFrame.java" />
-        <option value="$PROJECT_DIR$/src/ahk/pkginterface/database/ProfilesData.java" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/SignIn.java" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/ViewStorage.java" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/ComponentStorage.java" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/MenuSetup.java" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/Register.java" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/Frames/Register.java" />
-        <option value="$PROJECT_DIR$/src/ahk/pkginterface/TODO" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/Frames/SignIn.java" />
-        <option value="$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/MenuSetup.java" />
-        <option value="$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java" />
-        <option value="$PROJECT_DIR$/src/ahk/pkginterface/browsingFrames/browseAction.java" />
+        <option value="$PROJECT_DIR$/src/ahk/pkginterface/TODO" />
+        <option value="$PROJECT_DIR$/src/ahk/pkginterface/Frames/Css/ScriptWriter.java" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/ComponentStorage.java" />
+        <option value="$PROJECT_DIR$/src/ahk/pkginterface/browsingFrames/browseAction.java" />
+        <option value="$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/MenuSetup.java" />
+        <option value="$PROJECT_DIR$/src/ahk/pkginterface/database/ProfilesData.java" />
+        <option value="$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/Frames/TaskScheduler.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="width" value="960" />
-    <option name="height" value="1080" />
+    <option name="y" value="1" />
+    <option name="width" value="961" />
+    <option name="height" value="1079" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -249,6 +229,7 @@
     <property name="project.structure.last.edited" value="Libraries" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
+    <property name="SearchEverywhereHistoryKey" value="System.out.println&#9;null&#9;null" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -593,6 +574,9 @@
   <component name="ShelveChangesManager" show_recycled="false">
     <option name="remove_strategy" value="false" />
   </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="34d685f4-faaa-4f25-bf49-6d691a0d0670" name="Default" comment="" />
@@ -613,26 +597,24 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="960" height="1080" extended-state="0" />
+    <frame x="0" y="1" width="961" height="1079" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Nl-Palette" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32337797" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32928064" sideWeight="0.5" order="15" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31101957" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30309278" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="17" side_tool="false" content_ui="tabs" />
       <window_info id="Properties" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3285273" sideWeight="0.5" order="18" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24894068" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
@@ -642,6 +624,8 @@
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32337797" sideWeight="0.5" order="16" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3285273" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
     </layout>
@@ -659,7 +643,7 @@
           <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="12" />
+      <option name="time" value="19" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -668,34 +652,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/KeyData.java" />
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_92/src.zip!/javax/swing/JPasswordField.java" />
-    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/database/ProfileDB.java" />
-    <entry file="jar://C:/jdk1.8.0_111/src.zip!/java/sql/DriverManager.java" />
-    <entry file="file://$PROJECT_DIR$/SQL lauseet/test-keyboard-layout.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1972">
-          <caret line="116" column="30" lean-forward="false" selection-start-line="116" selection-start-column="30" selection-end-line="116" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SQL lauseet/US-keyboard-layout.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1870">
-          <caret line="110" column="7" lean-forward="false" selection-start-line="110" selection-start-column="7" selection-end-line="110" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/database/Key.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="29" lean-forward="false" selection-start-line="6" selection-start-column="29" selection-end-line="7" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/jdk1.8.0_111/src.zip!/java/util/HashMap.java" />
-    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/com/sun/javafx/tk/quantum/QuantumToolkit.java" />
-    <entry file="jar://C:/jdk1.8.0_111/src.zip!/java/util/concurrent/Callable.java" />
     <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/database/Actions.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -827,58 +783,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/beans/property/BooleanPropertyBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="145" column="0" lean-forward="false" selection-start-line="145" selection-start-column="0" selection-end-line="145" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/scene/control/ButtonBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="168" column="0" lean-forward="false" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/scene/Node.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="176">
-          <caret line="8413" column="0" lean-forward="false" selection-start-line="8413" selection-start-column="0" selection-end-line="8413" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/scene/control/Button.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="185">
-          <caret line="186" column="0" lean-forward="false" selection-start-line="186" selection-start-column="0" selection-end-line="186" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/scene/Scene.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="533">
-          <caret line="2518" column="17" lean-forward="true" selection-start-line="2518" selection-start-column="17" selection-end-line="2518" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/event/Event.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="781">
-          <caret line="198" column="0" lean-forward="false" selection-start-line="198" selection-start-column="0" selection-end-line="198" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/database/ProfilesData.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1649">
-          <caret line="99" column="51" lean-forward="false" selection-start-line="99" selection-start-column="51" selection-end-line="99" selection-end-column="51" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/database/Keys.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
@@ -931,57 +835,178 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/browsingFrames/browseAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="142" column="21" lean-forward="true" selection-start-line="142" selection-start-column="21" selection-end-line="142" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/MenuSetup.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="36" column="87" lean-forward="false" selection-start-line="36" selection-start-column="87" selection-end-line="36" selection-end-column="87" />
+        <state relative-caret-position="198">
+          <caret line="59" column="49" lean-forward="true" selection-start-line="59" selection-start-column="49" selection-end-line="59" selection-end-column="49" />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/database/ProfilesData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="429">
+          <caret line="130" column="14" lean-forward="false" selection-start-line="130" selection-start-column="8" selection-end-line="130" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/jdk1.8.0_111/src.zip!/java/io/FileInputStream.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="194" column="0" lean-forward="false" selection-start-line="194" selection-start-column="0" selection-end-line="194" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/com/sun/javafx/event/CompositeEventDispatcher.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="58" column="0" lean-forward="false" selection-start-line="58" selection-start-column="0" selection-end-line="58" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/ComponentStorage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="157">
+          <caret line="43" column="29" lean-forward="true" selection-start-line="42" selection-start-column="29" selection-end-line="43" selection-end-column="29" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/browsingFrames/browseAction.java">
+    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/database/Key.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="86" column="123" lean-forward="false" selection-start-line="86" selection-start-column="122" selection-end-line="86" selection-end-column="123" />
-          <folding />
+        <state relative-caret-position="170">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java">
+    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/scene/control/ToggleButton.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-921">
-          <caret line="112" column="30" lean-forward="false" selection-start-line="112" selection-start-column="30" selection-end-line="112" selection-end-column="30" />
-          <folding />
+        <state relative-caret-position="185">
+          <caret line="152" column="0" lean-forward="false" selection-start-line="152" selection-start-column="0" selection-end-line="152" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/scene/Scene.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="2493" column="0" lean-forward="false" selection-start-line="2493" selection-start-column="0" selection-end-line="2493" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/scene/Node.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="8882" column="0" lean-forward="false" selection-start-line="8882" selection-start-column="0" selection-end-line="8882" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/event/Event.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="781">
+          <caret line="198" column="0" lean-forward="false" selection-start-line="198" selection-start-column="0" selection-end-line="198" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/scene/control/ToggleGroup.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="154" column="45" lean-forward="false" selection-start-line="154" selection-start-column="45" selection-end-line="154" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/scene/Cursor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="747">
+          <caret line="288" column="0" lean-forward="false" selection-start-line="288" selection-start-column="0" selection-end-line="288" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/scene/CssStyleHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="185">
+          <caret line="487" column="0" lean-forward="false" selection-start-line="487" selection-start-column="0" selection-end-line="487" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/scene/control/Button.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="373">
+          <caret line="186" column="0" lean-forward="false" selection-start-line="186" selection-start-column="0" selection-end-line="186" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/scene/control/ButtonBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="168" column="0" lean-forward="false" selection-start-line="168" selection-start-column="0" selection-end-line="168" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/beans/property/BooleanPropertyBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="176">
+          <caret line="145" column="0" lean-forward="false" selection-start-line="145" selection-start-column="0" selection-end-line="145" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/javafx/beans/property/ObjectPropertyBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="202">
+          <caret line="131" column="0" lean-forward="false" selection-start-line="131" selection-start-column="0" selection-end-line="131" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/jdk1.8.0_111/javafx-src.zip!/com/sun/glass/ui/win/WinApplication.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="539">
+          <caret line="220" column="66" lean-forward="true" selection-start-line="219" selection-start-column="48" selection-end-line="220" selection-end-column="66" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/TODO">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="0" lean-forward="false" selection-start-line="5" selection-start-column="26" selection-end-line="6" selection-end-column="0" />
+        <state relative-caret-position="170">
+          <caret line="10" column="128" lean-forward="false" selection-start-line="10" selection-start-column="26" selection-end-line="10" selection-end-column="128" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/Frames/TaskScheduler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="439">
-          <caret line="65" column="42" lean-forward="false" selection-start-line="65" selection-start-column="42" selection-end-line="65" selection-end-column="42" />
+        <state relative-caret-position="253">
+          <caret line="247" column="17" lean-forward="false" selection-start-line="247" selection-start-column="17" selection-end-line="247" selection-end-column="17" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/ComponentStorage.java">
+    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/Frames/Css/ScriptWriter.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="87">
-          <caret line="134" column="34" lean-forward="true" selection-start-line="134" selection-start-column="34" selection-end-line="134" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state relative-caret-position="255">
+          <caret line="20" column="56" lean-forward="false" selection-start-line="20" selection-start-column="56" selection-end-line="20" selection-end-column="56" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="287">
+          <caret line="179" column="34" lean-forward="false" selection-start-line="179" selection-start-column="34" selection-end-line="179" selection-end-column="34" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1042,7 +1067,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.6" />
               </list>
             </option>
           </splitter-proportions>

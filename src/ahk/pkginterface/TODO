@@ -1,3 +1,8 @@
+ Uusi writescript systeemi siten että se ottaa tiedoston ja lisää sinne aktioneita. Koska niin kuin tiedät sinulla ei voi olla montaa ahk scriptiä päällä samaan aikaan. Joten muokkaa writescriptiä siten että katsoo onko kansio olemassa jos on, lisäät actioneita.
+Asap:
+	Tee scrum taulu githubiin mitä sinulta puuttuu mikä on tärkeetä mikä ei.
+	Mieti minkä laisen kirjoitus alusta haluat scriptille nyt kuin kirjoitat sen uudestaan.
+
 Open:
     hakee sekä tietokoneelta löytyneet ahk ohjelmat että käyttäjälle tallennetut ohjelmat.
 
