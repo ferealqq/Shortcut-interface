@@ -57,7 +57,6 @@ public class MenuSetup {
     }
 
     private void menuItemsForProfile(Menu profileMenu) {
-        System.out.println(componentStorage.currentUserId);
         if (0 < componentStorage.currentUserId) {
             createLogoutItem(profileMenu);
         } else {

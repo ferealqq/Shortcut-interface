@@ -41,13 +41,15 @@ public class ComponentStorage {
     public final LinkedList<JFXPanel> viewHistoryBackwards;
     public final HashMap<String,JFXPanel> viewMap;
     public int currentUserId;
-
     private Button firstStep;
     private Button secondStep;
     private Button thirdStep;
-
     public final ArrayList<Key> pressedKeys = new ArrayList<>();
+
     public final ArrayList<String> choosenActionPath = new ArrayList<>();
+
+    public String nameofthescript;
+
     public ComponentStorage(JFrame main){
         mainFrame = main;
         viewHistory = new LinkedList<>();

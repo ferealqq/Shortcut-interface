@@ -5,7 +5,6 @@ import ahk.pkginterface.database.Key;
 import ahk.pkginterface.database.KeyData;
 import ahk.pkginterface.database.Keys;
 import javafx.embed.swing.JFXPanel;
-import javafx.event.Event;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,15 +25,17 @@ public class AHKInterface extends JFrame {
     public final BorderPane stepPane = new BorderPane();
     private final ArrayList<Button> bottomRowButtons = new ArrayList<>();
 
-    private EventHandler<ActionEvent> btNextAction;
-    private EventHandler<ActionEvent> LastStepAction;
-    private EventHandler<ActionEvent> btDetectAction;
+    private EventHandler<ActionEvent> nextEventHandler;
+    private EventHandler<ActionEvent> detectEventHandler;
+    private EventHandler<ActionEvent> addactionEventHandler;
+
     public final JFrame main = this;
     public ComponentStorage componentStorage;// siirä viewmap aloitus formiin sitten kuin se on tehty
 
     public AHKInterface() {
         componentStorage = new ComponentStorage(main);
         componentStorage.setAhkinterface(this);
+        componentStorage.nameofthescript = JOptionPane.showInputDialog(this,"Name your script");
         constructAHK();
     }
 
@@ -79,7 +80,7 @@ public class AHKInterface extends JFrame {
     }
 
     private void createKeyListeners() {
-        btNextAction = new EventHandler<ActionEvent>() {
+        nextEventHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 if (componentStorage.pressedKeys.isEmpty()) {
@@ -89,17 +90,7 @@ public class AHKInterface extends JFrame {
                 componentStorage.hideSelectedAndShowSelected(ahkinterfaceView, componentStorage.viewMap.get("browseaction"));
             }
         };
-        LastStepAction = new EventHandler<ActionEvent>(){
-            @Override
-            public void handle(ActionEvent event){
-                if(componentStorage.choosenActionPath.isEmpty()){
-                    JOptionPane.showMessageDialog(componentStorage.mainFrame,"You haven't selected any action go and  do that in the second step.");
-                    return;
-                }
-                componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1), componentStorage.viewMap.get("taskscheduler"));
-            }
-        };
-        btDetectAction = new EventHandler<ActionEvent>() {
+        detectEventHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
@@ -112,10 +103,12 @@ public class AHKInterface extends JFrame {
             switch (bottomRowButtons.get(i).getText()) {
                 case "Detect":
                     Button btDetect = bottomRowButtons.get(i);
-                    btDetect.setOnAction(btDetectAction);
+                    btDetect.setOnAction(detectEventHandler);
+                    break;
                 case "Next":
                     Button btNext = bottomRowButtons.get(i);
-                    btNext.setOnAction(btNextAction);
+                    btNext.setOnAction(nextEventHandler);
+                    break;
             }
         }
     }
@@ -141,11 +134,6 @@ public class AHKInterface extends JFrame {
         btDetect.setMaxHeight(Double.MAX_VALUE);
         bottomRowButtons.add(btDetect);
 
-        Button btUndo = new Button("Undo");
-        buttonRow.setHgrow(btUndo, Priority.ALWAYS);
-        btUndo.setMaxHeight(Double.MAX_VALUE);
-        btUndo.setMaxWidth(Double.MAX_VALUE);
-        bottomRowButtons.add(btUndo);
 
         Button btBrowse = new Button("Browse Scripts");
         buttonRow.setHgrow(btBrowse, Priority.ALWAYS);
@@ -161,7 +149,7 @@ public class AHKInterface extends JFrame {
         }else{
             btNext.setDisable(false);
         }
-        buttonRow.getChildren().addAll(btBack, btScripts, btDetect, btUndo, btBrowse, btNext);
+        buttonRow.getChildren().addAll(btBack, btScripts, btDetect, btBrowse, btNext);
         buttonRow.setAlignment(Pos.BOTTOM_LEFT);
         bottomRowButtons.add(btNext);
 
@@ -186,16 +174,15 @@ public class AHKInterface extends JFrame {
                     public void handle(ActionEvent event) {
                          if (componentStorage.pressedKeys.contains(currentkey)) {
                            componentStorage.pressedKeys.remove(currentkey);
+                           btnKey.setStyle(null);
                             if(componentStorage.pressedKeys.isEmpty()){
                                 bottomRowButtons.get(bottomRowButtons.size()-1).setDisable(true);
                             }else{
                                 bottomRowButtons.get(bottomRowButtons.size()-1).setDisable(false);
                             }
-                            btnKey.setStyle(null);
                         } else {
                             btnKey.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
                             componentStorage.pressedKeys.add(currentkey);
-                            System.out.println(componentStorage.pressedKeys.isEmpty());
                             if(!componentStorage.pressedKeys.isEmpty()) bottomRowButtons.get(bottomRowButtons.size()-1).setDisable(false);
                          }
 

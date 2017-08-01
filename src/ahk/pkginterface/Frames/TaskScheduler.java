@@ -1,28 +1,24 @@
 package ahk.pkginterface.Frames;
 
-import ahk.pkginterface.AHKInterface;
 import ahk.pkginterface.ViewManagement.ComponentStorage;
-import javafx.beans.property.adapter.JavaBeanObjectProperty;
+import ahk.pkginterface.database.Key;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.DirectoryChooser;
-import javafx.stage.FileChooser;
 
 import javax.swing.*;
 import java.io.*;
-import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.Objects;
-
-import static javax.script.ScriptEngine.FILENAME;
 
 public class TaskScheduler {
     public final JFXPanel taskSchedulerView = new JFXPanel();
@@ -35,10 +31,12 @@ public class TaskScheduler {
     private EventHandler<ActionEvent> btnSaveActionEvent;
     private EventHandler<ActionEvent> btnPathActionEvent;
     public String choosenPath;
-    public TaskScheduler(ComponentStorage componentArchive){
+
+    public TaskScheduler(ComponentStorage componentArchive) {
         componentStorage = componentArchive;
         initComponents();
     }
+
     private void initComponents() {
         Scene scene = createScene();
         this.taskSchedulerView.setScene(scene);
@@ -52,6 +50,7 @@ public class TaskScheduler {
         createBottomPane();
         return scene;
     }
+
     private void createBottomPane() {
         HBox bottomPane = new HBox();
 
@@ -76,11 +75,12 @@ public class TaskScheduler {
         btnSave.setOnAction(btnSaveActionEvent);
         btnPath.setOnAction(btnPathActionEvent);
 
-        bottomPane.getChildren().addAll(btnPublish,btnPath,btnSave);
-        rootPane.setVgrow(bottomPane,Priority.ALWAYS);
+        bottomPane.getChildren().addAll(btnPublish, btnPath, btnSave);
+        rootPane.setVgrow(bottomPane, Priority.ALWAYS);
         rootPane.getChildren().add(bottomPane);
     }
-    private void createRadioButtons(){
+
+    private void createRadioButtons() {
         HBox FirstRadiobuttonPane = new HBox(40);
         RadioButton btnRunOnStart = new RadioButton("Run everytime computer starts");
         btnRunOnStart.setToggleGroup(toggleGroup);
@@ -93,23 +93,24 @@ public class TaskScheduler {
         btnRunWhenClockIs.setToggleGroup(toggleGroup);
         btnRunWhenClockIs.setUserData("Write the time when to run the script");
         tfTime.setDisable(true);
-        toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+        toggleGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
             public void changed(ObservableValue<? extends Toggle> ov, Toggle old_toggle, Toggle new_toggle) {
                 if (toggleGroup.getSelectedToggle() != null) {
-                    if(toggleGroup.getSelectedToggle().getUserData().toString().equals("Write the time when to run the script")){
+                    if (toggleGroup.getSelectedToggle().getUserData().toString().equals("Write the time when to run the script")) {
                         tfTime.setDisable(false);
-                    }else{
+                    } else {
                         tfTime.setDisable(true);
                     }
                 }
 
             }
         });
-        FirstRadiobuttonPane.getChildren().addAll(btnRunOnStart,btnAskOnStart);
-        SecondRadioButtonPane.getChildren().addAll(btnRunWhenClockIs,tfTime,btnRunNow);
-        rootPane.getChildren().addAll(FirstRadiobuttonPane,SecondRadioButtonPane);
+        FirstRadiobuttonPane.getChildren().addAll(btnRunOnStart, btnAskOnStart);
+        SecondRadioButtonPane.getChildren().addAll(btnRunWhenClockIs, tfTime, btnRunNow);
+        rootPane.getChildren().addAll(FirstRadiobuttonPane, SecondRadioButtonPane);
     }
-    private void createActions(){
+
+    private void createActions() {
         btnPathActionEvent = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -125,135 +126,185 @@ public class TaskScheduler {
                     * ChoosenPath is the path which the client has choosen.
                     * ChoosenActionPath is the path to the file where you would find the action.
                  */
-                String nameofthescript = JOptionPane.showInputDialog(componentStorage.mainFrame,"Name your script");
-                if(Objects.nonNull(choosenPath)){
-                    BufferedReader reader = null;
-                    BufferedWriter writer = null;
+                if (Objects.isNull(choosenPath)) {
+                    choosenPath = "YourScripts/" + componentStorage.nameofthescript + ".ahk";
+                }
+                File file = new File(choosenPath);
+                if (checkForDoubleKey(file.getAbsolutePath())) {
+                    JOptionPane.showMessageDialog(componentStorage.mainFrame, "Key already has an action. Try another key!");
+                    componentStorage.pressedKeys.removeAll(componentStorage.pressedKeys);
+                    componentStorage.choosenActionPath.removeAll(componentStorage.choosenActionPath);
+                    componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1), componentStorage.viewMap.get("ahkinterface"));
+                    resetColors();
+                    return;
+                }
+                String absolutePathOfTheScript = writeScript(file);
+                if (btnRunNow.isSelected()) {
                     try {
-                        for (String choosenActionPath:componentStorage.choosenActionPath) {
-                            reader = new BufferedReader(new FileReader(choosenActionPath));
-
-                            File file = new File(choosenPath+"/"+nameofthescript+".ahk");
-                            System.out.println(file.getAbsolutePath());
-                            file.createNewFile();
-                            writer = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
-                            String firstRow = componentStorage.pressedKeys.get(0).getKeysynonyminahk();
-                            for (int i = 1; i < componentStorage.pressedKeys.size(); i++) {
-                                firstRow = firstRow +" & "+ componentStorage.pressedKeys.get(i).getKeysynonyminahk();
-                            }
-                            writer.write(firstRow+"::");
-                            String sCurrentLine;
-                            while ((sCurrentLine = reader.readLine()) != null) {
-                               writer.newLine();
-                                writer.write(sCurrentLine);
-                            }
-                        }
-                    } catch (IOException e) {
-                        JOptionPane.showMessageDialog(componentStorage.mainFrame,e);
-                    }finally {
+                        BufferedWriter writer = new BufferedWriter(new FileWriter("run.bat"));
+                        writer.write("start " + absolutePathOfTheScript);
+                        writer.newLine();
+                        writer.write("exit");
+                        Process batRunner = Runtime.getRuntime().exec("cmd /c start run.bat");
                         close(writer);
-                        close(reader);
-                    }
-
-                    if(btnRunNow.isSelected()){
-                        try {
-                            writer = new BufferedWriter(new FileWriter("run.bat"));
-                            writer.write("start "+choosenPath+"/"+nameofthescript);
-                            Process batRunner = Runtime.getRuntime().exec("cmd /c start run.bat");
-                            System.out.println("run da script");
-                        } catch (IOException e) {}
-                    }
-                    try {
-                        File file = new File("TaskSchedule.bat");
-                        if(!file.exists()){
-                            file.createNewFile();
-                        }
-                        BufferedWriter BatWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
-                        if(toggleGroup.getSelectedToggle().getUserData().toString().equals("Write the time when to run the script")){
-                            BatWriter.write("SchTasks /Create /SC DAILY /TN \""+nameofthescript+"\" /TR \"E:AHK-Interface/YourScripts/"+nameofthescript+".ahk\" /ST "+tfTime.getText());
-                        }else{
-                            BatWriter.write("SchTasks /Create /SC ONSTART /TN \""+nameofthescript+"\" /TR \"E:AHK-Interface/YourScripts/"+nameofthescript+".ahk\" /ST "+tfTime.getText());
-                        }
-                        BatWriter.newLine();
-                        BatWriter.write("exit");
-                        String replacedPath = file.getAbsolutePath().replace("\\","\\\\");
-                        Process p = Runtime.getRuntime().exec("cmd /c start "+replacedPath);
-                        BatWriter.close();
-                    }catch(Exception ex){
-                        JOptionPane.showMessageDialog(componentStorage.mainFrame,ex);
-                    }
-
-                }else{
-
-                    BufferedReader reader = null;
-                    BufferedWriter writer = null;
-                    try {
-                        for (String choosenActionPath:componentStorage.choosenActionPath) {
-                            reader = new BufferedReader(new FileReader(choosenActionPath));
-
-                            File file = new File("YourScripts/"+nameofthescript+".ahk");
-                            if (!file.exists()) {
-                                file.createNewFile();
-                            }
-                            writer = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
-                            String firstRow = componentStorage.pressedKeys.get(0).getKeysynonyminahk();
-                            for (int i = 1; i < componentStorage.pressedKeys.size(); i++) {
-                                firstRow = firstRow +" & "+ componentStorage.pressedKeys.get(i).getKeysynonyminahk();
-                            }
-                            writer.write(firstRow+"::");
-                            String sCurrentLine;
-                            while ((sCurrentLine = reader.readLine()) != null) {
-                                writer.newLine();
-                                writer.write(sCurrentLine);
-                            }
-                        }
                     } catch (IOException e) {
-                        e.printStackTrace();
-                    }finally {
-                        close(writer);
-                        close(reader);
                     }
-                    if(btnRunNow.isSelected()){
-                        try {
-                            writer = new BufferedWriter(new FileWriter("run.bat"));
-                            writer.write("start YourScripts/"+nameofthescript+".ahk");
-                            Process batRunner = Runtime.getRuntime().exec("cmd /c start run.bat");
-                            System.out.println("run da script");
-                            close(writer);
-                        } catch (IOException e) {}
-                    }
-                    try {
-                        File file = new File("TaskSchedule.bat");
-                        if(!file.exists()){
-                            file.createNewFile();
-                        }
-                        BufferedWriter BatWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
-                        if(toggleGroup.getSelectedToggle().getUserData().toString().equals("Write the time when to run the script")){
-                            BatWriter.write("SchTasks /Create /SC DAILY /TN \""+nameofthescript+"\" /TR \"E:AHK-Interface/YourScripts/"+nameofthescript+".ahk\" /ST "+tfTime.getText());
-                        }else{
-                            BatWriter.write("SchTasks /Create /SC ONSTART /TN \""+nameofthescript+"\" /TR \"E:AHK-Interface/YourScripts/"+nameofthescript+".ahk\" /ST "+tfTime.getText());
-                        }
-                        BatWriter.newLine();
-                        BatWriter.write("exit");
-                        String replacedPath = file.getAbsolutePath().replace("\\","\\\\");
-                        Process p = Runtime.getRuntime().exec("cmd /c start "+replacedPath);
-                        close(BatWriter);
-                    }catch(Exception ex){
-                        JOptionPane.showMessageDialog(componentStorage.mainFrame,ex);
-                    }
+                }
+                //if the file exists and the task all ready have been created you dont need to create a new task
+                createTask(componentStorage.nameofthescript, absolutePathOfTheScript);
+
+                int integerofOptionAnwser = JOptionPane.showConfirmDialog(null,
+                        "Saving sucessful! Would you like to add more actions to the same script", "choose one", JOptionPane.YES_NO_OPTION);
+                boolean choosenAnwser = Boolean.valueOf(integerofOptionAnwser > 0 ? "false" : "true");
+                if (choosenAnwser) {
+                    componentStorage.pressedKeys.removeAll(componentStorage.pressedKeys);
+                    componentStorage.choosenActionPath.removeAll(componentStorage.choosenActionPath);
+                    componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1), componentStorage.viewMap.get("ahkinterface"));
+                    resetColors();
                 }
             }
         };
     }
+
+    private void resetColors() {
+        for (Node node : componentStorage.ahkinterface.rootPane.getChildren()) {
+            if (node.getClass().equals(HBox.class)) {
+                HBox hBox = (HBox) node;
+                for (Node nod : hBox.getChildren()) {
+                    if (nod.getClass().equals(Button.class)) {
+                        Button btn = (Button) nod;
+                        if (btn.getStyle().equals("-fx-background-color: slateblue; -fx-text-fill: white;"))
+                            btn.setStyle(null);
+                    }
+                }
+            }
+        }
+        for (Node node : componentStorage.browseaction.labelPane.getChildren()) {
+            if (node.getClass().equals(Label.class)) {
+                Label label = (Label) node;
+                if (label.getStyle().equals("-fx-background-color: #404040;")) {
+                    label.setStyle("-fx-background-color: transparent;");
+                }
+            }
+        }
+    }
+
+    private boolean checkForDoubleKey(String absolutePath) {
+        BufferedReader reader = null;
+        try {
+            if (!new File(absolutePath).exists()) return false;
+            reader = new BufferedReader(new FileReader(absolutePath));
+            while (Objects.nonNull(reader.readLine())) {
+                for (Key key : componentStorage.pressedKeys) {
+                    String line = reader.readLine();
+                    System.out.println(line + " line ");
+                    System.out.println(key.keysynonyminahk + " key synonym");
+                    if (line != null && line.contains(key.keysynonyminahk)) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    private String writeScript(File file) {
+        BufferedReader reader = null;
+        BufferedWriter writer = null;
+        try {
+            if (file.exists()) {
+                writer = new BufferedWriter(new FileWriter(file.getAbsoluteFile(), true));
+                writeContentForScript(writer, file);
+            } else {
+                file.createNewFile();
+                writer = new BufferedWriter(new FileWriter(file.getAbsoluteFile(), true));
+                writeContentForScript(writer, file);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            close(writer);
+            close(reader);
+            return file.getAbsolutePath();
+        }
+    }
+
+    private void writeContentForScript(BufferedWriter writer, File file) {
+        try {
+            writer.newLine();
+            String firstRow = componentStorage.pressedKeys.get(0).getKeysynonyminahk();
+            for (int i = 1; i < componentStorage.pressedKeys.size(); i++) {
+                firstRow = firstRow + " & " + componentStorage.pressedKeys.get(i).getKeysynonyminahk();
+            }
+            writer.write(firstRow + "::");
+            for (String actionLine : readChoosenAction()) {
+                writer.newLine();
+                writer.write(actionLine);
+            }
+            writer.newLine();
+            writer.write("return");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            close(writer);
+        }
+    }
+
+    private ArrayList<String> readChoosenAction() {
+        ArrayList<String> redLines = new ArrayList<>();
+        BufferedReader reader = null;
+        try {
+            for (String path : componentStorage.choosenActionPath) {
+                reader = new BufferedReader(new FileReader(path));
+                String sCurrentline;
+                while ((sCurrentline = reader.readLine()) != null) {
+                    redLines.add(sCurrentline);
+                    System.out.println(sCurrentline);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(reader);
+        }
+        return redLines;
+    }
+
+    private void createTask(String nameofthescript, String absolutePathOfTheScript) {
+        try {
+            File file = new File("TaskSchedule.bat");
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            BufferedWriter BatWriter = new BufferedWriter(new FileWriter(file.getAbsoluteFile()));
+            if (Objects.nonNull(toggleGroup.getSelectedToggle()) && toggleGroup.getSelectedToggle().getUserData().toString().equals("Write the time when to run the script")) {
+                BatWriter.write("SchTasks /Create /SC DAILY /TN \"" + nameofthescript + "\" /TR \"" + absolutePathOfTheScript + "\" /ST " + tfTime.getText());
+            } else if(Objects.nonNull(toggleGroup.getSelectedToggle()) && toggleGroup.getSelectedToggle().getUserData().toString().equals("Run everytime computer starts")) {
+                BatWriter.write("SchTasks /Create /SC ONSTART /TN \"" + nameofthescript + "\" /TR \"" + absolutePathOfTheScript + "\"");
+            }
+            BatWriter.newLine();
+            BatWriter.write("exit");
+            String replacedPath = file.getAbsolutePath().replace("\\", "\\\\");
+            Process p = Runtime.getRuntime().exec("cmd /c start " + replacedPath);
+            close(BatWriter);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(componentStorage.mainFrame, ex);
+        }
+    }
+
     public static void close(Closeable stream) {
         try {
             if (stream != null) {
                 stream.close();
             }
-        } catch(IOException e) {
+        } catch (IOException e) {
         }
     }
-    public JFXPanel giveView(){
+
+    public JFXPanel giveView() {
         return taskSchedulerView;
     }
 
