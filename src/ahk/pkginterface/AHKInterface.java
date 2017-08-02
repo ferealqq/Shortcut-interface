@@ -16,7 +16,7 @@ import javafx.scene.layout.*;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 
-import java.io.FileNotFoundException;
+import java.io.*;
 import java.util.ArrayList;
 
 
@@ -185,7 +185,8 @@ public class AHKInterface extends JFrame {
                         } else {
                             btnKey.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
                             componentStorage.pressedKeys.add(currentkey);
-                            if (!componentStorage.pressedKeys.isEmpty()) bottomRowButtons.get(bottomRowButtons.size() - 1).setDisable(false);
+                            if (!componentStorage.pressedKeys.isEmpty())
+                                bottomRowButtons.get(bottomRowButtons.size() - 1).setDisable(false);
                             disableOrEnable(KeyButtonPane);
                         }
                     }
@@ -222,7 +223,7 @@ public class AHKInterface extends JFrame {
                     }
                 }
             }
-        }else{
+        } else {
             for (Node node : keyButtonPane.getChildren()) {
                 if (node.getClass().equals(HBox.class)) {
                     HBox hbox = (HBox) node;
@@ -237,6 +238,36 @@ public class AHKInterface extends JFrame {
     }
 
     public static void main(String[] args) {
-        AHKInterface k = new AHKInterface();
+
+    }
+
+    public void findAHKScripts() {
+        File[] roots = new File("").listRoots();
+        final File file = new File("AHKScriptPaths.txt");
+        BufferedWriter writer = null;
+        try {
+            if (!file.exists()) file.createNewFile();
+            writer = new BufferedWriter(new FileWriter(file));
+            for (File root : roots) {
+                final File[] files = new File(root.getAbsolutePath()).listFiles();
+                showFiles(files, writer);
+            }
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showFiles(File[] files, BufferedWriter writer) throws IOException {
+        for (File file : files) {
+            if (file.isDirectory()) {
+                if (file.listFiles() != null) showFiles(file.listFiles(), writer);
+            } else {
+                if (file.getAbsolutePath().endsWith(".ahk")) {
+                    writer.write(file.getAbsolutePath());
+                    writer.newLine();
+                }
+            }
+        }
     }
 }
