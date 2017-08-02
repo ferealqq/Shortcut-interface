@@ -150,17 +150,20 @@ public class TaskScheduler {
                     } catch (IOException e) {
                     }
                 }
-                //if the file exists and the task all ready have been created you dont need to create a new task
+                //if the file exists and the task all ready have been created you dont need to create a     new task
                 createTask(componentStorage.nameofthescript, absolutePathOfTheScript);
 
                 int integerofOptionAnwser = JOptionPane.showConfirmDialog(null,
                         "Saving sucessful! Would you like to add more actions to the same script", "choose one", JOptionPane.YES_NO_OPTION);
                 boolean choosenAnwser = Boolean.valueOf(integerofOptionAnwser > 0 ? "false" : "true");
+                System.out.println(integerofOptionAnwser);
                 if (choosenAnwser) {
                     componentStorage.pressedKeys.removeAll(componentStorage.pressedKeys);
                     componentStorage.choosenActionPath.removeAll(componentStorage.choosenActionPath);
                     componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1), componentStorage.viewMap.get("ahkinterface"));
                     resetColors();
+                }else{
+                    System.exit(1);
                 }
             }
         };
@@ -168,13 +171,15 @@ public class TaskScheduler {
 
     private void resetColors() {
         for (Node node : componentStorage.ahkinterface.rootPane.getChildren()) {
-            if (node.getClass().equals(HBox.class)) {
-                HBox hBox = (HBox) node;
-                for (Node nod : hBox.getChildren()) {
-                    if (nod.getClass().equals(Button.class)) {
-                        Button btn = (Button) nod;
-                        if (btn.getStyle().equals("-fx-background-color: slateblue; -fx-text-fill: white;"))
-                            btn.setStyle(null);
+            if (node.getClass().equals(VBox.class)) {
+                VBox vBox = (VBox) node;
+                for (Node nod : vBox.getChildren()) {
+                    if (nod.getClass().equals(HBox.class)) {
+                        HBox hbox = (HBox) nod;
+                        for(Node btn : hbox.getChildren()){
+                            if(btn.getStyle().equals("-fx-background-color: slateblue; -fx-text-fill: white;")) btn.setStyle(null);
+                            if(btn.isDisabled()) btn.setDisable(false);
+                        }
                     }
                 }
             }
@@ -262,6 +267,9 @@ public class TaskScheduler {
                 while ((sCurrentline = reader.readLine()) != null) {
                     redLines.add(sCurrentline);
                     System.out.println(sCurrentline);
+                    for (int i = 0; i < sCurrentline.length(); i++) {
+                        sCurrentline.replace(sCurrentline.charAt(0)+"","k");
+                    }
                 }
             }
         } catch (Exception e) {

@@ -1,2 +1,2 @@
-start E:\AHK-Interface\YourScripts\asdqwe.ahk
+start E:\AHK-Interface\YourScripts\mute.ahk
 exit

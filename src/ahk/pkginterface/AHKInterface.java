@@ -6,6 +6,7 @@ import ahk.pkginterface.database.KeyData;
 import ahk.pkginterface.database.Keys;
 import javafx.embed.swing.JFXPanel;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
@@ -35,7 +36,7 @@ public class AHKInterface extends JFrame {
     public AHKInterface() {
         componentStorage = new ComponentStorage(main);
         componentStorage.setAhkinterface(this);
-        componentStorage.nameofthescript = JOptionPane.showInputDialog(this,"Name your script");
+        componentStorage.nameofthescript = JOptionPane.showInputDialog(this, "Name your script");
         constructAHK();
     }
 
@@ -52,7 +53,6 @@ public class AHKInterface extends JFrame {
         Scene scene = createScene();
         jfxPanel.setScene(scene);
     }
-
 
 
     /*
@@ -144,9 +144,9 @@ public class AHKInterface extends JFrame {
 
         Button btNext = new Button("Next");
         buttonRow.setHgrow(btNext, Priority.ALWAYS);
-        if(componentStorage.pressedKeys.isEmpty()){
+        if (componentStorage.pressedKeys.isEmpty()) {
             btNext.setDisable(true);
-        }else{
+        } else {
             btNext.setDisable(false);
         }
         buttonRow.getChildren().addAll(btBack, btScripts, btDetect, btBrowse, btNext);
@@ -161,6 +161,7 @@ public class AHKInterface extends JFrame {
     private void createKeyboard() throws FileNotFoundException {
         Keys keys = new KeyData().readKeyboardLayoutUSToKeys();
         keys.addRowsToArrayListRows();
+        VBox KeyButtonPane = new VBox();
         for (ArrayList<Key> row : keys.rows) {
             HBox rowPane = new HBox();
             for (int i = 0; i < row.size(); i++) {
@@ -172,28 +173,30 @@ public class AHKInterface extends JFrame {
                 btnKey.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                         if (componentStorage.pressedKeys.contains(currentkey)) {
-                           componentStorage.pressedKeys.remove(currentkey);
-                           btnKey.setStyle(null);
-                            if(componentStorage.pressedKeys.isEmpty()){
-                                bottomRowButtons.get(bottomRowButtons.size()-1).setDisable(true);
-                            }else{
-                                bottomRowButtons.get(bottomRowButtons.size()-1).setDisable(false);
+                        if (componentStorage.pressedKeys.contains(currentkey)) {
+                            componentStorage.pressedKeys.remove(currentkey);
+                            btnKey.setStyle(null);
+                            if (componentStorage.pressedKeys.isEmpty()) {
+                                bottomRowButtons.get(bottomRowButtons.size() - 1).setDisable(true);
+                            } else {
+                                bottomRowButtons.get(bottomRowButtons.size() - 1).setDisable(false);
                             }
+                            disableOrEnable(KeyButtonPane);
                         } else {
                             btnKey.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
                             componentStorage.pressedKeys.add(currentkey);
-                            if(!componentStorage.pressedKeys.isEmpty()) bottomRowButtons.get(bottomRowButtons.size()-1).setDisable(false);
-                         }
-
+                            if (!componentStorage.pressedKeys.isEmpty()) bottomRowButtons.get(bottomRowButtons.size() - 1).setDisable(false);
+                            disableOrEnable(KeyButtonPane);
+                        }
                     }
                 });
                 rowPane.getChildren().add(btnKey);
             }
-            rootPane.setVgrow(rowPane, Priority.ALWAYS);
-            rootPane.getChildren().add(rowPane);
+            KeyButtonPane.setVgrow(rowPane, Priority.ALWAYS);
+            KeyButtonPane.getChildren().add(rowPane);
         }
-
+        rootPane.setVgrow(KeyButtonPane, Priority.ALWAYS);
+        rootPane.getChildren().add(KeyButtonPane);
         /*
         * If you want something out of mainPane use this.
         Node nodeOut = mainPane.getChildren().get(1);
@@ -206,6 +209,33 @@ public class AHKInterface extends JFrame {
         }
         */
     }
+
+    private void disableOrEnable(Pane keyButtonPane) {
+        if (componentStorage.pressedKeys.size() >= 2) {
+            for (Node node : keyButtonPane.getChildren()) {
+                if (node.getClass().equals(HBox.class)) {
+                    HBox hbox = (HBox) node;
+                    for (Node node2 : hbox.getChildren()) {
+                        if (node2.getClass().equals(Button.class) && !node2.getStyle().equals("-fx-background-color: slateblue; -fx-text-fill: white;")) {
+                            node2.setDisable(true);
+                        }
+                    }
+                }
+            }
+        }else{
+            for (Node node : keyButtonPane.getChildren()) {
+                if (node.getClass().equals(HBox.class)) {
+                    HBox hbox = (HBox) node;
+                    for (Node node2 : hbox.getChildren()) {
+                        if (node2.getClass().equals(Button.class) && !node2.getStyle().equals("-fx-background-color: slateblue; -fx-text-fill: white;")) {
+                            node2.setDisable(false);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     public static void main(String[] args) {
         AHKInterface k = new AHKInterface();
     }

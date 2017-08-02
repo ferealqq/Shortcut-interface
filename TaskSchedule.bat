@@ -1,1 +1,2 @@
-SchTasks /Create /SC ONSTART /TN "bnew" /TR "E:\AHK-Interface\YourScripts\bnew.ahk"
+
+exit
