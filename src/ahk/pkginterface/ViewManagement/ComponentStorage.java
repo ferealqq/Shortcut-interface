@@ -1,6 +1,7 @@
 package ahk.pkginterface.ViewManagement;
 
 import ahk.pkginterface.AHKInterface;
+import ahk.pkginterface.Frames.KeySelection;
 import ahk.pkginterface.Frames.Register;
 import ahk.pkginterface.Frames.SignIn;
 import ahk.pkginterface.Frames.TaskScheduler;
@@ -8,7 +9,6 @@ import ahk.pkginterface.browsingFrames.browseAction;
 import ahk.pkginterface.database.Key;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.concurrent.Task;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,10 +23,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import javax.swing.*;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +32,7 @@ import java.util.LinkedList;
 
 public class ComponentStorage {
     public AHKInterface ahkinterface;
+    public final KeySelection keySelection;
     public final Register register;
     public final TaskScheduler taskScheduler;
     public final browseAction browseaction;
@@ -61,6 +59,7 @@ public class ComponentStorage {
         viewMap = new HashMap<>();
         viewHistoryBackwards = new LinkedList<>();
         menuSetup = new MenuSetup(this);
+        keySelection = new KeySelection(this);
         register = new Register(this);
         taskScheduler = new TaskScheduler(this);
         browseaction = new browseAction(this);
@@ -77,6 +76,8 @@ public class ComponentStorage {
     }
 
     public void createViewMap() {
+        viewMap.put("keyselection",keySelection.keySelectionView);
+        mainFrame.add(keySelection.keySelectionView);
         viewMap.put("register", register.giveView());
         mainFrame.add(register.giveView());
         viewMap.put("browseaction", browseaction.giveView());
@@ -119,6 +120,7 @@ public class ComponentStorage {
             setMenubar(register.rootPane);
             setMenubar(browseaction.topPane);
             setMenubar(ahkinterface.rootPane);
+            setMenubar(keySelection.rootPane);
             setMenubar(signIn.rootPane);
             setMenubar(taskScheduler.rootPane);
             last.show();
@@ -135,6 +137,7 @@ public class ComponentStorage {
             setMenubar(register.rootPane);
             setMenubar(browseaction.topPane);
             setMenubar(ahkinterface.rootPane);
+            setMenubar(keySelection.rootPane);
             setMenubar(signIn.rootPane);
             setMenubar(taskScheduler.rootPane);
             // kuin hideet jotain sinun pitää refreshaa menubar muista
@@ -151,6 +154,7 @@ public class ComponentStorage {
         setMenubar(register.rootPane);
         setMenubar(browseaction.topPane);
         setMenubar(ahkinterface.rootPane);
+        setMenubar(keySelection.rootPane);
         setMenubar(signIn.rootPane);
         setMenubar(taskScheduler.rootPane);
     }
