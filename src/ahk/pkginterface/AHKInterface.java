@@ -4,6 +4,7 @@ import ahk.pkginterface.ViewManagement.ComponentStorage;
 import ahk.pkginterface.database.Key;
 import ahk.pkginterface.database.KeyData;
 import ahk.pkginterface.database.Keys;
+import javafx.beans.binding.Bindings;
 import javafx.embed.swing.JFXPanel;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -12,6 +13,8 @@ import javafx.scene.control.Button;
 
 import javax.swing.*;
 
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.*;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
@@ -28,8 +31,9 @@ public class AHKInterface extends JFrame {
 
     private EventHandler<ActionEvent> nextEventHandler;
     private EventHandler<ActionEvent> detectEventHandler;
-    private EventHandler<ActionEvent> addactionEventHandler;
+    private EventHandler<ActionEvent> yourScriptEventHandler;
 
+    private YourScriptFrame yourScriptFrame = new YourScriptFrame();
     public final JFrame main = this;
     public ComponentStorage componentStorage;// siirä viewmap aloitus formiin sitten kuin se on tehty
 
@@ -52,6 +56,7 @@ public class AHKInterface extends JFrame {
     private void initComponents(JFXPanel jfxPanel) {
         Scene scene = createScene();
         jfxPanel.setScene(scene);
+        componentStorage.findAHKScripts();
     }
 
 
@@ -90,6 +95,14 @@ public class AHKInterface extends JFrame {
                 componentStorage.hideSelectedAndShowSelected(ahkinterfaceView, componentStorage.viewMap.get("browseaction"));
             }
         };
+        yourScriptEventHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                yourScriptFrame.setLocation(getX() + 200, getY() + 75);
+                yourScriptFrame.setVisible(true);
+                yourScriptFrame.createLabel();
+            }
+        };
         detectEventHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -104,6 +117,10 @@ public class AHKInterface extends JFrame {
                 case "Detect":
                     Button btDetect = bottomRowButtons.get(i);
                     btDetect.setOnAction(detectEventHandler);
+                    break;
+                case "Your Scripts":
+                    Button btScript = bottomRowButtons.get(i);
+                    btScript.setOnAction(yourScriptEventHandler);
                     break;
                 case "Next":
                     Button btNext = bottomRowButtons.get(i);
@@ -238,36 +255,40 @@ public class AHKInterface extends JFrame {
     }
 
     public static void main(String[] args) {
-
+        new AHKInterface();
     }
+    class YourScriptFrame extends JFrame {
+        public final JFXPanel yourScriptView = new JFXPanel();
 
-    public void findAHKScripts() {
-        File[] roots = new File("").listRoots();
-        final File file = new File("AHKScriptPaths.txt");
-        BufferedWriter writer = null;
-        try {
-            if (!file.exists()) file.createNewFile();
-            writer = new BufferedWriter(new FileWriter(file));
-            for (File root : roots) {
-                final File[] files = new File(root.getAbsolutePath()).listFiles();
-                showFiles(files, writer);
-            }
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        public final ScrollPane scrollPane = new ScrollPane();
+        public final VBox vBox = new VBox(10);
+
+        public YourScriptFrame() {
+            this.setUndecorated(true);
+            this.setSize(400, 400);
+            initComponent();
         }
-    }
 
-    public void showFiles(File[] files, BufferedWriter writer) throws IOException {
-        for (File file : files) {
-            if (file.isDirectory()) {
-                if (file.listFiles() != null) showFiles(file.listFiles(), writer);
-            } else {
-                if (file.getAbsolutePath().endsWith(".ahk")) {
-                    writer.write(file.getAbsolutePath());
-                    writer.newLine();
-                }
+        private void initComponent() {
+            Scene scene = createLocalScene();
+            this.yourScriptView.setScene(scene);
+            this.add(yourScriptView);
+        }
+
+        private Scene createLocalScene() {
+            Scene scene = new Scene(scrollPane);
+            return scene;
+        }
+
+        private void createLabel() {
+            for (String path : componentStorage.oldScriptPaths) {
+                Label currentlabel = new Label(path);
+                vBox.setVgrow(currentlabel, Priority.ALWAYS);
+                vBox.getChildren().add(currentlabel);
             }
+            int oldsize = componentStorage.oldScriptPaths.size();
+            scrollPane.setContent(vBox);
+            vBox.minWidthProperty().bind(Bindings.createDoubleBinding(() -> scrollPane.getViewportBounds().getWidth(), scrollPane.viewportBoundsProperty()));
         }
     }
 }

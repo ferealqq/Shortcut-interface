@@ -23,6 +23,10 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 import javax.swing.*;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +43,7 @@ public class ComponentStorage {
     public final MenuSetup menuSetup;
     public final LinkedList<JFXPanel> viewHistory;
     public final LinkedList<JFXPanel> viewHistoryBackwards;
-    public final HashMap<String,JFXPanel> viewMap;
+    public final HashMap<String, JFXPanel> viewMap;
     public int currentUserId;
     private Button firstStep;
     private Button secondStep;
@@ -49,8 +53,9 @@ public class ComponentStorage {
     public final ArrayList<String> choosenActionPath = new ArrayList<>();
 
     public String nameofthescript;
+    public final ArrayList<String> oldScriptPaths = new ArrayList<>();
 
-    public ComponentStorage(JFrame main){
+    public ComponentStorage(JFrame main) {
         mainFrame = main;
         viewHistory = new LinkedList<>();
         viewMap = new HashMap<>();
@@ -62,28 +67,32 @@ public class ComponentStorage {
         signIn = new SignIn(this);
         createViewMap();
     }
+
     /*
     * kuin uusi main form on valmis lisää tänne ahkinterface = new AHKinterface();
      */
-    public void setAhkinterface(AHKInterface ahkinterface){
+    public void setAhkinterface(AHKInterface ahkinterface) {
         this.ahkinterface = ahkinterface;
-        viewMap.put("ahkinterface",this.ahkinterface.ahkinterfaceView);
+        viewMap.put("ahkinterface", this.ahkinterface.ahkinterfaceView);
     }
-    public void createViewMap(){
-        viewMap.put("register",register.giveView());
+
+    public void createViewMap() {
+        viewMap.put("register", register.giveView());
         mainFrame.add(register.giveView());
-        viewMap.put("browseaction",browseaction.giveView());
+        viewMap.put("browseaction", browseaction.giveView());
         mainFrame.add(browseaction.giveView());
-        viewMap.put("signin",signIn.giveView());
+        viewMap.put("signin", signIn.giveView());
         mainFrame.add(signIn.giveView());
-        viewMap.put("taskscheduler",taskScheduler.giveView());
+        viewMap.put("taskscheduler", taskScheduler.giveView());
         mainFrame.add(taskScheduler.giveView());
     }
-    public Tooltip createTooltip(String message){
+
+    public Tooltip createTooltip(String message) {
         final Tooltip tooltip = new Tooltip(message);
         hackTooltipStartTiming(tooltip);
         return tooltip;
     }
+
     private static void hackTooltipStartTiming(Tooltip tooltip) {
         try {
             Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
@@ -100,12 +109,13 @@ public class ComponentStorage {
             e.printStackTrace();
         }
     }
-    public void showForwardHideCurrent(){
-        if(!viewHistoryBackwards.isEmpty()){
+
+    public void showForwardHideCurrent() {
+        if (!viewHistoryBackwards.isEmpty()) {
             JFXPanel last = viewHistoryBackwards.getLast();
             viewHistoryBackwards.removeLast();
-            viewHistory.add((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1));
-            ((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1)).hide();
+            viewHistory.add((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount() - 1));
+            ((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount() - 1)).hide();
             setMenubar(register.rootPane);
             setMenubar(browseaction.topPane);
             setMenubar(ahkinterface.rootPane);
@@ -115,12 +125,13 @@ public class ComponentStorage {
             mainFrame.add(last);
         }
     }
-    public void showBackwardsHideCurrent(){
-        if(!viewHistory.isEmpty()){
+
+    public void showBackwardsHideCurrent() {
+        if (!viewHistory.isEmpty()) {
             JFXPanel last = viewHistory.getLast();
-            viewHistoryBackwards.add(((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1)));
+            viewHistoryBackwards.add(((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount() - 1)));
             viewHistory.removeLast();
-            ((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1)).hide();
+            ((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount() - 1)).hide();
             setMenubar(register.rootPane);
             setMenubar(browseaction.topPane);
             setMenubar(ahkinterface.rootPane);
@@ -131,6 +142,7 @@ public class ComponentStorage {
             mainFrame.add(last);
         }
     }
+
     public void hideSelectedAndShowSelected(JFXPanel hidethis, JFXPanel showthis) {
         hidethis.hide();
         showthis.show();
@@ -142,24 +154,26 @@ public class ComponentStorage {
         setMenubar(signIn.rootPane);
         setMenubar(taskScheduler.rootPane);
     }
-    public void setMenubar(Pane currentViewsRootPane){
+
+    public void setMenubar(Pane currentViewsRootPane) {
         Iterator<Node> nodeIterator = currentViewsRootPane.getChildren().iterator();
-        while(nodeIterator.hasNext()){
-            if(nodeIterator.next().getClass().equals(MenuBar.class)){
+        while (nodeIterator.hasNext()) {
+            if (nodeIterator.next().getClass().equals(MenuBar.class)) {
                 nodeIterator.remove();
             }
         }
-        currentViewsRootPane.getChildren().add(0,menuSetup.createMenuBar());
+        currentViewsRootPane.getChildren().add(0, menuSetup.createMenuBar());
         //register.mainPane.getChildren() sinun pitää hakea oikea mainPane original muodossa että voit muokata sitä
     }
-    public void createStepBar(Pane stepbarToThisPane){
+
+    public void createStepBar(Pane stepbarToThisPane) {
         BorderPane stepPane = new BorderPane();
         HBox centeredHBox = new HBox(35);
         firstStep = new Button("1");
         secondStep = new Button("2");
         thirdStep = new Button("3");
-        createActionsToStepBar(firstStep,secondStep,thirdStep,stepbarToThisPane);
-        centeredHBox.getChildren().addAll(firstStep,secondStep,thirdStep);
+        createActionsToStepBar(firstStep, secondStep, thirdStep, stepbarToThisPane);
+        centeredHBox.getChildren().addAll(firstStep, secondStep, thirdStep);
         centeredHBox.setAlignment(Pos.CENTER);
         String stepPaneCss = this.getClass().getResource("Css/stepPane.css").toExternalForm();
         stepPane.getStylesheets().add(stepPaneCss);
@@ -167,11 +181,12 @@ public class ComponentStorage {
         stepPane.setStyle("-fx-background-color:#F5F5F5");
         stepbarToThisPane.getChildren().add(stepPane);
     }
-    private void createActionsToStepBar(Button firstStep, Button secondStep, Button thirdStep,Pane rootPane){
+
+    private void createActionsToStepBar(Button firstStep, Button secondStep, Button thirdStep, Pane rootPane) {
         firstStep.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                hideSelectedAndShowSelected((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1),viewMap.get("ahkinterface"));
+                hideSelectedAndShowSelected((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount() - 1), viewMap.get("ahkinterface"));
             }
         });
         secondStep.setOnAction(new EventHandler<ActionEvent>() {
@@ -181,22 +196,23 @@ public class ComponentStorage {
                     JOptionPane.showMessageDialog(mainFrame, "You havent selected any keys try again later!");
                     return;
                 }
-                hideSelectedAndShowSelected((JFXPanel)mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1),viewMap.get("browseaction"));
+                hideSelectedAndShowSelected((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount() - 1), viewMap.get("browseaction"));
             }
         });
-        thirdStep.setOnAction(new EventHandler<ActionEvent>(){
+        thirdStep.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event){
-                if(choosenActionPath.isEmpty()){
-                    JOptionPane.showMessageDialog(mainFrame,"You haven't selected any action go and  do that in the second step.");
+            public void handle(ActionEvent event) {
+                if (choosenActionPath.isEmpty()) {
+                    JOptionPane.showMessageDialog(mainFrame, "You haven't selected any action go and  do that in the second step.");
                     return;
                 }
-                hideSelectedAndShowSelected((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount()-1), viewMap.get("taskscheduler"));
+                hideSelectedAndShowSelected((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount() - 1), viewMap.get("taskscheduler"));
             }
         });
     }
-    public void highLightCurrentStep(int stepNumber){
-        switch(stepNumber){
+
+    public void highLightCurrentStep(int stepNumber) {
+        switch (stepNumber) {
             case 1:
                 firstStep.setStyle("-fx-background-color:#A9A9A9");
                 secondStep.setStyle("-fx-background-color:#D3D3D3;");
@@ -212,6 +228,27 @@ public class ComponentStorage {
                 secondStep.setStyle("-fx-background-color:#D3D3D3;");
                 thirdStep.setStyle("-fx-background-color:#A9A9A9");
                 break;
+        }
+    }
+
+    public void findAHKScripts() {
+        File[] roots = new File("").listRoots();
+        for (File root : roots) {
+            final File[] files = new File(root.getAbsolutePath()).listFiles();
+            showFiles(files);
+        }
+    }
+
+    public void showFiles(File[] files) {
+        for (File file : files) {
+            if (file.isDirectory()) {
+                if (file.listFiles() != null) showFiles(file.listFiles());
+            } else {
+                if (file.getAbsolutePath().endsWith(".ahk")) {
+                    System.out.println(file.getAbsolutePath());
+                    oldScriptPaths.add(file.getAbsolutePath());
+                }
+            }
         }
     }
 }
