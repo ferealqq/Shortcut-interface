@@ -1,6 +1,10 @@
 package ahk.pkginterface;
 
 import ahk.pkginterface.ViewManagement.ComponentStorage;
+import ahk.pkginterface.database.Actions;
+import ahk.pkginterface.database.ActionsData;
+import ahk.pkginterface.database.KeyData;
+import ahk.pkginterface.database.Keys;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,6 +22,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 
@@ -171,6 +177,8 @@ public class AHKInterface extends JFrame {
                     @Override
                     public void handle(MouseEvent event) {
                         BufferedReader reader = null;
+                        ArrayList<String> actionsinthisshit = new ArrayList<>();
+                        ArrayList<String> keysthatareinthisfile = new ArrayList<>();
                         try{
                             reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
                             ArrayList<String> insidesOfTheFile = new ArrayList<>();
@@ -178,8 +186,16 @@ public class AHKInterface extends JFrame {
                             while((sCurrentline = reader.readLine()) != null){
                                 insidesOfTheFile.add(sCurrentline);
                             }
-                            Stream<String> insidesOfTheFileStream = insidesOfTheFile.stream();
-
+                            Supplier<Stream<String>> streamSupplier = () -> insidesOfTheFile.stream();
+                            ActionsData actionsData = new ActionsData();
+                            ArrayList<Actions> listOfAllTheActions = actionsData.getActions();
+                            for(Actions action : listOfAllTheActions){
+                                HashMap<String,String[]> somemap = actionsData.readAllActionsToHashMap();
+                                String[] array = somemap.get(action.getAction());
+                                for(String jotain : array){
+                                    streamSupplier.get().filter(oneline -> oneline.contains(jotain)).forEach(actionsinthisshit::add);
+                                }
+                            }
                         }catch (Exception e){
                             e.printStackTrace();
                         }finally{

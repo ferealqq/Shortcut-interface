@@ -116,7 +116,7 @@ public class ActionsData {
 
     public static void main(String[] args) {
         ActionsData k = new ActionsData();
-        System.out.println(k.getActionCode("Volume Down")[0]);
+        System.out.println(k.readAllActionsToHashMap());
         /*FileReader fr = null;
         BufferedReader br = null;
         ActionsData k = new ActionsData();
