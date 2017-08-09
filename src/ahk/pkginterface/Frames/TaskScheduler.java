@@ -1,6 +1,7 @@
 package ahk.pkginterface.Frames;
 
 import ahk.pkginterface.ViewManagement.ComponentStorage;
+import ahk.pkginterface.database.ActionsData;
 import ahk.pkginterface.database.Key;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -137,7 +138,7 @@ public class TaskScheduler {
                 if (checkForDoubleKey(file.getAbsolutePath())) {
                     JOptionPane.showMessageDialog(componentStorage.mainFrame, "Key already has an action. Try another key!");
                     componentStorage.pressedKeys.removeAll(componentStorage.pressedKeys);
-                    componentStorage.choosenActionPath.removeAll(componentStorage.choosenActionPath);
+                    componentStorage.choosenActionnName.removeAll(componentStorage.choosenActionnName);
                     componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1), componentStorage.viewMap.get("keyselection"));
                     resetColors();
                     return;
@@ -163,7 +164,7 @@ public class TaskScheduler {
                 System.out.println(integerofOptionAnwser);
                 if (choosenAnwser) {
                     componentStorage.pressedKeys.removeAll(componentStorage.pressedKeys);
-                    componentStorage.choosenActionPath.removeAll(componentStorage.choosenActionPath);
+                    componentStorage.choosenActionnName.removeAll(componentStorage.choosenActionnName);
                     componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1), componentStorage.viewMap.get("keyselection"));
                     resetColors();
                 }else{
@@ -218,7 +219,6 @@ public class TaskScheduler {
     }
 
     private String writeScript(File file) {
-        BufferedReader reader = null;
         BufferedWriter writer = null;
         try {
             if (file.exists()) {
@@ -233,7 +233,6 @@ public class TaskScheduler {
             e.printStackTrace();
         } finally {
             close(writer);
-            close(reader);
             return file.getAbsolutePath();
         }
     }
@@ -246,7 +245,7 @@ public class TaskScheduler {
                 firstRow = firstRow + " & " + componentStorage.pressedKeys.get(i).getKeysynonyminahk();
             }
             writer.write(firstRow + "::");
-            for (String actionLine : readChoosenAction()) {
+            for (String actionLine : getScriptContent()) {
                 writer.newLine();
                 writer.write(actionLine);
             }
@@ -258,30 +257,20 @@ public class TaskScheduler {
             close(writer);
         }
     }
-
-    private ArrayList<String> readChoosenAction() {
-        ArrayList<String> redLines = new ArrayList<>();
-        BufferedReader reader = null;
-        try {
-            for (String path : componentStorage.choosenActionPath) {
-                reader = new BufferedReader(new FileReader(path));
-                String sCurrentline;
-                while ((sCurrentline = reader.readLine()) != null) {
-                    redLines.add(sCurrentline);
-                    System.out.println(sCurrentline);
-                    for (int i = 0; i < sCurrentline.length(); i++) {
-                        sCurrentline.replace(sCurrentline.charAt(0)+"","k");
-                    }
-                }
+    /*
+    * getScriptContent is method that gathers choosen actioncode from database and returns the code as an arraylist of strings
+     */
+    private ArrayList<String> getScriptContent(){
+        ArrayList<String> listOfCode = new ArrayList<>();
+        for(String oneOfTheChoosenActions : componentStorage.choosenActionnName){
+            String[] oneoftheActionsCode = new ActionsData().getActionCode(oneOfTheChoosenActions);
+            for(String onelineofcode:oneoftheActionsCode){
+                listOfCode.add(onelineofcode);
+                System.out.println(onelineofcode);
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            close(reader);
         }
-        return redLines;
+        return listOfCode;
     }
-
     private void createTask(String nameofthescript, String absolutePathOfTheScript) {
         try {
             File file = new File("TaskSchedule.bat");

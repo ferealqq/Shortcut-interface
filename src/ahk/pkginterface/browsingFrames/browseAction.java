@@ -16,7 +16,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.input.KeyEvent;
@@ -134,11 +133,11 @@ public class browseAction{
             actionLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    if(!componentStorage.choosenActionPath.contains(action.getPath())){
-                        componentStorage.choosenActionPath.add(action.getPath());
+                    if(!componentStorage.choosenActionnName.contains(action.getAction())){
+                        componentStorage.choosenActionnName.add(action.getAction());
                         actionLabel.setStyle("-fx-background-color: #404040;");
                     }else{
-                        componentStorage.choosenActionPath.remove(action.getPath());
+                        componentStorage.choosenActionnName.remove(action.getAction());
                         actionLabel.setStyle("-fx-background-color: transparent;");
                     }
                 }

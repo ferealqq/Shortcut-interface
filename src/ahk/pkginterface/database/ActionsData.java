@@ -53,24 +53,46 @@ public class ActionsData {
             closeConnection(connection);
         }
     }
-    public HashMap<String,String> readAllActionsToHashMap(){
-        HashMap<String,String> AllActions = new HashMap<>();
-        ArrayList<Actions> actions = getActions();
+    public HashMap<String,String[]> readAllActionsToHashMap(){
+        HashMap<String,String[]> AllActions = new HashMap<>();
         BufferedReader reader = null;
-        for(Actions action: actions){
-            try{
-                reader = new BufferedReader(new FileReader(action.getPath()));
-                String sCurrentline;
-                while((sCurrentline = reader.readLine()) != null){
-                    System.out.println(action.getAction() + "  " +sCurrentline);
-                    AllActions.put(action.getAction(),sCurrentline);
-                }
-                reader.close();
-            }catch(Exception e){
-                e.printStackTrace();
+        try {
+            connection = DriverManager.getConnection(setConnectionStrings());
+            String sqlquery = "select action,actioncode from actions;";
+            st = connection.createStatement();
+            resultSet = st.executeQuery(sqlquery);
+            while(resultSet.next()){
+                Array sqlArray = resultSet.getArray("actioncode");
+                String[] sqlArrayConvertedToArray = (String[])sqlArray.getArray();
+                AllActions.put(resultSet.getString("action"),sqlArrayConvertedToArray);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            closeConnection(connection);
         }
         return AllActions;
+    }
+    /*
+    * getActionCode is method that gets the choosen actioncode from the database and returns the code as a array of strings
+     */
+    public String[] getActionCode(String actionName){
+        String[] actionCode = null;
+        try{
+            connection = DriverManager.getConnection(setConnectionStrings());
+            prepStatement = connection.prepareStatement("select actioncode from actions where action = ?;");
+            prepStatement.setString(1,actionName);
+            resultSet = prepStatement.executeQuery();
+            if(resultSet.next()){
+                Array sqlArray = resultSet.getArray("actioncode");
+                actionCode = (String[])sqlArray.getArray();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            closeConnection(connection);
+        }
+        return actionCode;
     }
 
 
@@ -94,7 +116,7 @@ public class ActionsData {
 
     public static void main(String[] args) {
         ActionsData k = new ActionsData();
-        k.readAllActionsToHashMap();
+        System.out.println(k.getActionCode("Volume Down")[0]);
         /*FileReader fr = null;
         BufferedReader br = null;
         ActionsData k = new ActionsData();

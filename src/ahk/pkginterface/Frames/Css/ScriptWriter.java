@@ -16,7 +16,7 @@ public class ScriptWriter {
         BufferedReader reader = null;
         BufferedWriter writer = null;
         try {
-            for (String choosenActionPath : componentStorage.choosenActionPath) {
+            for (String choosenActionPath : componentStorage.choosenActionnName) {
                 reader = new BufferedReader(new FileReader(choosenActionPath));
                 File file = new File(choosenPath + "/" + nameofthescript + ".ahk");
                 file.createNewFile();
