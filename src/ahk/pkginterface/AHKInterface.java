@@ -195,6 +195,10 @@ public class AHKInterface extends JFrame {
                                 for(String jotain : array){
                                     streamSupplier.get().filter(oneline -> oneline.contains(jotain)).forEach(actionsinthisshit::add);
                                 }
+                                /*
+                                "You have to re-think your identifition algorythm for the script reading,
+                                 because you will get same lines in couple of different places and therefor you cant add by identifying one line of the code."
+                                 */
                             }
                         }catch (Exception e){
                             e.printStackTrace();
