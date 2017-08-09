@@ -36,12 +36,16 @@ public class TaskScheduler {
         componentStorage = componentArchive;
         initComponents();
     }
-
+    /*
+    setting components to taskscheduler view
+     */
     private void initComponents() {
         Scene scene = createScene();
         this.taskSchedulerView.setScene(scene);
     }
-
+    /*
+    Creating a scene creating the components for the scene. Adding them to the scene. Returning the scene, completed.
+     */
     private Scene createScene() {
         Scene scene = new Scene(rootPane);
         componentStorage.createStepBar(rootPane);
@@ -134,7 +138,7 @@ public class TaskScheduler {
                     JOptionPane.showMessageDialog(componentStorage.mainFrame, "Key already has an action. Try another key!");
                     componentStorage.pressedKeys.removeAll(componentStorage.pressedKeys);
                     componentStorage.choosenActionPath.removeAll(componentStorage.choosenActionPath);
-                    componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1), componentStorage.viewMap.get("ahkinterface"));
+                    componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1), componentStorage.viewMap.get("keyselection"));
                     resetColors();
                     return;
                 }
@@ -160,7 +164,7 @@ public class TaskScheduler {
                 if (choosenAnwser) {
                     componentStorage.pressedKeys.removeAll(componentStorage.pressedKeys);
                     componentStorage.choosenActionPath.removeAll(componentStorage.choosenActionPath);
-                    componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1), componentStorage.viewMap.get("ahkinterface"));
+                    componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1), componentStorage.viewMap.get("keyselection"));
                     resetColors();
                 }else{
                     System.exit(1);
@@ -170,7 +174,7 @@ public class TaskScheduler {
     }
 
     private void resetColors() {
-        for (Node node : componentStorage.ahkinterface.rootPane.getChildren()) {
+        for (Node node : componentStorage.keySelection.rootPane.getChildren()) {
             if (node.getClass().equals(VBox.class)) {
                 VBox vBox = (VBox) node;
                 for (Node nod : vBox.getChildren()) {
@@ -202,8 +206,6 @@ public class TaskScheduler {
             while (Objects.nonNull(reader.readLine())) {
                 for (Key key : componentStorage.pressedKeys) {
                     String line = reader.readLine();
-                    System.out.println(line + " line ");
-                    System.out.println(key.keysynonyminahk + " key synonym");
                     if (line != null && line.contains(key.keysynonyminahk)) {
                         return true;
                     }

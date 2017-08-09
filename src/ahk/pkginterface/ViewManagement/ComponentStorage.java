@@ -68,12 +68,16 @@ public class ComponentStorage {
     }
 
     /*
-    * kuin uusi main form on valmis lisää tänne ahkinterface = new AHKinterface();
+    * Adding ahkinterface(Homepage) to viewmap and giving componentstorage the variable ahkinterface
      */
     public void setAhkinterface(AHKInterface ahkinterface) {
         this.ahkinterface = ahkinterface;
         viewMap.put("ahkinterface", this.ahkinterface.ahkinterfaceView);
     }
+    /*
+    * Filling the viewmap with view
+    * and adding them to the main jframe
+     */
 
     public void createViewMap() {
         viewMap.put("keyselection",keySelection.keySelectionView);
@@ -87,13 +91,18 @@ public class ComponentStorage {
         viewMap.put("taskscheduler", taskScheduler.giveView());
         mainFrame.add(taskScheduler.giveView());
     }
-
+    /*
+    * creating a tooltip and hacking the setup time.
+    * Returns tooltip
+     */
     public Tooltip createTooltip(String message) {
         final Tooltip tooltip = new Tooltip(message);
         hackTooltipStartTiming(tooltip);
         return tooltip;
     }
-
+    /*
+    * Hacks the tooltip to change popup time
+     */
     private static void hackTooltipStartTiming(Tooltip tooltip) {
         try {
             Field fieldBehavior = tooltip.getClass().getDeclaredField("BEHAVIOR");
@@ -110,7 +119,10 @@ public class ComponentStorage {
             e.printStackTrace();
         }
     }
-
+    /*
+    * Hideing current frame and going forwards.
+    * This function has been created for the purpose of the menusetup back and forward
+     */
     public void showForwardHideCurrent() {
         if (!viewHistoryBackwards.isEmpty()) {
             JFXPanel last = viewHistoryBackwards.getLast();
@@ -119,7 +131,7 @@ public class ComponentStorage {
             ((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount() - 1)).hide();
             setMenubar(register.rootPane);
             setMenubar(browseaction.topPane);
-            setMenubar(ahkinterface.rootPane);
+            setMenubar(ahkinterface.menuPaneAkaRealRootPane);
             setMenubar(keySelection.rootPane);
             setMenubar(signIn.rootPane);
             setMenubar(taskScheduler.rootPane);
@@ -127,7 +139,10 @@ public class ComponentStorage {
             mainFrame.add(last);
         }
     }
-
+    /*
+    * Hiding the current view and showing the last view.
+    * This function has been created for the purpose of the menusetup back and forward
+     */
     public void showBackwardsHideCurrent() {
         if (!viewHistory.isEmpty()) {
             JFXPanel last = viewHistory.getLast();
@@ -136,7 +151,7 @@ public class ComponentStorage {
             ((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount() - 1)).hide();
             setMenubar(register.rootPane);
             setMenubar(browseaction.topPane);
-            setMenubar(ahkinterface.rootPane);
+            setMenubar(ahkinterface.menuPaneAkaRealRootPane);
             setMenubar(keySelection.rootPane);
             setMenubar(signIn.rootPane);
             setMenubar(taskScheduler.rootPane);
@@ -146,6 +161,10 @@ public class ComponentStorage {
         }
     }
 
+    /*
+    * Hides the first variable, and shows the second variable.
+    * This function was made because I was hiding Jfxpanels alot and showing others so I thought this might be useful.
+     */
     public void hideSelectedAndShowSelected(JFXPanel hidethis, JFXPanel showthis) {
         hidethis.hide();
         showthis.show();
@@ -153,12 +172,16 @@ public class ComponentStorage {
         mainFrame.add(showthis);
         setMenubar(register.rootPane);
         setMenubar(browseaction.topPane);
-        setMenubar(ahkinterface.rootPane);
+        setMenubar(ahkinterface.menuPaneAkaRealRootPane);
         setMenubar(keySelection.rootPane);
         setMenubar(signIn.rootPane);
         setMenubar(taskScheduler.rootPane);
     }
-
+    /*
+    *   setMenubar is a function that removes old menubar and creates a new menubar.
+    *   Function was neseccary to make all scenes have the right components in it.
+    *   Menubar has components which requires current information.
+     */
     public void setMenubar(Pane currentViewsRootPane) {
         Iterator<Node> nodeIterator = currentViewsRootPane.getChildren().iterator();
         while (nodeIterator.hasNext()) {
@@ -167,9 +190,10 @@ public class ComponentStorage {
             }
         }
         currentViewsRootPane.getChildren().add(0, menuSetup.createMenuBar());
-        //register.mainPane.getChildren() sinun pitää hakea oikea mainPane original muodossa että voit muokata sitä
     }
-
+    /*
+    * Creating step bar to keyselection, browsingaction and taskscheduler
+     */
     public void createStepBar(Pane stepbarToThisPane) {
         BorderPane stepPane = new BorderPane();
         HBox centeredHBox = new HBox(35);
@@ -185,12 +209,14 @@ public class ComponentStorage {
         stepPane.setStyle("-fx-background-color:#F5F5F5");
         stepbarToThisPane.getChildren().add(stepPane);
     }
-
+    /*
+    * creating action event handlers on every button on the stepbar
+     */
     private void createActionsToStepBar(Button firstStep, Button secondStep, Button thirdStep, Pane rootPane) {
         firstStep.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                hideSelectedAndShowSelected((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount() - 1), viewMap.get("ahkinterface"));
+                hideSelectedAndShowSelected((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount() - 1), viewMap.get("keyselection"));
             }
         });
         secondStep.setOnAction(new EventHandler<ActionEvent>() {
@@ -214,7 +240,9 @@ public class ComponentStorage {
             }
         });
     }
-
+    /*
+    * Highlighting the current step to make sure the user is in the right scene
+     */
     public void highLightCurrentStep(int stepNumber) {
         switch (stepNumber) {
             case 1:
@@ -234,15 +262,21 @@ public class ComponentStorage {
                 break;
         }
     }
-
+    /*
+    * Finding where in the computer are ahk scripts. Making sure that we have all your ahkscripts.
+    * So you can go back and edit them.
+    * Findnig the paths for the scripts and saving them to an arraylist which can be referenced as oldScriptPahts
+     */
     public void findAHKScripts() {
         File[] roots = new File("").listRoots();
         for (File root : roots) {
             final File[] files = new File(root.getAbsolutePath()).listFiles();
-            showFiles(files);
+            if(files != null) showFiles(files);
         }
     }
-
+    /*
+    * Just for making a loop of for
+     */
     public void showFiles(File[] files) {
         for (File file : files) {
             if (file.isDirectory()) {

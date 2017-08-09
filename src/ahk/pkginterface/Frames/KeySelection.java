@@ -26,7 +26,6 @@ import java.util.ArrayList;
 public class KeySelection {
     public final JFXPanel keySelectionView = new JFXPanel();
     public final VBox rootPane = new VBox();
-    public final BorderPane stepPane = new BorderPane();
     private final ArrayList<Button> bottomRowButtons = new ArrayList<>();
 
     private EventHandler<ActionEvent> nextEventHandler;
@@ -45,15 +44,6 @@ public class KeySelection {
         jfxPanel.setScene(scene);
     }
 
-
-    /*
-    * Remember to run these methods in following order or the code will not work. Because they relay on the other variables in the other methods.
-    * reateListeners();
-        createStepBar();
-        createComponents(actionsData.getActions());
-        createButtons();
-        setListeners();
-     */
     private Scene createScene() {
         Scene scene = new Scene(rootPane, 1000, 600);
         createKeyListeners();

@@ -9,3 +9,6 @@ return
 f7::
 SoundSet +1
 return
+Y & H::
+Send {Media_Play_Pause}
+return

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class ActionsData {
@@ -52,6 +53,26 @@ public class ActionsData {
             closeConnection(connection);
         }
     }
+    public HashMap<String,String> readAllActionsToHashMap(){
+        HashMap<String,String> AllActions = new HashMap<>();
+        ArrayList<Actions> actions = getActions();
+        BufferedReader reader = null;
+        for(Actions action: actions){
+            try{
+                reader = new BufferedReader(new FileReader(action.getPath()));
+                String sCurrentline;
+                while((sCurrentline = reader.readLine()) != null){
+                    System.out.println(action.getAction() + "  " +sCurrentline);
+                    AllActions.put(action.getAction(),sCurrentline);
+                }
+                reader.close();
+            }catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+        return AllActions;
+    }
+
 
     public ArrayList<Actions> searchAction(String search) {
         ArrayList<Actions> actions = getActions();
@@ -73,8 +94,7 @@ public class ActionsData {
 
     public static void main(String[] args) {
         ActionsData k = new ActionsData();
-        System.out.println(k.getActions());
-        System.out.println(k.searchAction("stop"));
+        k.readAllActionsToHashMap();
         /*FileReader fr = null;
         BufferedReader br = null;
         ActionsData k = new ActionsData();
