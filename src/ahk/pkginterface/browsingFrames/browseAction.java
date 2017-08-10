@@ -133,11 +133,11 @@ public class browseAction{
             actionLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    if(!componentStorage.choosenActionnName.contains(action.getAction())){
-                        componentStorage.choosenActionnName.add(action.getAction());
+                    if(!componentStorage.choosenActionName.contains(action.getAction())){
+                        componentStorage.choosenActionName.add(action.getAction());
                         actionLabel.setStyle("-fx-background-color: #404040;");
                     }else{
-                        componentStorage.choosenActionnName.remove(action.getAction());
+                        componentStorage.choosenActionName.remove(action.getAction());
                         actionLabel.setStyle("-fx-background-color: transparent;");
                     }
                 }

@@ -53,6 +53,7 @@ public class ActionsData {
             closeConnection(connection);
         }
     }
+
     public HashMap<String,String[]> readAllActionsToHashMap(){
         HashMap<String,String[]> AllActions = new HashMap<>();
         BufferedReader reader = null;
@@ -94,7 +95,23 @@ public class ActionsData {
         }
         return actionCode;
     }
-
+    public String[] getSpotifyActionCode(){
+        String[] actionCode = null;
+        try{
+            connection = DriverManager.getConnection(setConnectionStrings());
+            st = connection.createStatement();
+            resultSet =st.executeQuery("select CodeData from SpotifyCodeData;");
+            if(resultSet.next()){
+                Array sqlArray = resultSet.getArray("CodeData");
+                actionCode = (String[])sqlArray.getArray();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            closeConnection(connection);
+        }
+        return actionCode;
+    }
 
     public ArrayList<Actions> searchAction(String search) {
         ArrayList<Actions> actions = getActions();
@@ -116,7 +133,7 @@ public class ActionsData {
 
     public static void main(String[] args) {
         ActionsData k = new ActionsData();
-        System.out.println(k.readAllActionsToHashMap());
+        System.out.println(k.getSpotifyActionCode()[1]);
         /*FileReader fr = null;
         BufferedReader br = null;
         ActionsData k = new ActionsData();

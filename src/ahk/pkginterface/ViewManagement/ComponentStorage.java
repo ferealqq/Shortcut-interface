@@ -48,7 +48,7 @@ public class ComponentStorage {
     private Button thirdStep;
     public final ArrayList<Key> pressedKeys = new ArrayList<>();
 
-    public final ArrayList<String> choosenActionnName = new ArrayList<>();
+    public final ArrayList<String> choosenActionName = new ArrayList<>();
 
     public String nameofthescript;
     public final ArrayList<String> oldScriptPaths = new ArrayList<>();
@@ -232,7 +232,7 @@ public class ComponentStorage {
         thirdStep.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (choosenActionnName.isEmpty()) {
+                if (choosenActionName.isEmpty()) {
                     JOptionPane.showMessageDialog(mainFrame, "You haven't selected any action go and  do that in the second step.");
                     return;
                 }

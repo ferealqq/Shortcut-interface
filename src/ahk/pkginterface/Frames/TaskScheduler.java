@@ -138,7 +138,7 @@ public class TaskScheduler {
                 if (checkForDoubleKey(file.getAbsolutePath())) {
                     JOptionPane.showMessageDialog(componentStorage.mainFrame, "Key already has an action. Try another key!");
                     componentStorage.pressedKeys.removeAll(componentStorage.pressedKeys);
-                    componentStorage.choosenActionnName.removeAll(componentStorage.choosenActionnName);
+                    componentStorage.choosenActionName.removeAll(componentStorage.choosenActionName);
                     componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1), componentStorage.viewMap.get("keyselection"));
                     resetColors();
                     return;
@@ -164,7 +164,7 @@ public class TaskScheduler {
                 System.out.println(integerofOptionAnwser);
                 if (choosenAnwser) {
                     componentStorage.pressedKeys.removeAll(componentStorage.pressedKeys);
-                    componentStorage.choosenActionnName.removeAll(componentStorage.choosenActionnName);
+                    componentStorage.choosenActionName.removeAll(componentStorage.choosenActionName);
                     componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1), componentStorage.viewMap.get("keyselection"));
                     resetColors();
                 }else{
@@ -238,6 +238,11 @@ public class TaskScheduler {
     }
 
     private void writeContentForScript(BufferedWriter writer, File file) {
+        ArrayList<String> scriptContent = getScriptContent();
+        if(Objects.nonNull(componentStorage.choosenActionName.stream().filter(actionName -> actionName.contains("Spotify")))){
+            writeSporifyScript(writer,scriptContent);
+            return;
+        }
         try {
             writer.newLine();
             String firstRow = componentStorage.pressedKeys.get(0).getKeysynonyminahk();
@@ -245,10 +250,12 @@ public class TaskScheduler {
                 firstRow = firstRow + " & " + componentStorage.pressedKeys.get(i).getKeysynonyminahk();
             }
             writer.write(firstRow + "::");
-            for (String actionLine : getScriptContent()) {
+            writer.newLine();
+            for (String actionLine : scriptContent) {
                 writer.newLine();
                 writer.write(actionLine);
             }
+            writer.newLine();
             writer.newLine();
             writer.write("return");
         } catch (IOException e) {
@@ -257,16 +264,49 @@ public class TaskScheduler {
             close(writer);
         }
     }
+    private void writeSporifyScript(BufferedWriter writer,ArrayList<String> scriptContent){
+        ArrayList<String> spotifyScriptContent = getSpotifyScriptContent();
+        try {
+            writer.newLine();
+            String firstRow = componentStorage.pressedKeys.get(0).getKeysynonyminahk();
+            for (int i = 1; i < componentStorage.pressedKeys.size(); i++) {
+                firstRow = firstRow + " & " + componentStorage.pressedKeys.get(i).getKeysynonyminahk();
+            }
+            writer.write(firstRow + "::");
+            for (int index = 0; index <=spotifyScriptContent.size();index++) {
+                writer.newLine();
+                if(index == 10 || index == 3){
+                    for(String content : scriptContent){
+                        writer.write(content);
+                        writer.newLine();
+                        System.out.println(content);
+                    }
+                }
+                writer.write(spotifyScriptContent.get(index));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            close(writer);
+        }
+    }
+    private ArrayList<String> getSpotifyScriptContent(){
+        final ArrayList<String> listOfCode = new ArrayList<>();
+        String[] oneoftheActionsCode = new ActionsData().getSpotifyActionCode();
+        for(String onelineofcode:oneoftheActionsCode){
+            listOfCode.add(onelineofcode);
+        }
+        return listOfCode;
+    }
     /*
     * getScriptContent is method that gathers choosen actioncode from database and returns the code as an arraylist of strings
      */
     private ArrayList<String> getScriptContent(){
-        ArrayList<String> listOfCode = new ArrayList<>();
-        for(String oneOfTheChoosenActions : componentStorage.choosenActionnName){
+        final ArrayList<String> listOfCode = new ArrayList<>();
+        for(String oneOfTheChoosenActions : componentStorage.choosenActionName){
             String[] oneoftheActionsCode = new ActionsData().getActionCode(oneOfTheChoosenActions);
             for(String onelineofcode:oneoftheActionsCode){
                 listOfCode.add(onelineofcode);
-                System.out.println(onelineofcode);
             }
         }
         return listOfCode;

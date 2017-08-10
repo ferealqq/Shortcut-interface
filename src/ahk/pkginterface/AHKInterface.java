@@ -193,7 +193,7 @@ public class AHKInterface extends JFrame {
                                 HashMap<String,String[]> somemap = actionsData.readAllActionsToHashMap();
                                 String[] array = somemap.get(action.getAction());
                                 for(String jotain : array){
-                                    streamSupplier.get().filter(oneline -> oneline.contains(jotain)).forEach(actionsinthisshit::add);
+                                    streamSupplier.get().filter(oneline -> oneline.equals(jotain)).forEach(actionsinthisshit::add);
                                 }
                                 /*
                                 "You have to re-think your identifition algorythm for the script reading,
