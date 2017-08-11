@@ -1,16 +1,12 @@
 package ahk.pkginterface;
 
 import ahk.pkginterface.ViewManagement.ComponentStorage;
-import ahk.pkginterface.database.Actions;
 import ahk.pkginterface.database.ActionsData;
-import ahk.pkginterface.database.KeyData;
-import ahk.pkginterface.database.Keys;
 import javafx.beans.binding.Bindings;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
@@ -25,10 +21,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -40,6 +33,7 @@ public class AHKInterface extends JFrame {
     public final JFrame main = this;
     public ComponentStorage componentStorage;// siirä viewmap aloitus formiin sitten kuin se on tehty
 
+    public final HashMap<String,ArrayList<String>> keyAndList = new HashMap<>();
 
     private BorderPane scriptInfoLabel = null;
     private HBox scriptInfoPane = null;
@@ -218,7 +212,7 @@ public class AHKInterface extends JFrame {
                                 insidesOfTheFile.add(sCurrentline);
                             }
                             Supplier<Stream<String>> insidesOfTheScriptInASupplier = () -> insidesOfTheFile.stream();
-                            createCurrentScriptInfo(insidesOfTheScriptInASupplier);
+                            createCurrentScriptInfo(insidesOfTheFile);
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
@@ -239,36 +233,54 @@ public class AHKInterface extends JFrame {
         scriptPane.getChildren().add(labelPane);
     }
 
-    private void createCurrentScriptInfo(Supplier<Stream<String>> insidesOfTheScriptInASupplier){
+    private void createCurrentScriptInfo(ArrayList<String> insidesofTheFile){
         ArrayList<String> ActionCodeInScript = new ArrayList<>();
+        ArrayList<String> CheckForDoubleActions = new ArrayList<>();
         ArrayList<String> KeysInScript = new ArrayList<>();
         VBox actionsPane = new VBox(1);
-
+        analyzeTheScript(insidesofTheFile);
+    }
+    public void analyzeTheScript(ArrayList<String> insidesOfTheFile){
+        Iterator<String> insidesOfTheFileIterator = insidesOfTheFile.iterator();
+        while(insidesOfTheFileIterator.hasNext()){
+            String sCurenntString = insidesOfTheFileIterator.next();
+            System.out.println(sCurenntString);
+            if(sCurenntString.endsWith("::")){
+                if(insidesOfTheFileIterator.hasNext()) {
+                    insidesOfTheFileIterator.next();
+                    returnsTheActionsInOneKey(insidesOfTheFileIterator,sCurenntString);
+                }else{
+                    break;
+                }
+            }
+        }
+        System.out.println(keyAndList);
+    }
+    public HashMap<String,ArrayList<String>> returnsTheActionsInOneKey(Iterator<String> iterator,String currentKey){
+        ArrayList<String> actionsFound = new ArrayList<>();
         ActionsData actionsData = new ActionsData();
         HashMap<String, String[]> mapOfActionsAndTheirCode = actionsData.readAllActionsToHashMap();
         Object[] keysAsObject = mapOfActionsAndTheirCode.keySet().toArray();
-        for(Object actionname : keysAsObject){
-            String[] linesOfCode = mapOfActionsAndTheirCode.get(actionname.toString());
-            for(String somethingfunny : linesOfCode){
-                insidesOfTheScriptInASupplier.get().filter(oneline -> oneline.equals(somethingfunny)).forEach(ActionCodeInScript::add);
+        while(iterator.hasNext()){
+            System.out.println("im runnign idiot");
+            String currentString = iterator.next();
+            if(currentString.endsWith("::")) {
+                returnsTheActionsInOneKey(iterator,currentString);
+                break;
             }
-            for(String containedCode : ActionCodeInScript){
-                String[] oneActionCode = mapOfActionsAndTheirCode.get(actionname.toString());
-                for(String OneLineOfCode : oneActionCode){
-                    if(OneLineOfCode.equals(containedCode)) {
-                        for(Node children : actionsPane.getChildren()){
-                            Label labelInBox = (Label)children;
-                            System.out.println(labelInBox.getText());
-                            if(labelInBox.equals(actionname.toString())) System.out.println("bad meme");
-                        }
-                        Label test = new Label(actionname.toString());
-                        actionsPane.getChildren().add(test);
+            for(Object key: keysAsObject){
+                String keyToString = key.toString();
+                String[] linesOfCode = mapOfActionsAndTheirCode.get(keyToString);
+                for(String lineofCodeFromMap: linesOfCode){
+                    if(currentString.equals(lineofCodeFromMap)){
+                        System.out.println(keyToString  + " action found ");
+                        actionsFound.add(keyToString);
                     }
                 }
             }
         }
-        actionsPane.setAlignment(Pos.CENTER);
-        actionSectionPane.getChildren().add(actionsPane);
+        keyAndList.put(currentKey,actionsFound);
+        return keyAndList;
     }
 
     private void createMinusAndPlusButtons(VBox scriptPane) {
