@@ -1,2 +1,2 @@
-start E:\AHK-Interface\YourScripts\mute.ahk
+start E:\AHK-Interface\YourScripts\moik.ahk
 exit

@@ -119,6 +119,37 @@ public class ProfilesData {
         }
         return 0;
     }
+    public void insertScriptPaths(String[] path,int id) {
+        try{
+            connection = DriverManager.getConnection(setConnectionStrings());
+            String sqlquery = "update profile set scriptpaths = array_append(scriptpaths,?::text) where profile_id = ?;";
+            prepStatement = connection.prepareStatement(sqlquery);
+            Array sqlArray = connection.createArrayOf("VARCHAR",path);
+            prepStatement.setArray(1,sqlArray);
+            prepStatement.setInt(2,id);
+            prepStatement.executeQuery();
+            prepStatement.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally{
+            closeConnection(connection);
+        }
+    }
+    public void insertScriptPaths(String path,int id){
+        try{
+            connection = DriverManager.getConnection(setConnectionStrings());
+            String sqlquery = "update profile set scriptpaths = array_append(scriptpaths,?::text) where profile_id = ?;";
+            prepStatement = connection.prepareStatement(sqlquery);
+            prepStatement.setString(1,path);
+            prepStatement.setInt(2,id);
+            prepStatement.executeQuery();
+            prepStatement.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally{
+            closeConnection(connection);
+        }
+    }
     public static void closeConnection(Connection con) {
         if (con != null) {
             try {
@@ -128,6 +159,7 @@ public class ProfilesData {
         }
     }
     public static void main(String[] args) {
-        System.out.println(new ProfilesData().checkPassword("pekka@pekkas.fi","pekka"));
+        String[] memus = {"pekka","kukka","kekki"};
+        new ProfilesData().insertScriptPaths(memus,1);
     }
 }

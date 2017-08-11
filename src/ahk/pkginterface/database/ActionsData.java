@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 public class ActionsData {
@@ -53,6 +54,65 @@ public class ActionsData {
         }
     }
 
+    public HashMap<String,String[]> readAllActionsToHashMap(){
+        HashMap<String,String[]> AllActions = new HashMap<>();
+        BufferedReader reader = null;
+        try {
+            connection = DriverManager.getConnection(setConnectionStrings());
+            String sqlquery = "select action,actioncode from actions;";
+            st = connection.createStatement();
+            resultSet = st.executeQuery(sqlquery);
+            while(resultSet.next()){
+                Array sqlArray = resultSet.getArray("actioncode");
+                String[] sqlArrayConvertedToArray = (String[])sqlArray.getArray();
+                AllActions.put(resultSet.getString("action"),sqlArrayConvertedToArray);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }finally {
+            closeConnection(connection);
+        }
+        return AllActions;
+    }
+    /*
+    * getActionCode is method that gets the choosen actioncode from the database and returns the code as a array of strings
+     */
+    public String[] getActionCode(String actionName){
+        String[] actionCode = null;
+        try{
+            connection = DriverManager.getConnection(setConnectionStrings());
+            prepStatement = connection.prepareStatement("select actioncode from actions where action = ?;");
+            prepStatement.setString(1,actionName);
+            resultSet = prepStatement.executeQuery();
+            if(resultSet.next()){
+                Array sqlArray = resultSet.getArray("actioncode");
+                actionCode = (String[])sqlArray.getArray();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            closeConnection(connection);
+        }
+        return actionCode;
+    }
+    public String[] getSpotifyActionCode(){
+        String[] actionCode = null;
+        try{
+            connection = DriverManager.getConnection(setConnectionStrings());
+            st = connection.createStatement();
+            resultSet =st.executeQuery("select CodeData from SpotifyCodeData;");
+            if(resultSet.next()){
+                Array sqlArray = resultSet.getArray("CodeData");
+                actionCode = (String[])sqlArray.getArray();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            closeConnection(connection);
+        }
+        return actionCode;
+    }
+
     public ArrayList<Actions> searchAction(String search) {
         ArrayList<Actions> actions = getActions();
         ArrayList<Actions> results = new ArrayList<>();
@@ -73,8 +133,7 @@ public class ActionsData {
 
     public static void main(String[] args) {
         ActionsData k = new ActionsData();
-        System.out.println(k.getActions());
-        System.out.println(k.searchAction("stop"));
+        System.out.println(k.getSpotifyActionCode()[1]);
         /*FileReader fr = null;
         BufferedReader br = null;
         ActionsData k = new ActionsData();

@@ -6,7 +6,7 @@
    -fx-background-radius: 2;
    -fx-text-fill: black;
 }
-.button:hover{
+.button:hover {
 	-fx-background-color: #A9A9A9;
 }
 .button:pressed {

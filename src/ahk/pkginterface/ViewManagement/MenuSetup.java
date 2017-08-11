@@ -94,7 +94,9 @@ public class MenuSetup {
         });
         profileMenu.getItems().add(0,logoutItem);
     }
-
+    /*
+    * Disabling or enabling backwards and forwards menu button, if there is nothing to go back for or if there is nothing to go forward for.
+     */
     public void disableOrEnable(){
         this.backwardsMenuButton.setDisable(componentStorage.viewHistory.isEmpty());
         this.forwardsMenuButton.setDisable(componentStorage.viewHistoryBackwards.isEmpty());
