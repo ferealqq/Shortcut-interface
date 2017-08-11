@@ -5,16 +5,19 @@ import ahk.pkginterface.database.Actions;
 import ahk.pkginterface.database.ActionsData;
 import ahk.pkginterface.database.KeyData;
 import ahk.pkginterface.database.Keys;
+import javafx.beans.binding.Bindings;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
 import javax.swing.*;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
@@ -40,8 +43,9 @@ public class AHKInterface extends JFrame {
 
     private BorderPane scriptInfoLabel = null;
     private HBox scriptInfoPane = null;
-    private BorderPane keySectionPane = null;
-    private BorderPane actionSectionPane = null;
+    private VBox keySectionPane = null;
+    private VBox actionSectionPane = null;
+    private final Label scriptNameLabel = new Label();
 
 
     public AHKInterface() {
@@ -77,18 +81,20 @@ public class AHKInterface extends JFrame {
     }
 
     private void createInfoPane() {
-        VBox rootInfoPane = new VBox();
+        BorderPane rootInfoPane = new BorderPane();
 
-        scriptInfoLabel = createLabelpane(rootInfoPane);
-        scriptInfoPane = createScriptInfoPane(rootInfoPane);
-        HBox bottomButtonPane = createBottomButtonPane(rootInfoPane);
+        scriptInfoLabel = createLabelpane();
+        scriptInfoPane = createScriptInfoPane();
+        HBox bottomButtonPane = createBottomButtonPane();
 
-        rootInfoPane.getChildren().addAll(scriptInfoLabel, scriptInfoPane, bottomButtonPane);
+        rootInfoPane.setTop(scriptInfoLabel);
+        rootInfoPane.setCenter(scriptInfoPane);
+        rootInfoPane.setBottom(bottomButtonPane);
         rootPane.setHgrow(rootInfoPane, Priority.ALWAYS);
         rootPane.getChildren().addAll(rootInfoPane);
     }
 
-    private HBox createBottomButtonPane(VBox rootInfoPane) {
+    private HBox createBottomButtonPane() {
         HBox bottomButtonPane = new HBox();
         Button changeKey = new Button("Change key");
         changeKey.setMaxSize(Double.MAX_VALUE, 50);
@@ -107,44 +113,57 @@ public class AHKInterface extends JFrame {
         bottomButtonPane.getChildren().addAll(changeKey, changeAction, editTask, run);
 
         bottomButtonPane.setMaxSize(Double.MAX_VALUE, 50);
-        rootInfoPane.setVgrow(bottomButtonPane, Priority.ALWAYS);
         return bottomButtonPane;
     }
 
-    private HBox createScriptInfoPane(VBox rootInfoPane) {
+    private HBox createScriptInfoPane() {
         HBox scriptInfoPane = new HBox();
-        keySectionPane = new BorderPane();
-        keySectionPane.setStyle("-fx-border-color: #A9A9A9");
-        actionSectionPane = new BorderPane();
-        actionSectionPane.setStyle("-fx-border-color: #A9A9A9");
+        keySectionPane = new VBox();
+        ScrollPane keySectionScrollPane = new ScrollPane();
+        keySectionScrollPane.setStyle("-fx-border-color: #A9A9A9");
+        actionSectionPane = new VBox();
+        ScrollPane actionSectionScrollPane = new ScrollPane();
+        actionSectionScrollPane.setStyle("-fx-border-color: #A9A9A9");
         Label firstlabel = new Label("Key");
         Label secondLabel = new Label("Action");
+        firstlabel.setStyle("-fx-font-family: Lucida Sans Unicode;" +
+                "-fx-font-size: 20px;" +
+                "-fx-font-color: #A9A9A9");
+        secondLabel.setStyle("-fx-font-family: Lucida Sans Unicode;" +
+                "-fx-font-size: 20px;" +
+                "-fx-font-color: #A9A9A9");
         firstlabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         firstlabel.setAlignment(Pos.CENTER);
         secondLabel.setAlignment(Pos.CENTER);
         secondLabel.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        keySectionPane.setCenter(firstlabel);
-        actionSectionPane.setCenter(secondLabel);
+        keySectionPane.getChildren().add(firstlabel);
+        actionSectionPane.getChildren().add(secondLabel);
         keySectionPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        keySectionPane.setAlignment(Pos.CENTER);
+        keySectionScrollPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         actionSectionPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        scriptInfoPane.setHgrow(keySectionPane, Priority.ALWAYS);
-        scriptInfoPane.setHgrow(actionSectionPane, Priority.ALWAYS);
+        actionSectionPane.setAlignment(Pos.CENTER);
+        actionSectionScrollPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        scriptInfoPane.setHgrow(keySectionScrollPane, Priority.ALWAYS);
+        scriptInfoPane.setHgrow(actionSectionScrollPane, Priority.ALWAYS);
         scriptInfoPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-        scriptInfoPane.getChildren().addAll(keySectionPane, actionSectionPane);
-        rootInfoPane.setVgrow(scriptInfoPane, Priority.ALWAYS);
-
+        keySectionScrollPane.setContent(keySectionPane);
+        actionSectionScrollPane.setContent(actionSectionPane);
+        keySectionScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        keySectionPane.minWidthProperty().bind(Bindings.createDoubleBinding(() -> keySectionScrollPane.getViewportBounds().getWidth(), keySectionScrollPane.viewportBoundsProperty()));
+        actionSectionScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        actionSectionPane.minWidthProperty().bind(Bindings.createDoubleBinding(() -> actionSectionScrollPane.getViewportBounds().getWidth(), actionSectionScrollPane.viewportBoundsProperty()));
+        scriptInfoPane.getChildren().addAll(keySectionScrollPane,actionSectionScrollPane);
+        scriptInfoPane.setAlignment(Pos.CENTER);
         return scriptInfoPane;
     }
 
-    private BorderPane createLabelpane(VBox rootInfoPane) {
+    private BorderPane createLabelpane() {
         BorderPane labelPane = new BorderPane();
 
-        Label scriptNameLabel = new Label();
         scriptNameLabel.getStylesheets().add(this.getClass().getResource("Css/label.css").toExternalForm());
         scriptNameLabel.setAlignment(Pos.CENTER);
         labelPane.setCenter(scriptNameLabel);
-        rootInfoPane.setVgrow(labelPane, Priority.ALWAYS);
-        rootInfoPane.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
         return labelPane;
     }
@@ -184,15 +203,13 @@ public class AHKInterface extends JFrame {
         if (files != null) for (File file : files) {
             if (file.getAbsolutePath().endsWith(".ahk")) {
                 String scriptName = file.getName().replaceFirst("[.][^.]+$", "");
-                ;
                 Label scriptLabel = new Label(scriptName);
                 scriptLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
+                        scriptLabel.setStyle("-fx-background-color: #A9A9A9;");
+                        scriptNameLabel.setText(scriptName);
                         BufferedReader reader = null;
-                        ArrayList<String> ActionCodeInScript = new ArrayList<>();
-                        ArrayList<String> actioninscript = new ArrayList<>();
-                        ArrayList<String> KeysInScript = new ArrayList<>();
                         try {
                             reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
                             ArrayList<String> insidesOfTheFile = new ArrayList<>();
@@ -201,22 +218,7 @@ public class AHKInterface extends JFrame {
                                 insidesOfTheFile.add(sCurrentline);
                             }
                             Supplier<Stream<String>> insidesOfTheScriptInASupplier = () -> insidesOfTheFile.stream();
-                            ActionsData actionsData = new ActionsData();
-                            HashMap<String, String[]> mapOfActionsAndTheirCode = actionsData.readAllActionsToHashMap();
-                            Object[] keysAsObject = mapOfActionsAndTheirCode.keySet().toArray();
-                            for(Object actionname : keysAsObject){
-                                String[] linesOfCode = mapOfActionsAndTheirCode.get(actionname.toString());
-                                for(String somethingfunny : linesOfCode){
-                                    insidesOfTheScriptInASupplier.get().filter(oneline -> oneline.equals(somethingfunny)).forEach(ActionCodeInScript::add);
-                                }
-                                for(String containedCode : ActionCodeInScript){
-                                    String[] jotain = mapOfActionsAndTheirCode.get(actionname.toString());
-                                    for(String j : jotain){
-                                        if(j.equals(containedCode)) actioninscript.add(actionname.toString());
-                                    }
-                                }
-                            }
-                            System.out.println(ActionCodeInScript);
+                            createCurrentScriptInfo(insidesOfTheScriptInASupplier);
                         } catch (Exception e) {
                             e.printStackTrace();
                         } finally {
@@ -232,10 +234,41 @@ public class AHKInterface extends JFrame {
         }
         labelPane.setMaxSize(800 / 2.8, 350);
         labelPane.setStyle("-fx-font-family: Lucida Sans Unicode;" +
-                "-fx-font-size: 15px;" +
-                "-fx-text-aligment: center");
+                "-fx-font-size: 15px");
         scriptPane.setVgrow(labelPane, Priority.ALWAYS);
         scriptPane.getChildren().add(labelPane);
+    }
+
+    private void createCurrentScriptInfo(Supplier<Stream<String>> insidesOfTheScriptInASupplier){
+        ArrayList<String> ActionCodeInScript = new ArrayList<>();
+        ArrayList<String> KeysInScript = new ArrayList<>();
+        VBox actionsPane = new VBox(1);
+
+        ActionsData actionsData = new ActionsData();
+        HashMap<String, String[]> mapOfActionsAndTheirCode = actionsData.readAllActionsToHashMap();
+        Object[] keysAsObject = mapOfActionsAndTheirCode.keySet().toArray();
+        for(Object actionname : keysAsObject){
+            String[] linesOfCode = mapOfActionsAndTheirCode.get(actionname.toString());
+            for(String somethingfunny : linesOfCode){
+                insidesOfTheScriptInASupplier.get().filter(oneline -> oneline.equals(somethingfunny)).forEach(ActionCodeInScript::add);
+            }
+            for(String containedCode : ActionCodeInScript){
+                String[] oneActionCode = mapOfActionsAndTheirCode.get(actionname.toString());
+                for(String OneLineOfCode : oneActionCode){
+                    if(OneLineOfCode.equals(containedCode)) {
+                        for(Node children : actionsPane.getChildren()){
+                            Label labelInBox = (Label)children;
+                            System.out.println(labelInBox.getText());
+                            if(labelInBox.equals(actionname.toString())) System.out.println("bad meme");
+                        }
+                        Label test = new Label(actionname.toString());
+                        actionsPane.getChildren().add(test);
+                    }
+                }
+            }
+        }
+        actionsPane.setAlignment(Pos.CENTER);
+        actionSectionPane.getChildren().add(actionsPane);
     }
 
     private void createMinusAndPlusButtons(VBox scriptPane) {

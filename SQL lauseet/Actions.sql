@@ -13,4 +13,3 @@ insert into Actions (path,actionCode,action) values ('Path/spotify_previous.ahk'
 insert into Actions (path,actionCode,action) values ('Path/spotify_volume_up.ahk','{"ControlSend, ahk_parent, ^\{Up\}, ahk_class SpotifyMainWindow"}','Spotify Volume Up');
 insert into Actions (path,actionCode,action) values ('Path/spotify_volume_down.ahk','{"ControlSend, ahk_parent, ^\{Down\}, ahk_class SpotifyMainWindow"}','Spotify Volume Down');
 insert into Actions (path,actionCode,action) values ('Path/spotify_next.ahk','{"ControlSend, ahk_parent, ^\{Right\}, ahk_class SpotifyMainWindow"}','Spotify Next');
-insert into Actions (path,actionCode,action,keyWords) values ('Path/spotify_pause.ahk','{"Send \{Media_Play_Pause\}"}','Spotify Pause','{"Pause","Media","Music","Stop"}');

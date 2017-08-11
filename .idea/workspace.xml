@@ -2,10 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="34d685f4-faaa-4f25-bf49-6d691a0d0670" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$2.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface.class" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/SQL lauseet/Actions.sql" afterPath="$PROJECT_DIR$/SQL lauseet/Actions.sql" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -20,12 +18,12 @@
     <window id="1">
       <content type="file-editors">
         <state>
-          <leaf>
+          <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
             <file leaf-file-name="AHKInterface.java" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="483">
-                    <caret line="218" column="67" lean-forward="true" selection-start-line="218" selection-start-column="67" selection-end-line="218" selection-end-column="67" />
+                  <state relative-caret-position="695">
+                    <caret line="175" column="50" lean-forward="true" selection-start-line="175" selection-start-column="50" selection-end-line="175" selection-end-column="50" />
                     <folding>
                       <element signature="imports" expanded="true" />
                     </folding>
@@ -44,7 +42,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="MenuSetup.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MenuSetup.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/MenuSetup.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="613">
@@ -57,8 +55,8 @@
       <file leaf-file-name="KeySelection.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/Frames/KeySelection.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="663">
-              <caret line="59" column="5" lean-forward="false" selection-start-line="59" selection-start-column="5" selection-end-line="59" selection-end-column="5" />
+            <state relative-caret-position="255">
+              <caret line="35" column="62" lean-forward="false" selection-start-line="35" selection-start-column="62" selection-end-line="35" selection-end-column="62" />
               <folding />
             </state>
           </provider>
@@ -69,7 +67,15 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="238">
               <caret line="35" column="0" lean-forward="false" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+                <element signature="e#4014#4015#0" expanded="false" />
+                <element signature="e#4057#4058#0" expanded="false" />
+                <element signature="e#4412#4413#0" expanded="false" />
+                <element signature="e#4445#4446#0" expanded="false" />
+                <element signature="e#4479#4480#0" expanded="false" />
+                <element signature="e#4512#4513#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -79,9 +85,17 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="374">
               <caret line="50" column="48" lean-forward="false" selection-start-line="50" selection-start-column="48" selection-end-line="50" selection-end-column="48" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="browseAction.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/browsingFrames/browseAction.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="732">
+              <caret line="149" column="158" lean-forward="true" selection-start-line="148" selection-start-column="8" selection-end-line="149" selection-end-column="158" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -89,19 +103,11 @@
       <file leaf-file-name="ActionsData.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/database/ActionsData.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="453">
+            <state relative-caret-position="1071">
               <caret line="68" column="13" lean-forward="false" selection-start-line="68" selection-start-column="13" selection-end-line="68" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="browseAction.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/browsingFrames/browseAction.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1904">
-              <caret line="135" column="89" lean-forward="false" selection-start-line="135" selection-start-column="89" selection-end-line="135" selection-end-column="89" />
-              <folding />
+              <folding>
+                <element signature="imports" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -127,17 +133,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>system</find>
-      <find>create</find>
-      <find>findahk</find>
-      <find>override</find>
-      <find>setVisible</find>
-      <find>setAhk</find>
-      <find>Lucida Sans Unicode</find>
-      <find>css</find>
-      <find>borderpane</find>
-      <find>StepPane</find>
-      <find>stepPane</find>
       <find>step</find>
       <find>stepBar</find>
       <find>ahkinter</find>
@@ -157,6 +152,17 @@
       <find>ll</find>
       <find>sys</find>
       <find>writeScript</find>
+      <find>mouseclicked</find>
+      <find>A9</find>
+      <find>Actions</find>
+      <find>sectionPane</find>
+      <find>sectionpane</find>
+      <find>infolabel</find>
+      <find>createlabel</find>
+      <find>final</find>
+      <find>scriptnamelabel</find>
+      <find>hgrow</find>
+      <find>scroll</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -206,10 +212,10 @@
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/Frames/KeySelection.java" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/database/ProfilesData.java" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/MenuSetup.java" />
-        <option value="$PROJECT_DIR$/src/ahk/pkginterface/browsingFrames/browseAction.java" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/ComponentStorage.java" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/Frames/TaskScheduler.java" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/database/ActionsData.java" />
+        <option value="$PROJECT_DIR$/src/ahk/pkginterface/browsingFrames/browseAction.java" />
         <option value="$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java" />
       </list>
     </option>
@@ -611,6 +617,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="1" width="960" height="1079" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="14" side_tool="false" content_ui="tabs" />
@@ -940,15 +947,15 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
           <caret line="35" column="0" lean-forward="false" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/Frames/KeySelection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="663">
-          <caret line="59" column="5" lean-forward="false" selection-start-line="59" selection-start-column="5" selection-end-line="59" selection-end-column="5" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#4014#4015#0" expanded="false" />
+            <element signature="e#4057#4058#0" expanded="false" />
+            <element signature="e#4412#4413#0" expanded="false" />
+            <element signature="e#4445#4446#0" expanded="false" />
+            <element signature="e#4479#4480#0" expanded="false" />
+            <element signature="e#4512#4513#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -959,19 +966,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/browsingFrames/browseAction.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1904">
-          <caret line="135" column="89" lean-forward="false" selection-start-line="135" selection-start-column="89" selection-end-line="135" selection-end-column="89" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/database/ProfilesData.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="38">
           <caret line="118" column="9" lean-forward="false" selection-start-line="118" selection-start-column="9" selection-end-line="118" selection-end-column="9" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -979,9 +977,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="374">
           <caret line="50" column="48" lean-forward="false" selection-start-line="50" selection-start-column="48" selection-end-line="50" selection-end-column="48" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -990,7 +986,17 @@
         <state relative-caret-position="542">
           <caret line="249" column="68" lean-forward="true" selection-start-line="249" selection-start-column="68" selection-end-line="249" selection-end-column="68" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/database/ActionsData.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1071">
+          <caret line="68" column="13" lean-forward="false" selection-start-line="68" selection-start-column="13" selection-end-line="68" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1003,18 +1009,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/database/ActionsData.java">
+    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/Frames/KeySelection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="453">
-          <caret line="68" column="13" lean-forward="false" selection-start-line="68" selection-start-column="13" selection-end-line="68" selection-end-column="13" />
+        <state relative-caret-position="255">
+          <caret line="35" column="62" lean-forward="false" selection-start-line="35" selection-start-column="62" selection-end-line="35" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/browsingFrames/browseAction.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="732">
+          <caret line="149" column="158" lean-forward="true" selection-start-line="148" selection-start-column="8" selection-end-line="149" selection-end-column="158" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="483">
-          <caret line="218" column="67" lean-forward="true" selection-start-line="218" selection-start-column="67" selection-end-line="218" selection-end-column="67" />
+        <state relative-caret-position="695">
+          <caret line="175" column="50" lean-forward="true" selection-start-line="175" selection-start-column="50" selection-end-line="175" selection-end-column="50" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
