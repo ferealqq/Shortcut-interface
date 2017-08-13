@@ -41,8 +41,10 @@ public class AHKInterface extends JFrame {
     private VBox actionSectionPane = null;
     private final Label scriptNameLabel = new Label();
 
-    private File currentActionDisblayedFile = null;
-    private Label currentActionDisblayedLabel = null;
+    private File currentScriptDisblayedFile = null;
+    private Label currentScriptDisblayedLabel = null;
+    private Label currentActionDisbalayedLabel = null;
+    private Label currentKeyDisblayedLabel = null;
     public AHKInterface() {
         componentStorage = new ComponentStorage(main);
         componentStorage.setAhkinterface(this);
@@ -121,10 +123,10 @@ public class AHKInterface extends JFrame {
             public void handle(ActionEvent event) {
                 String newName = JOptionPane.showInputDialog(main,"Write new name of the script","Rename");
                 if(!newName.isEmpty()){
-                    Boolean bool = currentActionDisblayedFile.renameTo(new File(currentActionDisblayedFile.getParent()+"\\"+newName+".ahk"));
+                    Boolean bool = currentScriptDisblayedFile.renameTo(new File(currentScriptDisblayedFile.getParent()+"\\"+newName+".ahk"));
                     if(bool) {
                         scriptNameLabel.setText(newName);
-                        currentActionDisblayedLabel.setText(newName);
+                        currentScriptDisblayedLabel.setText(newName);
                     }
                 }
             }
@@ -247,15 +249,10 @@ public class AHKInterface extends JFrame {
                     @Override
                     public void handle(MouseEvent event) {
                         Iterator<Node> iterator  =labelPane.getChildren().iterator();
-                        while(iterator.hasNext()){
-                            Node iteratorNextNode = iterator.next();
-                            Label oldLabelWithWrongColor = null;
-                            if(iteratorNextNode.getClass().equals(Label.class))  oldLabelWithWrongColor = (Label)iteratorNextNode;
-                            if(oldLabelWithWrongColor.getStyle().equals("-fx-background-color: #A9A9A9;")) oldLabelWithWrongColor.setStyle("-fx-background-color: transparent");
-                        }
+                        oldColorReplacement(iterator);
                         if (!scriptLabel.getStyle().equals("-fx-background-color: #A9A9A9;")) {
-                            currentActionDisblayedFile = file;
-                            currentActionDisblayedLabel = scriptLabel;
+                            currentScriptDisblayedFile = file;
+                            currentScriptDisblayedLabel = scriptLabel;
                             scriptLabel.setStyle("-fx-background-color: #A9A9A9;");
                             scriptNameLabel.setText(scriptName);
                             BufferedReader reader = null;
@@ -277,8 +274,8 @@ public class AHKInterface extends JFrame {
                                 }
                             }
                         }else{
-                            currentActionDisblayedFile = null;
-                            currentActionDisblayedLabel = null;
+                            currentScriptDisblayedFile = null;
+                            currentScriptDisblayedLabel = null;
                             deleteOldScriptInfo();
                             scriptLabel.setStyle("-fx-background-color: transparent");
                             scriptNameLabel.setText("");
@@ -334,6 +331,34 @@ public class AHKInterface extends JFrame {
             List<String> listOfActions = keyAndAListOfActionsInCurrentScript.get(keyFromMapToString).stream().distinct().collect(Collectors.toList());
             Label currentActionlabel = new Label(listOfActions.toString());
             Label currentKeyLabel = new Label(keyFromMapToString.replace(":"," "));
+            currentKeyLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    Iterator<Node> iterator = keyPane.getChildren().iterator();
+                    oldColorReplacement(iterator);
+                    if(!currentKeyLabel.getStyle().equals("-fx-background-color: #A9A9A9;")){
+                        currentKeyLabel.setStyle("-fx-background-color: #A9A9A9;");
+                        currentKeyDisblayedLabel = currentKeyLabel;
+                    }else{
+                        currentKeyDisblayedLabel = null;
+                        currentKeyLabel.setStyle("-fx-background-color: transparent");
+                    }
+                }
+            });
+            currentActionlabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    Iterator<Node> iterator = actionsPane.getChildren().iterator();
+                    oldColorReplacement(iterator);
+                    if(!currentActionlabel.getStyle().equals("-fx-background-color: #A9A9A9;")){
+                        currentActionlabel.setStyle("-fx-background-color: #A9A9A9;");
+                        currentActionDisbalayedLabel = currentActionlabel;
+                    }else{
+                        currentActionDisbalayedLabel = null;
+                        currentActionlabel.setStyle("-fx-background-color: transparent");
+                    }
+                }
+            });
             actionsPane.getChildren().add(currentActionlabel);
             keyPane.getChildren().add(currentKeyLabel);
         }
@@ -341,6 +366,14 @@ public class AHKInterface extends JFrame {
         actionsPane.setAlignment(Pos.CENTER);
         keySectionPane.getChildren().add(keyPane);
         actionSectionPane.getChildren().add(actionsPane);
+    }
+    private  void oldColorReplacement(Iterator<Node> iterator){
+        while(iterator.hasNext()){
+            Node iteratorNextNode = iterator.next();
+            Label oldLabelWithWrongColor = null;
+            if(iteratorNextNode.getClass().equals(Label.class))  oldLabelWithWrongColor = (Label)iteratorNextNode;
+            if(oldLabelWithWrongColor.getStyle().equals("-fx-background-color: #A9A9A9;")) oldLabelWithWrongColor.setStyle("-fx-background-color: transparent");
+        }
     }
     public void analyzeTheScript(ArrayList<String> insidesOfTheFile){
         Iterator<String> insidesOfTheFileIterator = insidesOfTheFile.iterator();

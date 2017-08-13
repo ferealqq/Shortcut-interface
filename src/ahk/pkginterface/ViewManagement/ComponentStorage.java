@@ -1,10 +1,7 @@
 package ahk.pkginterface.ViewManagement;
 
 import ahk.pkginterface.AHKInterface;
-import ahk.pkginterface.Frames.KeySelection;
-import ahk.pkginterface.Frames.Register;
-import ahk.pkginterface.Frames.SignIn;
-import ahk.pkginterface.Frames.TaskScheduler;
+import ahk.pkginterface.Frames.*;
 import ahk.pkginterface.browsingFrames.browseAction;
 import ahk.pkginterface.database.Key;
 import javafx.animation.KeyFrame;
@@ -33,6 +30,7 @@ import java.util.LinkedList;
 public class ComponentStorage {
     public AHKInterface ahkinterface;
     public final KeySelection keySelection;
+    public final ChangeKey changeKey;
     public final Register register;
     public final TaskScheduler taskScheduler;
     public final browseAction browseaction;
@@ -60,6 +58,7 @@ public class ComponentStorage {
         viewHistoryBackwards = new LinkedList<>();
         menuSetup = new MenuSetup(this);
         keySelection = new KeySelection(this);
+        changeKey = new ChangeKey(this);
         register = new Register(this);
         taskScheduler = new TaskScheduler(this);
         browseaction = new browseAction(this);
@@ -82,6 +81,8 @@ public class ComponentStorage {
     public void createViewMap() {
         viewMap.put("keyselection",keySelection.keySelectionView);
         mainFrame.add(keySelection.keySelectionView);
+        viewMap.put("changekey",changeKey.changeKeyView);
+        mainFrame.add(changeKey.changeKeyView);
         viewMap.put("register", register.giveView());
         mainFrame.add(register.giveView());
         viewMap.put("browseaction", browseaction.giveView());
@@ -129,12 +130,7 @@ public class ComponentStorage {
             viewHistoryBackwards.removeLast();
             viewHistory.add((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount() - 1));
             ((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount() - 1)).hide();
-            setMenubar(register.rootPane);
-            setMenubar(browseaction.topPane);
-            setMenubar(ahkinterface.menuPaneAkaRealRootPane);
-            setMenubar(keySelection.rootPane);
-            setMenubar(signIn.rootPane);
-            setMenubar(taskScheduler.rootPane);
+            setMenuBars();
             last.show();
             mainFrame.add(last);
         }
@@ -149,12 +145,7 @@ public class ComponentStorage {
             viewHistoryBackwards.add(((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount() - 1)));
             viewHistory.removeLast();
             ((JFXPanel) mainFrame.getContentPane().getComponent(mainFrame.getContentPane().getComponentCount() - 1)).hide();
-            setMenubar(register.rootPane);
-            setMenubar(browseaction.topPane);
-            setMenubar(ahkinterface.menuPaneAkaRealRootPane);
-            setMenubar(keySelection.rootPane);
-            setMenubar(signIn.rootPane);
-            setMenubar(taskScheduler.rootPane);
+            setMenuBars();
             // kuin hideet jotain sinun pitää refreshaa menubar muista
             last.show();
             mainFrame.add(last);
@@ -170,12 +161,16 @@ public class ComponentStorage {
         showthis.show();
         viewHistory.add(hidethis);
         mainFrame.add(showthis);
+        setMenuBars();
+    }
+    public void setMenuBars(){
         setMenubar(register.rootPane);
         setMenubar(browseaction.topPane);
         setMenubar(ahkinterface.menuPaneAkaRealRootPane);
         setMenubar(keySelection.rootPane);
         setMenubar(signIn.rootPane);
         setMenubar(taskScheduler.rootPane);
+        setMenubar(changeKey.rootPane);
     }
     /*
     *   setMenubar is a function that removes old menubar and creates a new menubar.

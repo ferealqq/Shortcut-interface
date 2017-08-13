@@ -4,40 +4,34 @@ import ahk.pkginterface.ViewManagement.ComponentStorage;
 import ahk.pkginterface.database.Key;
 import ahk.pkginterface.database.KeyData;
 import ahk.pkginterface.database.Keys;
-import javafx.beans.binding.Bindings;
 import javafx.embed.swing.JFXPanel;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 
 import javax.swing.*;
-
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.*;
-import javafx.event.EventHandler;
-import javafx.event.ActionEvent;
-
-import java.io.*;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-
-public class KeySelection {
-    public final JFXPanel keySelectionView = new JFXPanel();
+public class ChangeKey {
+    public final JFXPanel changeKeyView = new JFXPanel();
     public final VBox rootPane = new VBox();
     private final ArrayList<Button> bottomRowButtons = new ArrayList<>();
 
     private EventHandler<ActionEvent> nextEventHandler;
-    private EventHandler<ActionEvent> detectEventHandler;
-    private EventHandler<ActionEvent> yourScriptEventHandler;
 
-    private YourScriptFrame yourScriptFrame = new YourScriptFrame();
-    public ComponentStorage componentStorage;// siirä viewmap aloitus formiin sitten kuin se on tehty
+    public ComponentStorage componentStorage;
 
-    public KeySelection(ComponentStorage compStorage) {
+    public ChangeKey(ComponentStorage compStorage) {
         componentStorage = compStorage;
-        initComponents(keySelectionView);
+        initComponents(changeKeyView);
     }
     private void initComponents(JFXPanel jfxPanel) {
         Scene scene = createScene();
@@ -46,69 +40,15 @@ public class KeySelection {
 
     private Scene createScene() {
         Scene scene = new Scene(rootPane, 1000, 600);
-        createKeyListeners();
-        componentStorage.createStepBar(rootPane);
-        componentStorage.highLightCurrentStep(1);
         try {
             createKeyboard();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         createButtons(scene);
-        setKeyListeners();
         return (scene);
     }
-    public void changeKeyMode(Boolean changeBoolean){
-        if(changeBoolean){
 
-        }
-    }
-
-    private void createKeyListeners() {
-        nextEventHandler = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (componentStorage.pressedKeys.isEmpty()) {
-                    JOptionPane.showMessageDialog(null, "You havent selected any keys try again later!");
-                    return;
-                }
-                componentStorage.hideSelectedAndShowSelected(keySelectionView, componentStorage.viewMap.get("browseaction"));
-            }
-        };
-        yourScriptEventHandler = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                yourScriptFrame.setLocation(componentStorage.ahkinterface.getX() + 200, componentStorage.ahkinterface.getY() + 75);
-                yourScriptFrame.setVisible(true);
-                yourScriptFrame.createLabel();
-            }
-        };
-        detectEventHandler = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-            }
-        };
-    }
-
-    private void setKeyListeners() {
-        for (int i = 0; i < bottomRowButtons.size(); i++) {
-            switch (bottomRowButtons.get(i).getText()) {
-                case "Detect":
-                    Button btDetect = bottomRowButtons.get(i);
-                    btDetect.setOnAction(detectEventHandler);
-                    break;
-                case "Your Scripts":
-                    Button btScript = bottomRowButtons.get(i);
-                    btScript.setOnAction(yourScriptEventHandler);
-                    break;
-                case "Next":
-                    Button btNext = bottomRowButtons.get(i);
-                    btNext.setOnAction(nextEventHandler);
-                    break;
-            }
-        }
-    }
 
     private void createButtons(Scene scene) {
         HBox buttonRow = new HBox();
@@ -119,34 +59,19 @@ public class KeySelection {
         btBack.setMaxHeight(Double.MAX_VALUE);
         bottomRowButtons.add(btBack);
 
-        Button btScripts = new Button("Your Scripts");
-        buttonRow.setHgrow(btScripts, Priority.ALWAYS);
-        btScripts.setMaxWidth(Double.MAX_VALUE);
-        btScripts.setMaxHeight(Double.MAX_VALUE);
-        bottomRowButtons.add(btScripts);
-
-        Button btDetect = new Button("Detect");
-        buttonRow.setHgrow(btDetect, Priority.ALWAYS);
-        btDetect.setMaxWidth(Double.MAX_VALUE);
-        btDetect.setMaxHeight(Double.MAX_VALUE);
-        bottomRowButtons.add(btDetect);
-
-
-        Button btBrowse = new Button("Browse Scripts");
-        buttonRow.setHgrow(btBrowse, Priority.ALWAYS);
-        btBrowse.setMaxWidth(Double.MAX_VALUE);
-        btBrowse.setMaxHeight(Double.MAX_VALUE);
-        bottomRowButtons.add(btBrowse);
-
-
         Button btNext = new Button("Next");
         buttonRow.setHgrow(btNext, Priority.ALWAYS);
-        if (componentStorage.pressedKeys.isEmpty()) {
-            btNext.setDisable(true);
-        } else {
-            btNext.setDisable(false);
-        }
-        buttonRow.getChildren().addAll(btBack, btScripts, btDetect, btBrowse, btNext);
+        btNext.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (componentStorage.pressedKeys.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "You havent selected any keys try again later!");
+                    return;
+                }
+                componentStorage.hideSelectedAndShowSelected(changeKeyView, componentStorage.viewMap.get("browseaction"));
+            }
+        });
+        buttonRow.getChildren().addAll(btBack, btNext);
         buttonRow.setAlignment(Pos.BOTTOM_LEFT);
         bottomRowButtons.add(btNext);
 
@@ -231,40 +156,6 @@ public class KeySelection {
                     }
                 }
             }
-        }
-    }
-    class YourScriptFrame extends JFrame {
-        public final JFXPanel yourScriptView = new JFXPanel();
-
-        public final ScrollPane scrollPane = new ScrollPane();
-        public final VBox vBox = new VBox(10);
-
-        public YourScriptFrame() {
-            this.setUndecorated(true);
-            this.setSize(400, 400);
-            initComponent();
-        }
-
-        private void initComponent() {
-            Scene scene = createLocalScene();
-            this.yourScriptView.setScene(scene);
-            this.add(yourScriptView);
-        }
-
-        private Scene createLocalScene() {
-            Scene scene = new Scene(scrollPane);
-            return scene;
-        }
-
-        private void createLabel() {
-            for (String path : componentStorage.oldScriptPaths) {
-                Label currentlabel = new Label(path);
-                vBox.setVgrow(currentlabel, Priority.ALWAYS);
-                vBox.getChildren().add(currentlabel);
-            }
-            int oldsize = componentStorage.oldScriptPaths.size();
-            scrollPane.setContent(vBox);
-            vBox.minWidthProperty().bind(Bindings.createDoubleBinding(() -> scrollPane.getViewportBounds().getWidth(), scrollPane.viewportBoundsProperty()));
         }
     }
 }
