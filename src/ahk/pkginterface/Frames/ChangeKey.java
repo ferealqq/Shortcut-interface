@@ -20,9 +20,8 @@ import javax.swing.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Stream;
 
 public class ChangeKey {
     public final JFXPanel changeKeyView = new JFXPanel();
@@ -32,6 +31,7 @@ public class ChangeKey {
     private EventHandler<ActionEvent> nextEventHandler;
 
     public ComponentStorage componentStorage;
+    public VBox KeyButtonPane = null;
 
     public ChangeKey(ComponentStorage compStorage) {
         componentStorage = compStorage;
@@ -86,12 +86,18 @@ public class ChangeKey {
                 try {
                     lines = Files.readAllLines(scriptToChangeIn.toPath(), StandardCharsets.UTF_8);
                     lines.remove(indexWhereToBePlaced-1);
-                    lines.add(indexWhereToBePlaced-1, componentStorage.toBeChangedKeys.get(0).getKeysynonyminahk()+"::");
+                    if(componentStorage.toBeChangedKeys.size() == 2){
+                        lines.add(indexWhereToBePlaced-1,componentStorage.toBeChangedKeys.get(0).getKeysynonyminahk() + " & "+componentStorage.toBeChangedKeys.get(1).getKeysynonyminahk() + "::");
+                    }else{
+                        lines.add(indexWhereToBePlaced-1, componentStorage.toBeChangedKeys.get(0).getKeysynonyminahk()+"::");
+                    }
                     Files.write(scriptToChangeIn.toPath(), lines, StandardCharsets.UTF_8);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+                componentStorage.changeKeyInfo.currentKeyDisblayedLabel.setText(componentStorage.toBeChangedKeys.get(0).getKey());
                 componentStorage.hideSelectedAndShowSelected(changeKeyView, componentStorage.viewMap.get("ahkinterface"));
+
             }
         });
         buttonRow.getChildren().addAll(btBack, btChangeKey);
@@ -106,12 +112,12 @@ public class ChangeKey {
     private void createKeyboard() throws FileNotFoundException {
         Keys keys = new KeyData().readKeyboardLayoutUSToKeys();
         keys.addRowsToArrayListRows();
-        VBox KeyButtonPane = new VBox();
+        KeyButtonPane = new VBox();
         for (ArrayList<Key> row : keys.rows) {
             HBox rowPane = new HBox();
             for (int i = 0; i < row.size(); i++) {
                 Key currentkey = row.get(i);
-                Button btnKey = new Button(currentkey.getKey());
+                Button btnKey = new Button(currentkey.getKey().toUpperCase());
                 rowPane.setHgrow(btnKey, Priority.ALWAYS);
                 btnKey.setMaxWidth(Double.MAX_VALUE);
                 btnKey.setMaxHeight(Double.MAX_VALUE);
@@ -154,6 +160,26 @@ public class ChangeKey {
             }
         }
         */
+    }
+    public void disableRightKeys(){
+        if(Objects.nonNull(componentStorage.changeKeyInfo.currentKeyDisblayedLabel)) {
+            ArrayList<String> listOfKeysInCurrentScript = componentStorage.changeKeyInfo.getCurrentScriptKeysInArrayList();
+            for (Node childInKeyButtonPane : KeyButtonPane.getChildren()) {
+                if (childInKeyButtonPane.getClass().equals(HBox.class)) {
+                    HBox hBox = (HBox) childInKeyButtonPane;
+                    for (Node node : hBox.getChildren()) {
+                        Button btnkey = (Button) node;
+                        for (String keyInCurrentScript : listOfKeysInCurrentScript) {
+                            System.out.println(keyInCurrentScript+btnkey.getText());
+                            if (btnkey.getText().equals(keyInCurrentScript.replace(" ", "").toUpperCase())) {
+                                System.out.println("?");
+                                btnkey.setDisable(true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private void disableOrEnable(Pane keyButtonPane) {

@@ -1,2 +1,2 @@
-start E:\AHK-Interface\YourScripts\funnyonepeke.ahk
+start E:\AHK-Interface\YourScripts\niceone.ahk
 exit

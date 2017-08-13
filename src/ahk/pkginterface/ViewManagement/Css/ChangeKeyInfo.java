@@ -1,9 +1,12 @@
 package ahk.pkginterface.ViewManagement.Css;
 
 import javafx.scene.control.Label;
+import org.omg.CORBA.INTERNAL;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 
 public class ChangeKeyInfo {
     public File currentScriptDisblayedFile = null;
@@ -13,5 +16,12 @@ public class ChangeKeyInfo {
     public final HashMap<String,HashMap<String,Integer>> keysIndexInScript = new HashMap<>();
     public ChangeKeyInfo(){
 
+    }
+    public HashMap<String,Integer> getCurrentScriptInformation(){
+        return keysIndexInScript.get(currentKeyDisblayedLabel.getText().replace(" ",""));
+    }
+    public ArrayList<String> getCurrentScriptKeysInArrayList(){
+        HashMap<String,Integer> map = keysIndexInScript.get(currentScriptDisblayedFile.getName().replaceFirst("[.][^.]+$", ""));
+        return new ArrayList<String>(map.keySet());
     }
 }

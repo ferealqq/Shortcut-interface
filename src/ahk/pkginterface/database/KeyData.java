@@ -59,7 +59,21 @@ public class KeyData {
             closeConnection(connection);
         }
     }
-
+    public ArrayList<ArrayList<Key>>getKeysInArrayLists(){
+        ArrayList<ArrayList<Key>> theRealList = new ArrayList<>();
+        try {
+            Keys keys = new KeyData().readKeyboardLayoutUSToKeys();
+            keys.addRowsToArrayListRows();
+            ArrayList<ArrayList> k = keys.rows;
+            for(ArrayList<Key> keek : k){
+                theRealList.add(keek);
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }finally {
+            return theRealList;
+        }
+    }
     /*
     * check if the data has been written to the databse already.
     * returns true if data already exists if not returns false

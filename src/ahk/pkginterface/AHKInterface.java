@@ -129,6 +129,7 @@ public class AHKInterface extends JFrame {
         btChangeKey.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                componentStorage.changeKey.disableRightKeys();
                 componentStorage.hideSelectedAndShowSelected((JFXPanel)main.getContentPane().getComponent(main.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("changekey"));
             }
         });
