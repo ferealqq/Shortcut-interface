@@ -23,9 +23,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 public class AHKInterface extends JFrame {
@@ -43,7 +41,8 @@ public class AHKInterface extends JFrame {
     private VBox actionSectionPane = null;
     private final Label scriptNameLabel = new Label();
 
-
+    private File currentActionDisblayedFile = null;
+    private Label currentActionDisblayedLabel = null;
     public AHKInterface() {
         componentStorage = new ComponentStorage(main);
         componentStorage.setAhkinterface(this);
@@ -92,24 +91,68 @@ public class AHKInterface extends JFrame {
 
     private HBox createBottomButtonPane() {
         HBox bottomButtonPane = new HBox();
-        Button changeKey = new Button("Change key");
-        changeKey.setMaxSize(Double.MAX_VALUE, 50);
-        bottomButtonPane.setHgrow(changeKey, Priority.ALWAYS);
-        Button changeAction = new Button("Change action");
-        changeAction.setMaxSize(Double.MAX_VALUE, 50);
-        bottomButtonPane.setHgrow(changeAction, Priority.ALWAYS);
-        Button editTask = new Button("Edit Scheduled Task");
-        editTask.setMaxSize(Double.MAX_VALUE, 50);
-        bottomButtonPane.setHgrow(editTask, Priority.ALWAYS);
-        Button run = new Button("Run");
-        run.setMaxSize(Double.MAX_VALUE, 50);
-        bottomButtonPane.setHgrow(run, Priority.ALWAYS);
+        Button btRenameTheScript = new Button("Rename");
+        btRenameTheScript.setMaxSize(Double.MAX_VALUE, 50);
+        bottomButtonPane.setHgrow(btRenameTheScript, Priority.ALWAYS);
+        Button btChangeKey = new Button("Change key");
+        btChangeKey.setMaxSize(Double.MAX_VALUE, 50);
+        bottomButtonPane.setHgrow(btChangeKey, Priority.ALWAYS);
+        Button btChangeAction = new Button("Change action");
+        btChangeAction.setMaxSize(Double.MAX_VALUE, 50);
+        bottomButtonPane.setHgrow(btChangeAction, Priority.ALWAYS);
+        Button btEditTask = new Button("Edit Scheduled Task");
+        btEditTask.setMaxSize(Double.MAX_VALUE, 50);
+        bottomButtonPane.setHgrow(btEditTask, Priority.ALWAYS);
+        Button btRun = new Button("Run");
+        btRun.setMaxSize(Double.MAX_VALUE, 50);
+        bottomButtonPane.setHgrow(btRun, Priority.ALWAYS);
+
+        createButtonActions(btRenameTheScript,btChangeKey,btChangeAction,btEditTask,btRun);
 
         bottomButtonPane.getStylesheets().add(this.getClass().getResource("Css/main_btns.css").toExternalForm());
-        bottomButtonPane.getChildren().addAll(changeKey, changeAction, editTask, run);
+        bottomButtonPane.getChildren().addAll(btRenameTheScript,btChangeKey, btChangeAction, btEditTask, btRun);
 
         bottomButtonPane.setMaxSize(Double.MAX_VALUE, 50);
         return bottomButtonPane;
+    }
+    private void createButtonActions(Button btRenameTheScript,Button btChangeKey, Button btChangeAction,Button btEditTask,Button btRun){
+        btRenameTheScript.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String newName = JOptionPane.showInputDialog(main,"Write new name of the script","Rename");
+                if(!newName.isEmpty()){
+                    Boolean bool = currentActionDisblayedFile.renameTo(new File(currentActionDisblayedFile.getParent()+"\\"+newName+".ahk"));
+                    if(bool) {
+                        scriptNameLabel.setText(newName);
+                        currentActionDisblayedLabel.setText(newName);
+                    }
+                }
+            }
+        });
+        btChangeKey.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        });
+        btChangeAction.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        });
+        btEditTask.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        });
+        btRun.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+            }
+        });
     }
 
     private HBox createScriptInfoPane() {
@@ -203,7 +246,16 @@ public class AHKInterface extends JFrame {
                 scriptLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
+                        Iterator<Node> iterator  =labelPane.getChildren().iterator();
+                        while(iterator.hasNext()){
+                            Node iteratorNextNode = iterator.next();
+                            Label oldLabelWithWrongColor = null;
+                            if(iteratorNextNode.getClass().equals(Label.class))  oldLabelWithWrongColor = (Label)iteratorNextNode;
+                            if(oldLabelWithWrongColor.getStyle().equals("-fx-background-color: #A9A9A9;")) oldLabelWithWrongColor.setStyle("-fx-background-color: transparent");
+                        }
                         if (!scriptLabel.getStyle().equals("-fx-background-color: #A9A9A9;")) {
+                            currentActionDisblayedFile = file;
+                            currentActionDisblayedLabel = scriptLabel;
                             scriptLabel.setStyle("-fx-background-color: #A9A9A9;");
                             scriptNameLabel.setText(scriptName);
                             BufferedReader reader = null;
@@ -225,6 +277,8 @@ public class AHKInterface extends JFrame {
                                 }
                             }
                         }else{
+                            currentActionDisblayedFile = null;
+                            currentActionDisblayedLabel = null;
                             deleteOldScriptInfo();
                             scriptLabel.setStyle("-fx-background-color: transparent");
                             scriptNameLabel.setText("");

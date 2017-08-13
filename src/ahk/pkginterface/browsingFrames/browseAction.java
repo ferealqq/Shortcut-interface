@@ -112,7 +112,7 @@ public class browseAction{
         String searchFieldCss = this.getClass().getResource("search_field_css.css").toExternalForm();
         String btCss = this.getClass().getResource("main_btns.css").toExternalForm();
         searchField.getStylesheets().add(searchFieldCss);
-        topPane.getChildren().add(searchField);
+        topPane.getChildren().add(searchField); 
         BorderPane.setAlignment(btNext, Pos.BOTTOM_RIGHT);
         btNext.getStylesheets().add(btCss);
         btNext.setOnAction(btNextAction);
