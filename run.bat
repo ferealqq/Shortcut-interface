@@ -1,2 +1,2 @@
-start E:\AHK-Interface\YourScripts\moik.ahk
+start E:\AHK-Interface\YourScripts\funnyonepeke.ahk
 exit

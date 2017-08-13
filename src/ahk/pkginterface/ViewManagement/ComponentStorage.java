@@ -2,6 +2,7 @@ package ahk.pkginterface.ViewManagement;
 
 import ahk.pkginterface.AHKInterface;
 import ahk.pkginterface.Frames.*;
+import ahk.pkginterface.ViewManagement.Css.ChangeKeyInfo;
 import ahk.pkginterface.browsingFrames.browseAction;
 import ahk.pkginterface.database.Key;
 import javafx.animation.KeyFrame;
@@ -21,6 +22,7 @@ import javafx.util.Duration;
 
 import javax.swing.*;
 import java.io.File;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -45,8 +47,11 @@ public class ComponentStorage {
     private Button secondStep;
     private Button thirdStep;
     public final ArrayList<Key> pressedKeys = new ArrayList<>();
+    public final ArrayList<Key> toBeChangedKeys = new ArrayList<>();
 
     public final ArrayList<String> choosenActionName = new ArrayList<>();
+
+    public final ChangeKeyInfo changeKeyInfo = new ChangeKeyInfo();
 
     public String nameofthescript;
     public final ArrayList<String> oldScriptPaths = new ArrayList<>();

@@ -1,6 +1,5 @@
 
 f5::
-DetectHiddenWindows, On 
 IfWinActive, ahk_class SpotifyMainWindow 
 {
 Send {Media_Play_Pause}

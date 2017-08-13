@@ -1,23 +1,4 @@
-
-f4::
-DetectHiddenWindows, On 
-IfWinActive, ahk_class SpotifyMainWindow 
-{
-SoundSet, +1, , mute
-DetectHiddenWindows, Off
-return
-}
-IfWinNotActive, ahk_class SpotifyMainWindow
-{
-WinShow, ahk_class SpotifyMainWindow
-winactivate, ahk_class SpotifyMainWindow
-SoundSet, +1, , mute
-WinMinimize, ahk_class SpotifyMainWindow 
-DetectHiddenWindows, Off
-return
-}
-
-f5::
+f1::
 DetectHiddenWindows, On 
 IfWinActive, ahk_class SpotifyMainWindow 
 {
@@ -35,8 +16,7 @@ DetectHiddenWindows, Off
 return
 }
 
-f6::
-DetectHiddenWindows, On 
+Esc::
 IfWinActive, ahk_class SpotifyMainWindow 
 {
 SoundSet -1
@@ -53,9 +33,7 @@ DetectHiddenWindows, Off
 return
 }
 
-f8::
-DetectHiddenWindows, On 
-IfWinActive, ahk_class SpotifyMainWindow 
+f7::
 {
 SoundSet +1
 DetectHiddenWindows, Off

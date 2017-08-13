@@ -31,6 +31,7 @@ public class KeySelection {
     private EventHandler<ActionEvent> nextEventHandler;
     private EventHandler<ActionEvent> detectEventHandler;
     private EventHandler<ActionEvent> yourScriptEventHandler;
+    private EventHandler<ActionEvent> backtomenuEventHandler;
 
     private YourScriptFrame yourScriptFrame = new YourScriptFrame();
     public ComponentStorage componentStorage;// siirä viewmap aloitus formiin sitten kuin se on tehty
@@ -89,11 +90,21 @@ public class KeySelection {
 
             }
         };
+        backtomenuEventHandler = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                componentStorage.hideSelectedAndShowSelected((JFXPanel)componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("ahkinterface"));
+            }
+        };
     }
 
     private void setKeyListeners() {
         for (int i = 0; i < bottomRowButtons.size(); i++) {
             switch (bottomRowButtons.get(i).getText()) {
+                case "Back to menu":
+                    Button btBack = bottomRowButtons.get(i);
+                    btBack.setOnAction(backtomenuEventHandler);
+                    break;
                 case "Detect":
                     Button btDetect = bottomRowButtons.get(i);
                     btDetect.setOnAction(detectEventHandler);

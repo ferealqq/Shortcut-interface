@@ -17,8 +17,12 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import javax.swing.*;
-import java.io.FileNotFoundException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class ChangeKey {
     public final JFXPanel changeKeyView = new JFXPanel();
@@ -54,26 +58,45 @@ public class ChangeKey {
         HBox buttonRow = new HBox();
 
         Button btBack = new Button("Back to menu");
+        btBack.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                componentStorage.hideSelectedAndShowSelected((JFXPanel)componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("ahkinterface"));
+            }
+        });
         buttonRow.setHgrow(btBack, Priority.ALWAYS);
         btBack.setMaxWidth(Double.MAX_VALUE);
         btBack.setMaxHeight(Double.MAX_VALUE);
         bottomRowButtons.add(btBack);
 
-        Button btNext = new Button("Next");
-        buttonRow.setHgrow(btNext, Priority.ALWAYS);
-        btNext.setOnAction(new EventHandler<ActionEvent>() {
+        Button btChangeKey = new Button("Change Key");
+        buttonRow.setHgrow(btChangeKey, Priority.ALWAYS);
+        btChangeKey.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (componentStorage.pressedKeys.isEmpty()) {
+                if (componentStorage.toBeChangedKeys.isEmpty()) {
                     JOptionPane.showMessageDialog(null, "You havent selected any keys try again later!");
                     return;
                 }
-                componentStorage.hideSelectedAndShowSelected(changeKeyView, componentStorage.viewMap.get("browseaction"));
+                String keyToBeChanged = componentStorage.changeKeyInfo.currentKeyDisblayedLabel.getText().replace(" ","");
+                File scriptToChangeIn = componentStorage.changeKeyInfo.currentScriptDisblayedFile;
+                HashMap<String,Integer> map = componentStorage.changeKeyInfo.keysIndexInScript.get(scriptToChangeIn.getName().replaceFirst("[.][^.]+$", ""));
+                int indexWhereToBePlaced= map.get(keyToBeChanged);
+                List<String> lines = null;
+                try {
+                    lines = Files.readAllLines(scriptToChangeIn.toPath(), StandardCharsets.UTF_8);
+                    lines.remove(indexWhereToBePlaced-1);
+                    lines.add(indexWhereToBePlaced-1, componentStorage.toBeChangedKeys.get(0).getKeysynonyminahk()+"::");
+                    Files.write(scriptToChangeIn.toPath(), lines, StandardCharsets.UTF_8);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                componentStorage.hideSelectedAndShowSelected(changeKeyView, componentStorage.viewMap.get("ahkinterface"));
             }
         });
-        buttonRow.getChildren().addAll(btBack, btNext);
+        buttonRow.getChildren().addAll(btBack, btChangeKey);
         buttonRow.setAlignment(Pos.BOTTOM_LEFT);
-        bottomRowButtons.add(btNext);
+        bottomRowButtons.add(btChangeKey);
 
         String buttonRowCss = this.getClass().getResource("Css/main_btns.css").toExternalForm();
         buttonRow.getStylesheets().add(buttonRowCss);
@@ -95,10 +118,10 @@ public class ChangeKey {
                 btnKey.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
-                        if (componentStorage.pressedKeys.contains(currentkey)) {
-                            componentStorage.pressedKeys.remove(currentkey);
+                        if (componentStorage.toBeChangedKeys.contains(currentkey)) {
+                            componentStorage.toBeChangedKeys.remove(currentkey);
                             btnKey.setStyle(null);
-                            if (componentStorage.pressedKeys.isEmpty()) {
+                            if (componentStorage.toBeChangedKeys.isEmpty()) {
                                 bottomRowButtons.get(bottomRowButtons.size() - 1).setDisable(true);
                             } else {
                                 bottomRowButtons.get(bottomRowButtons.size() - 1).setDisable(false);
@@ -106,8 +129,8 @@ public class ChangeKey {
                             disableOrEnable(KeyButtonPane);
                         } else {
                             btnKey.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
-                            componentStorage.pressedKeys.add(currentkey);
-                            if (!componentStorage.pressedKeys.isEmpty())
+                            componentStorage.toBeChangedKeys.add(currentkey);
+                            if (!componentStorage.toBeChangedKeys.isEmpty())
                                 bottomRowButtons.get(bottomRowButtons.size() - 1).setDisable(false);
                             disableOrEnable(KeyButtonPane);
                         }
@@ -134,7 +157,7 @@ public class ChangeKey {
     }
 
     private void disableOrEnable(Pane keyButtonPane) {
-        if (componentStorage.pressedKeys.size() >= 2) {
+        if (componentStorage.toBeChangedKeys.size() >= 2) {
             for (Node node : keyButtonPane.getChildren()) {
                 if (node.getClass().equals(HBox.class)) {
                     HBox hbox = (HBox) node;

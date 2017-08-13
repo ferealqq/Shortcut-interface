@@ -2,6 +2,7 @@ package ahk.pkginterface;
 
 import ahk.pkginterface.ViewManagement.ComponentStorage;
 import ahk.pkginterface.database.ActionsData;
+import com.sun.org.apache.bcel.internal.classfile.LineNumber;
 import javafx.beans.binding.Bindings;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
@@ -18,10 +19,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -41,10 +39,7 @@ public class AHKInterface extends JFrame {
     private VBox actionSectionPane = null;
     private final Label scriptNameLabel = new Label();
 
-    private File currentScriptDisblayedFile = null;
-    private Label currentScriptDisblayedLabel = null;
-    private Label currentActionDisbalayedLabel = null;
-    private Label currentKeyDisblayedLabel = null;
+
     public AHKInterface() {
         componentStorage = new ComponentStorage(main);
         componentStorage.setAhkinterface(this);
@@ -123,10 +118,10 @@ public class AHKInterface extends JFrame {
             public void handle(ActionEvent event) {
                 String newName = JOptionPane.showInputDialog(main,"Write new name of the script","Rename");
                 if(!newName.isEmpty()){
-                    Boolean bool = currentScriptDisblayedFile.renameTo(new File(currentScriptDisblayedFile.getParent()+"\\"+newName+".ahk"));
+                    Boolean bool = componentStorage.changeKeyInfo.currentScriptDisblayedFile.renameTo(new File(componentStorage.changeKeyInfo.currentScriptDisblayedFile.getParent()+"\\"+newName+".ahk"));
                     if(bool) {
                         scriptNameLabel.setText(newName);
-                        currentScriptDisblayedLabel.setText(newName);
+                        componentStorage.changeKeyInfo.currentScriptDisblayedLabel.setText(newName);
                     }
                 }
             }
@@ -134,7 +129,7 @@ public class AHKInterface extends JFrame {
         btChangeKey.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                componentStorage.hideSelectedAndShowSelected((JFXPanel)main.getContentPane().getComponent(main.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("changekey"));
             }
         });
         btChangeAction.setOnAction(new EventHandler<ActionEvent>() {
@@ -152,7 +147,15 @@ public class AHKInterface extends JFrame {
         btRun.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                try {
+                    BufferedWriter writer = new BufferedWriter(new FileWriter("run.bat"));
+                    writer.write("start " + componentStorage.changeKeyInfo.currentScriptDisblayedFile.getAbsolutePath());
+                    writer.newLine();
+                    writer.write("exit");
+                    Process batRunner = Runtime.getRuntime().exec("cmd /c start run.bat");
+                    writer.close();
+                } catch (IOException e) {
+                }
             }
         });
     }
@@ -251,19 +254,22 @@ public class AHKInterface extends JFrame {
                         Iterator<Node> iterator  =labelPane.getChildren().iterator();
                         oldColorReplacement(iterator);
                         if (!scriptLabel.getStyle().equals("-fx-background-color: #A9A9A9;")) {
-                            currentScriptDisblayedFile = file;
-                            currentScriptDisblayedLabel = scriptLabel;
+                            componentStorage.changeKeyInfo.currentScriptDisblayedFile = file;
+                            componentStorage.changeKeyInfo.currentScriptDisblayedLabel = scriptLabel;
                             scriptLabel.setStyle("-fx-background-color: #A9A9A9;");
                             scriptNameLabel.setText(scriptName);
-                            BufferedReader reader = null;
+                            LineNumberReader reader = null;
                             try {
-                                reader = new BufferedReader(new FileReader(file.getAbsolutePath()));
+                                reader = new LineNumberReader(new FileReader(file.getAbsolutePath()));
+                                HashMap<String,Integer> keysIndex = new HashMap<>();
                                 ArrayList<String> insidesOfTheFile = new ArrayList<>();
                                 String sCurrentline;
                                 while ((sCurrentline = reader.readLine()) != null) {
                                     insidesOfTheFile.add(sCurrentline);
+                                    if(sCurrentline.endsWith("::")) keysIndex.put(sCurrentline.replace(":",""),reader.getLineNumber());
                                 }
                                 deleteOldScriptInfo();
+                                componentStorage.changeKeyInfo.keysIndexInScript.put(scriptName,keysIndex);
                                 createCurrentScriptInfo(insidesOfTheFile);
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -274,12 +280,13 @@ public class AHKInterface extends JFrame {
                                 }
                             }
                         }else{
-                            currentScriptDisblayedFile = null;
-                            currentScriptDisblayedLabel = null;
+                            componentStorage.changeKeyInfo.currentScriptDisblayedFile = null;
+                            componentStorage.changeKeyInfo.currentScriptDisblayedLabel = null;
                             deleteOldScriptInfo();
                             scriptLabel.setStyle("-fx-background-color: transparent");
                             scriptNameLabel.setText("");
                         }
+                        System.out.println(componentStorage.changeKeyInfo.keysIndexInScript);
                     }
                 });
                 labelPane.getChildren().add(scriptLabel);
@@ -338,9 +345,9 @@ public class AHKInterface extends JFrame {
                     oldColorReplacement(iterator);
                     if(!currentKeyLabel.getStyle().equals("-fx-background-color: #A9A9A9;")){
                         currentKeyLabel.setStyle("-fx-background-color: #A9A9A9;");
-                        currentKeyDisblayedLabel = currentKeyLabel;
+                        componentStorage.changeKeyInfo.currentKeyDisblayedLabel = currentKeyLabel;
                     }else{
-                        currentKeyDisblayedLabel = null;
+                        componentStorage.changeKeyInfo. currentKeyDisblayedLabel = null;
                         currentKeyLabel.setStyle("-fx-background-color: transparent");
                     }
                 }
@@ -352,9 +359,9 @@ public class AHKInterface extends JFrame {
                     oldColorReplacement(iterator);
                     if(!currentActionlabel.getStyle().equals("-fx-background-color: #A9A9A9;")){
                         currentActionlabel.setStyle("-fx-background-color: #A9A9A9;");
-                        currentActionDisbalayedLabel = currentActionlabel;
+                        componentStorage.changeKeyInfo.currentActionDisbalayedLabel = currentActionlabel;
                     }else{
-                        currentActionDisbalayedLabel = null;
+                        componentStorage.changeKeyInfo.currentActionDisbalayedLabel = null;
                         currentActionlabel.setStyle("-fx-background-color: transparent");
                     }
                 }
