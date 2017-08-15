@@ -3,7 +3,7 @@ package ahk.pkginterface.ViewManagement;
 import ahk.pkginterface.AHKInterface;
 import ahk.pkginterface.Frames.*;
 import ahk.pkginterface.ViewManagement.Css.ChangeKeyInfo;
-import ahk.pkginterface.browsingFrames.browseAction;
+import ahk.pkginterface.Frames.BrowseAction;
 import ahk.pkginterface.database.Key;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -22,7 +22,6 @@ import javafx.util.Duration;
 
 import javax.swing.*;
 import java.io.File;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,9 +32,10 @@ public class ComponentStorage {
     public AHKInterface ahkinterface;
     public final KeySelection keySelection;
     public final ChangeKey changeKey;
+    public final ChangeAction changeAction;
     public final Register register;
     public final TaskScheduler taskScheduler;
-    public final browseAction browseaction;
+    public final BrowseAction browseaction;
     public final SignIn signIn;
     public final JFrame mainFrame;
     public final MenuSetup menuSetup;
@@ -48,6 +48,7 @@ public class ComponentStorage {
     private Button thirdStep;
     public final ArrayList<Key> pressedKeys = new ArrayList<>();
     public final ArrayList<Key> toBeChangedKeys = new ArrayList<>();
+    public final ArrayList<String> toBeChangedAction = new ArrayList<>();
 
     public final ArrayList<String> choosenActionName = new ArrayList<>();
 
@@ -64,9 +65,10 @@ public class ComponentStorage {
         menuSetup = new MenuSetup(this);
         keySelection = new KeySelection(this);
         changeKey = new ChangeKey(this);
+        changeAction = new ChangeAction(this);
         register = new Register(this);
         taskScheduler = new TaskScheduler(this);
-        browseaction = new browseAction(this);
+        browseaction = new BrowseAction(this);
         signIn = new SignIn(this);
         createViewMap();
     }
@@ -88,6 +90,8 @@ public class ComponentStorage {
         mainFrame.add(keySelection.keySelectionView);
         viewMap.put("changekey",changeKey.changeKeyView);
         mainFrame.add(changeKey.changeKeyView);
+        viewMap.put("changeaction",changeAction.changeActionView);
+        mainFrame.add(changeAction.changeActionView);
         viewMap.put("register", register.giveView());
         mainFrame.add(register.giveView());
         viewMap.put("browseaction", browseaction.giveView());
@@ -176,6 +180,7 @@ public class ComponentStorage {
         setMenubar(signIn.rootPane);
         setMenubar(taskScheduler.rootPane);
         setMenubar(changeKey.rootPane);
+        setMenubar(changeAction.topPane);
     }
     /*
     *   setMenubar is a function that removes old menubar and creates a new menubar.

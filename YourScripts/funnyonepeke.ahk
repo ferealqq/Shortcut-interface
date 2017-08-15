@@ -1,4 +1,4 @@
-f1::
+f2 & f3::
 DetectHiddenWindows, On 
 IfWinActive, ahk_class SpotifyMainWindow 
 {

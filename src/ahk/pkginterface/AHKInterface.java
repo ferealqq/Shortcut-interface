@@ -136,7 +136,7 @@ public class AHKInterface extends JFrame {
         btChangeAction.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                componentStorage.hideSelectedAndShowSelected((JFXPanel)main.getContentPane().getComponent(main.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("changeaction"));
             }
         });
         btEditTask.setOnAction(new EventHandler<ActionEvent>() {
@@ -252,8 +252,7 @@ public class AHKInterface extends JFrame {
                 scriptLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        Iterator<Node> iterator  =labelPane.getChildren().iterator();
-                        oldColorReplacement(iterator);
+                        oldColorReplacement(labelPane.getChildren().iterator());
                         if (!scriptLabel.getStyle().equals("-fx-background-color: #A9A9A9;")) {
                             componentStorage.changeKeyInfo.currentScriptDisblayedFile = file;
                             componentStorage.changeKeyInfo.currentScriptDisblayedLabel = scriptLabel;
@@ -267,7 +266,7 @@ public class AHKInterface extends JFrame {
                                 String sCurrentline;
                                 while ((sCurrentline = reader.readLine()) != null) {
                                     insidesOfTheFile.add(sCurrentline);
-                                    if(sCurrentline.endsWith("::")) keysIndex.put(sCurrentline.replace(":",""),reader.getLineNumber());
+                                    if(sCurrentline.endsWith("::")) keysIndex.put(sCurrentline.replace(":","").replace(" ",""),reader.getLineNumber());
                                 }
                                 deleteOldScriptInfo();
                                 componentStorage.changeKeyInfo.keysIndexInScript.put(scriptName,keysIndex);
@@ -287,7 +286,6 @@ public class AHKInterface extends JFrame {
                             scriptLabel.setStyle("-fx-background-color: transparent");
                             scriptNameLabel.setText("");
                         }
-                        System.out.println(componentStorage.changeKeyInfo.keysIndexInScript);
                     }
                 });
                 labelPane.getChildren().add(scriptLabel);

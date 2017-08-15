@@ -95,7 +95,11 @@ public class ChangeKey {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                componentStorage.changeKeyInfo.currentKeyDisblayedLabel.setText(componentStorage.toBeChangedKeys.get(0).getKey());
+                if(componentStorage.toBeChangedKeys.size() == 2){
+                    componentStorage.changeKeyInfo.currentKeyDisblayedLabel.setText(componentStorage.toBeChangedKeys.get(0).getKey() + " & " + componentStorage.toBeChangedKeys.get(1).getKey());
+                }else{
+                    componentStorage.changeKeyInfo.currentKeyDisblayedLabel.setText(componentStorage.toBeChangedKeys.get(0).getKey());
+                }
                 componentStorage.hideSelectedAndShowSelected(changeKeyView, componentStorage.viewMap.get("ahkinterface"));
 
             }
@@ -133,11 +137,15 @@ public class ChangeKey {
                                 bottomRowButtons.get(bottomRowButtons.size() - 1).setDisable(false);
                             }
                             disableOrEnable(KeyButtonPane);
+                            disableRightKeys();
                         } else {
                             btnKey.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
                             componentStorage.toBeChangedKeys.add(currentkey);
-                            if (!componentStorage.toBeChangedKeys.isEmpty())
+                            System.out.println(currentkey+" currentkey added");
+                            if (!componentStorage.toBeChangedKeys.isEmpty()) {
+                                // setting the "finnish button" change key button enabled
                                 bottomRowButtons.get(bottomRowButtons.size() - 1).setDisable(false);
+                            }
                             disableOrEnable(KeyButtonPane);
                         }
                     }
@@ -170,9 +178,7 @@ public class ChangeKey {
                     for (Node node : hBox.getChildren()) {
                         Button btnkey = (Button) node;
                         for (String keyInCurrentScript : listOfKeysInCurrentScript) {
-                            System.out.println(keyInCurrentScript+btnkey.getText());
                             if (btnkey.getText().equals(keyInCurrentScript.replace(" ", "").toUpperCase())) {
-                                System.out.println("?");
                                 btnkey.setDisable(true);
                             }
                         }
