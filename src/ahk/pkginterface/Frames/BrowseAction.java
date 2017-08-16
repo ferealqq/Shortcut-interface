@@ -1,4 +1,4 @@
-package ahk.pkginterface.browsingFrames;
+package ahk.pkginterface.Frames;
 
 import ahk.pkginterface.ViewManagement.ComponentStorage;
 import ahk.pkginterface.database.ActionsData;
@@ -23,7 +23,7 @@ import javafx.scene.input.KeyEvent;
 import java.util.ArrayList;
 import javafx.scene.control.TextField;
 
-public class browseAction{
+public class BrowseAction {
     public final JFXPanel browseActionView = new JFXPanel();
     public final BorderPane rootPane = new BorderPane();
     public final BorderPane stepPane = new BorderPane();
@@ -42,7 +42,7 @@ public class browseAction{
     private ChangeListener<Boolean> focusListener;
     private EventHandler<KeyEvent> keyReleasedAL;
     private EventHandler<ActionEvent> btBackAction;
-    public browseAction(ComponentStorage viewArchive) {
+    public BrowseAction(ComponentStorage viewArchive) {
         componentStorage = viewArchive;
         initComponents(browseActionView);
     }
@@ -109,8 +109,8 @@ public class browseAction{
     }
     private void createButtons(){
         BorderPane bottomPane = new BorderPane();
-        String searchFieldCss = this.getClass().getResource("search_field_css.css").toExternalForm();
-        String btCss = this.getClass().getResource("main_btns.css").toExternalForm();
+        String searchFieldCss = this.getClass().getResource("Css/search_field_css.css").toExternalForm();
+        String btCss = this.getClass().getResource("Css/main_btns.css").toExternalForm();
         searchField.getStylesheets().add(searchFieldCss);
         topPane.getChildren().add(searchField); 
         BorderPane.setAlignment(btNext, Pos.BOTTOM_RIGHT);
@@ -123,7 +123,7 @@ public class browseAction{
     }
     private void createComponents(ArrayList<Actions> listofActions){
         ScrollPane scrollPane = new ScrollPane();
-        String actionlabelsCss = this.getClass().getResource("action_labels_css.css").toExternalForm();
+        String actionlabelsCss = this.getClass().getResource("Css/action_labels_css.css").toExternalForm();
         for(Actions action : listofActions){
             Label actionLabel = new Label();
             labelPane.setVgrow(actionLabel,Priority.ALWAYS);

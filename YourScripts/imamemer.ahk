@@ -1,5 +1,5 @@
 
-f5::
+f6::
 DetectHiddenWindows, On 
 IfWinActive, ahk_class SpotifyMainWindow 
 {
@@ -17,8 +17,7 @@ DetectHiddenWindows, Off
 return
 }
 
-f3::
-DetectHiddenWindows, On 
+J::
 IfWinActive, ahk_class SpotifyMainWindow 
 {
 ControlSend, ahk_parent, ^{Up}, ahk_class SpotifyMainWindow
