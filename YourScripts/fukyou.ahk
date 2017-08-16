@@ -1,5 +1,5 @@
 
-f5::
+f4 & f3::
 IfWinActive, ahk_class SpotifyMainWindow 
 {
 Send {Media_Play_Pause}
@@ -16,7 +16,7 @@ DetectHiddenWindows, Off
 return
 }
 
-f6::
+f5 & f4::
 DetectHiddenWindows, On 
 IfWinActive, ahk_class SpotifyMainWindow 
 {

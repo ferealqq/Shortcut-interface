@@ -1,7 +1,6 @@
-package ahk.pkginterface.ViewManagement.Css;
+package ahk.pkginterface.ViewManagement;
 
 import javafx.scene.control.Label;
-import org.omg.CORBA.INTERNAL;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class ChangeKeyInfo {
 
     }
     public HashMap<String,Integer> getCurrentScriptInformation(){
-        return keysIndexInScript.get(currentKeyDisblayedLabel.getText().replace(" ",""));
+        return keysIndexInScript.get(currentScriptDisblayedFile.getName().replaceFirst("[.][^.]+$", ""));
     }
     public ArrayList<String> getCurrentScriptKeysInArrayList(){
         HashMap<String,Integer> map = keysIndexInScript.get(currentScriptDisblayedFile.getName().replaceFirst("[.][^.]+$", ""));

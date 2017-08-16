@@ -1,4 +1,4 @@
-f2 & f3::
+f5::
 DetectHiddenWindows, On 
 IfWinActive, ahk_class SpotifyMainWindow 
 {
@@ -16,7 +16,7 @@ DetectHiddenWindows, Off
 return
 }
 
-Esc::
+f4 & 4::
 IfWinActive, ahk_class SpotifyMainWindow 
 {
 SoundSet -1

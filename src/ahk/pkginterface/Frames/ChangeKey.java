@@ -80,7 +80,7 @@ public class ChangeKey {
                 }
                 String keyToBeChanged = componentStorage.changeKeyInfo.currentKeyDisblayedLabel.getText().replace(" ","");
                 File scriptToChangeIn = componentStorage.changeKeyInfo.currentScriptDisblayedFile;
-                HashMap<String,Integer> map = componentStorage.changeKeyInfo.keysIndexInScript.get(scriptToChangeIn.getName().replaceFirst("[.][^.]+$", ""));
+                HashMap<String,Integer> map = componentStorage.changeKeyInfo.getCurrentScriptInformation();
                 int indexWhereToBePlaced= map.get(keyToBeChanged);
                 List<String> lines = null;
                 try {
@@ -136,7 +136,7 @@ public class ChangeKey {
                             } else {
                                 bottomRowButtons.get(bottomRowButtons.size() - 1).setDisable(false);
                             }
-                            disableOrEnable(KeyButtonPane);
+                            disableOrEnable();
                             disableRightKeys();
                         } else {
                             btnKey.setStyle("-fx-background-color: slateblue; -fx-text-fill: white;");
@@ -146,7 +146,7 @@ public class ChangeKey {
                                 // setting the "finnish button" change key button enabled
                                 bottomRowButtons.get(bottomRowButtons.size() - 1).setDisable(false);
                             }
-                            disableOrEnable(KeyButtonPane);
+                            disableOrEnable();
                         }
                     }
                 });
@@ -188,9 +188,9 @@ public class ChangeKey {
         }
     }
 
-    private void disableOrEnable(Pane keyButtonPane) {
+    public void disableOrEnable() {
         if (componentStorage.toBeChangedKeys.size() >= 2) {
-            for (Node node : keyButtonPane.getChildren()) {
+            for (Node node : KeyButtonPane.getChildren()) {
                 if (node.getClass().equals(HBox.class)) {
                     HBox hbox = (HBox) node;
                     for (Node node2 : hbox.getChildren()) {
@@ -201,12 +201,28 @@ public class ChangeKey {
                 }
             }
         } else {
-            for (Node node : keyButtonPane.getChildren()) {
+            for (Node node : KeyButtonPane.getChildren()) {
                 if (node.getClass().equals(HBox.class)) {
                     HBox hbox = (HBox) node;
                     for (Node node2 : hbox.getChildren()) {
                         if (node2.getClass().equals(Button.class) && !node2.getStyle().equals("-fx-background-color: slateblue; -fx-text-fill: white;")) {
                             node2.setDisable(false);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    public void resetColors(){
+        for (Node node : componentStorage.changeKey.rootPane.getChildren()) {
+            if (node.getClass().equals(VBox.class)) {
+                VBox vBox = (VBox) node;
+                for (Node nod : vBox.getChildren()) {
+                    if (nod.getClass().equals(HBox.class)) {
+                        HBox hbox = (HBox) nod;
+                        for(Node btn : hbox.getChildren()){
+                            if(btn.getStyle().equals("-fx-background-color: slateblue; -fx-text-fill: white;")) btn.setStyle(null);
+                            if(btn.isDisabled()) btn.setDisable(false);
                         }
                     }
                 }

@@ -2,7 +2,6 @@ package ahk.pkginterface.ViewManagement;
 
 import ahk.pkginterface.AHKInterface;
 import ahk.pkginterface.Frames.*;
-import ahk.pkginterface.ViewManagement.Css.ChangeKeyInfo;
 import ahk.pkginterface.Frames.BrowseAction;
 import ahk.pkginterface.database.Key;
 import javafx.animation.KeyFrame;

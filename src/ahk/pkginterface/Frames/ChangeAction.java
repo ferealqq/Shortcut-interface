@@ -19,7 +19,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.input.KeyEvent;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import javafx.scene.control.TextField;
 
 public class ChangeAction{
@@ -27,7 +30,7 @@ public class ChangeAction{
     public final BorderPane rootPane = new BorderPane();
 
 
-    private final Button btNext = new Button("Next");
+    private final Button btChangeAction = new Button("Change Actions");
     private final TextField searchField = new TextField("Search");
     private final ActionsData actionsData = new ActionsData();
     public final ComponentStorage componentStorage;
@@ -36,7 +39,7 @@ public class ChangeAction{
     public final VBox topPane = new VBox(5);
 
 
-    private EventHandler<ActionEvent> btNextAction;
+    private EventHandler<ActionEvent> EventHandlerChangeAction;
     private ChangeListener<Boolean> focusListener;
     private EventHandler<KeyEvent> keyReleasedAL;
     private EventHandler<ActionEvent> btBackAction;
@@ -62,10 +65,11 @@ public class ChangeAction{
         searchField.focusedProperty().addListener(focusListener);
     }
     public void createListeners(){
-        btNextAction = new EventHandler<ActionEvent>() {
+        EventHandlerChangeAction = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+                File scriptToChangeIn = componentStorage.changeKeyInfo.currentScriptDisblayedFile;
+                HashMap<String,Integer> map = componentStorage.changeKeyInfo.keysIndexInScript.get(scriptToChangeIn.getName().replaceFirst("[.][^.]+$", ""));
                 componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1), componentStorage.viewMap.get("ahkinterface"));
             }
         };
@@ -95,10 +99,10 @@ public class ChangeAction{
         String btCss = this.getClass().getResource("Css/main_btns.css").toExternalForm();
         searchField.getStylesheets().add(searchFieldCss);
         topPane.getChildren().add(searchField);
-        BorderPane.setAlignment(btNext, Pos.BOTTOM_RIGHT);
-        btNext.getStylesheets().add(btCss);
-        btNext.setOnAction(btNextAction);
-        bottomPane.setRight(btNext);
+        BorderPane.setAlignment(btChangeAction, Pos.BOTTOM_RIGHT);
+        btChangeAction.getStylesheets().add(btCss);
+        btChangeAction.setOnAction(EventHandlerChangeAction);
+        bottomPane.setRight(btChangeAction);
 
         rootPane.setBottom(bottomPane);
 
