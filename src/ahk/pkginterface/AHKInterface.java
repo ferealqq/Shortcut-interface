@@ -254,10 +254,10 @@ public class AHKInterface extends JFrame {
                 scriptLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        oldColorReplacement(labelPane.getChildren().iterator());
                         if (!scriptLabel.getStyle().equals("-fx-background-color: #A9A9A9;")) {
                             componentStorage.changeKeyInfo.currentScriptDisblayedFile = file;
                             componentStorage.changeKeyInfo.currentScriptDisblayedLabel = scriptLabel;
+                            oldColorReplacement(labelPane.getChildren().iterator());
                             scriptLabel.setStyle("-fx-background-color: #A9A9A9;");
                             scriptNameLabel.setText(scriptName);
                             LineNumberReader reader = null;
@@ -285,7 +285,7 @@ public class AHKInterface extends JFrame {
                             componentStorage.changeKeyInfo.currentScriptDisblayedFile = null;
                             componentStorage.changeKeyInfo.currentScriptDisblayedLabel = null;
                             deleteOldScriptInfo();
-                            scriptLabel.setStyle("-fx-background-color: transparent");
+                            oldColorReplacement(labelPane.getChildren().iterator());
                             scriptNameLabel.setText("");
                         }
                     }
@@ -343,13 +343,13 @@ public class AHKInterface extends JFrame {
                 @Override
                 public void handle(MouseEvent event) {
                     Iterator<Node> iterator = keyPane.getChildren().iterator();
-                    oldColorReplacement(iterator);
                     if(!currentKeyLabel.getStyle().equals("-fx-background-color: #A9A9A9;")){
+                        oldColorReplacement(iterator);
                         currentKeyLabel.setStyle("-fx-background-color: #A9A9A9;");
                         componentStorage.changeKeyInfo.currentKeyDisblayedLabel = currentKeyLabel;
                     }else{
                         componentStorage.changeKeyInfo. currentKeyDisblayedLabel = null;
-                        currentKeyLabel.setStyle("-fx-background-color: transparent");
+                        oldColorReplacement(iterator);
                     }
                 }
             });
@@ -357,13 +357,13 @@ public class AHKInterface extends JFrame {
                 @Override
                 public void handle(MouseEvent event) {
                     Iterator<Node> iterator = actionsPane.getChildren().iterator();
-                    oldColorReplacement(iterator);
                     if(!currentActionlabel.getStyle().equals("-fx-background-color: #A9A9A9;")){
+                        oldColorReplacement(iterator);
                         currentActionlabel.setStyle("-fx-background-color: #A9A9A9;");
                         componentStorage.changeKeyInfo.currentActionDisbalayedLabel = currentActionlabel;
                     }else{
                         componentStorage.changeKeyInfo.currentActionDisbalayedLabel = null;
-                        currentActionlabel.setStyle("-fx-background-color: transparent");
+                        oldColorReplacement(iterator);
                     }
                 }
             });
