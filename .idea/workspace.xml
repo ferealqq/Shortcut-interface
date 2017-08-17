@@ -5,39 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="34d685f4-faaa-4f25-bf49-6d691a0d0670" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/Css/ChangeKeyInfo.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/browsingFrames/action_labels_css.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/browsingFrames/ahk_main_bottombtns_css.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/browsingFrames/main_btns.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/browsingFrames/search_field_css.css" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/browsingFrames/stepPane.css" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$1.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$2.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$3.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$4.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$4.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$5.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$5.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$6.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$6.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$7.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$7.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$8.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$8.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$9.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface$9.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/AHKInterface.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/ChangeAction$1.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/ChangeAction$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/ChangeAction$2.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/ChangeAction$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/ChangeAction$3.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/ChangeAction$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/ChangeAction$4.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/ChangeAction$4.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/ChangeAction.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/ChangeAction.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/ChangeKey$2.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/ChangeKey$2.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/ChangeKey$3.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/ChangeKey$3.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/ChangeKey.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/Frames/ChangeKey.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/ComponentStorage.class" afterPath="$PROJECT_DIR$/out/production/AHK-Interface/ahk/pkginterface/ViewManagement/ComponentStorage.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YourScripts/fukyou.ahk" afterPath="$PROJECT_DIR$/YourScripts/fukyou.ahk" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/YourScripts/funnyonepeke.ahk" afterPath="$PROJECT_DIR$/YourScripts/funnyonepeke.ahk" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ahk/pkginterface/Frames/ChangeAction.java" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/Frames/ChangeAction.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ahk/pkginterface/Frames/ChangeKey.java" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/Frames/ChangeKey.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/ComponentStorage.java" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/ComponentStorage.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/Css/ChangeKeyInfo.java" afterPath="$PROJECT_DIR$/src/ahk/pkginterface/ViewManagement/ChangeKeyInfo.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -55,12 +26,12 @@
             <file leaf-file-name="AHKInterface.java" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="372">
-                    <caret line="130" column="2" lean-forward="false" selection-start-line="130" selection-start-column="2" selection-end-line="130" selection-end-column="2" />
+                  <state relative-caret-position="780">
+                    <caret line="287" column="84" lean-forward="false" selection-start-line="287" selection-start-column="84" selection-end-line="287" selection-end-column="84" />
                     <folding>
                       <element signature="imports" expanded="true" />
-                      <marker date="1502898432165" expanded="false" signature="21965:21976" ph=" { " />
-                      <marker date="1502898432165" expanded="false" signature="21995:22001" ph=" }" />
+                      <marker date="1502974267884" expanded="false" signature="21908:21919" ph=" { " />
+                      <marker date="1502974267884" expanded="false" signature="21938:21944" ph=" }" />
                     </folding>
                   </state>
                 </provider>
@@ -112,8 +83,8 @@
       <file leaf-file-name="ChangeKey.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/Frames/ChangeKey.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="373">
-              <caret line="217" column="53" lean-forward="true" selection-start-line="217" selection-start-column="53" selection-end-line="217" selection-end-column="53" />
+            <state relative-caret-position="637">
+              <caret line="223" column="67" lean-forward="true" selection-start-line="223" selection-start-column="67" selection-end-line="223" selection-end-column="67" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -174,7 +145,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>replace</find>
       <find>change</find>
       <find>keysIndexIns</find>
       <find>runnow</find>
@@ -204,6 +174,7 @@
       <find>changeAction</find>
       <find>btchangeaction</find>
       <find>disableOrEnable</find>
+      <find>oldColor</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -944,8 +915,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/Frames/ChangeKey.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="217" column="53" lean-forward="true" selection-start-line="217" selection-start-column="53" selection-end-line="217" selection-end-column="53" />
+        <state relative-caret-position="637">
+          <caret line="223" column="67" lean-forward="true" selection-start-line="223" selection-start-column="67" selection-end-line="223" selection-end-column="67" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -954,12 +925,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ahk/pkginterface/AHKInterface.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="130" column="2" lean-forward="false" selection-start-line="130" selection-start-column="2" selection-end-line="130" selection-end-column="2" />
+        <state relative-caret-position="780">
+          <caret line="287" column="84" lean-forward="false" selection-start-line="287" selection-start-column="84" selection-end-line="287" selection-end-column="84" />
           <folding>
             <element signature="imports" expanded="true" />
-            <marker date="1502898432165" expanded="false" signature="21965:21976" ph=" { " />
-            <marker date="1502898432165" expanded="false" signature="21995:22001" ph=" }" />
+            <marker date="1502974267884" expanded="false" signature="21908:21919" ph=" { " />
+            <marker date="1502974267884" expanded="false" signature="21938:21944" ph=" }" />
           </folding>
         </state>
       </provider>
