@@ -19,6 +19,7 @@ import javafx.stage.DirectoryChooser;
 import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class TaskScheduler {
@@ -291,24 +292,20 @@ public class TaskScheduler {
         }
     }
     private ArrayList<String> getSpotifyScriptContent(){
-        final ArrayList<String> listOfCode = new ArrayList<>();
-        String[] oneoftheActionsCode = new ActionsData().getSpotifyActionCode();
-        for(String onelineofcode:oneoftheActionsCode){
-            listOfCode.add(onelineofcode);
-        }
-        return listOfCode;
+        return new ArrayList<String>(Arrays.asList(new ActionsData().getSpotifyActionCode()));
     }
     /*
     * getScriptContent is method that gathers choosen actioncode from database and returns the code as an arraylist of strings
      */
     private ArrayList<String> getScriptContent(){
         final ArrayList<String> listOfCode = new ArrayList<>();
-        for(String oneOfTheChoosenActions : componentStorage.choosenActionName){
-            String[] oneoftheActionsCode = new ActionsData().getActionCode(oneOfTheChoosenActions);
-            for(String onelineofcode:oneoftheActionsCode){
-                listOfCode.add(onelineofcode);
-            }
-        }
+        componentStorage.choosenActionName.stream().forEach(
+                oneActionName ->{
+                    for(String oneLine : new ActionsData().getActionCode(oneActionName)){
+                        listOfCode.add(oneLine);
+                    }
+                }
+        );
         return listOfCode;
     }
     private void createTask(String nameofthescript, String absolutePathOfTheScript) {

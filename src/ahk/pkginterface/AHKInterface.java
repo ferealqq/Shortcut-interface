@@ -2,7 +2,6 @@ package ahk.pkginterface;
 
 import ahk.pkginterface.ViewManagement.ComponentStorage;
 import ahk.pkginterface.database.ActionsData;
-import com.sun.org.apache.bcel.internal.classfile.LineNumber;
 import javafx.beans.binding.Bindings;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
@@ -32,7 +31,7 @@ public class AHKInterface extends JFrame {
     public ComponentStorage componentStorage;// siirä viewmap aloitus formiin sitten kuin se on tehty
 
     public final HashMap<String,ArrayList<String>> keyAndAListOfActionsInCurrentScript = new HashMap<>();
-
+    public final HashMap<String,String> actionAndKey = new HashMap<>();
     private BorderPane scriptInfoLabel = null;
     private HBox scriptInfoPane = null;
     private VBox keySectionPane = null;
@@ -129,16 +128,24 @@ public class AHKInterface extends JFrame {
         btChangeKey.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                componentStorage.toBeChangedKeys.removeAll(componentStorage.toBeChangedKeys);
-                componentStorage.changeKey.resetColors();
-                componentStorage.changeKey.disableRightKeys();
-                componentStorage.hideSelectedAndShowSelected((JFXPanel)main.getContentPane().getComponent(main.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("changekey"));
+                if(componentStorage.changeKeyInfo.currentKeyDisblayedLabel != null){
+                    componentStorage.toBeChangedKeys.removeAll(componentStorage.toBeChangedKeys);
+                    componentStorage.changeKey.resetColors();
+                    componentStorage.changeKey.disableRightKeys();
+                    componentStorage.hideSelectedAndShowSelected((JFXPanel)main.getContentPane().getComponent(main.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("changekey"));
+                }else{
+                    JOptionPane.showMessageDialog(main,"You haven't selected a key to be changed");
+                }
             }
         });
         btChangeAction.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                componentStorage.hideSelectedAndShowSelected((JFXPanel)main.getContentPane().getComponent(main.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("changeaction"));
+                if(componentStorage.changeKeyInfo.currentActionDisbalayedLabel != null){
+                    componentStorage.hideSelectedAndShowSelected((JFXPanel)main.getContentPane().getComponent(main.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("changeaction"));
+                }else{
+                    JOptionPane.showMessageDialog(main,"You haven't selected an action to be changed");
+                }
             }
         });
         btEditTask.setOnAction(new EventHandler<ActionEvent>() {
@@ -338,7 +345,9 @@ public class AHKInterface extends JFrame {
             String keyFromMapToString = keyFromMap.toString();
             List<String> listOfActions = keyAndAListOfActionsInCurrentScript.get(keyFromMapToString).stream().distinct().collect(Collectors.toList());
             Label currentActionlabel = new Label(listOfActions.toString());
-            Label currentKeyLabel = new Label(keyFromMapToString.replace(":"," "));
+            Label currentKeyLabel = new Label(keyFromMapToString.replace(":",""));
+            // if something goes broken you replaced .replace(":"," "); to .replace(":","");
+            actionAndKey.put(listOfActions.toString(),keyFromMapToString.replace(":",""));
             currentKeyLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {

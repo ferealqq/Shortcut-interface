@@ -3,6 +3,7 @@ package ahk.pkginterface.ViewManagement;
 import ahk.pkginterface.AHKInterface;
 import ahk.pkginterface.Frames.*;
 import ahk.pkginterface.Frames.BrowseAction;
+import ahk.pkginterface.ScriptWriter;
 import ahk.pkginterface.database.Key;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -38,6 +39,7 @@ public class ComponentStorage {
     public final SignIn signIn;
     public final JFrame mainFrame;
     public final MenuSetup menuSetup;
+    public final ScriptWriter scriptWriter;
     public final LinkedList<JFXPanel> viewHistory;
     public final LinkedList<JFXPanel> viewHistoryBackwards;
     public final HashMap<String, JFXPanel> viewMap;
@@ -51,7 +53,7 @@ public class ComponentStorage {
 
     public final ArrayList<String> choosenActionName = new ArrayList<>();
 
-    public final ChangeKeyInfo changeKeyInfo = new ChangeKeyInfo();
+    public final ChangeInfo changeKeyInfo = new ChangeInfo();
 
     public String nameofthescript;
     public final ArrayList<String> oldScriptPaths = new ArrayList<>();
@@ -62,6 +64,7 @@ public class ComponentStorage {
         viewMap = new HashMap<>();
         viewHistoryBackwards = new LinkedList<>();
         menuSetup = new MenuSetup(this);
+        scriptWriter = new ScriptWriter(this);
         keySelection = new KeySelection(this);
         changeKey = new ChangeKey(this);
         changeAction = new ChangeAction(this);
