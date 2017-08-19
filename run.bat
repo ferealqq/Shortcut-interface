@@ -1,2 +1,2 @@
-start E:\AHK-Interface\YourScripts\fukyou.ahk
+start E:\AHK-Interface\YourScripts\3.ahk
 exit

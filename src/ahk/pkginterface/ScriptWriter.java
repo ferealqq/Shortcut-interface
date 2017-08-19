@@ -3,11 +3,14 @@ package ahk.pkginterface;
 import ahk.pkginterface.ViewManagement.ComponentStorage;
 import ahk.pkginterface.database.ActionsData;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class ScriptWriter {
     private final ComponentStorage componentStorage;
@@ -53,19 +56,21 @@ public class ScriptWriter {
             int placerIndex = actionStartsHere;
             if(Objects.nonNull(spotifyContent)) {
                 for (String oneLine : spotifyContent) {
-                    if(!lines.get(placerIndex).contains("::")){
+                    if(placerIndex>=lines.size()){
+                        lines.add(oneLine);
+                    }else if (lines.get(placerIndex).contains("::")){
+                        lines.add(oneLine);
+                    }else if(!lines.get(placerIndex).contains("::")){
                         lines.remove(placerIndex);
                         lines.add(placerIndex, oneLine);
                         placerIndex++;
-                    }else if (lines.get(placerIndex).contains("::")){
-                        lines.add(oneLine);
                     }
                 }
                 componentStorage.toBeChangedAction.forEach(
                         action -> {
                             for(String oneLineOfCode : new ActionsData().getActionCode(action)){
                                 lines.add(3+actionStartsHere,oneLineOfCode);
-                                lines.add(11+actionStartsHere,oneLineOfCode);
+                                lines.add(10+actionStartsHere,oneLineOfCode);
                             }
                         }
                 );
@@ -80,26 +85,35 @@ public class ScriptWriter {
     }
     private void removeOldActionContent(File script,Integer startsHere){
         Integer removeIndex = startsHere;
-        List<String> lines = null;
-        try {
+        List<String> lines;
+        try{
             lines = Files.readAllLines(script.toPath(), StandardCharsets.UTF_8);
-            while(true){
-                if(removeIndex > lines.size()-1) break;
-                if(lines.get(removeIndex).contains("::")){
-                    System.out.println("broken");
-                    break;
+            Integer endsHere = searchEndingPoint(lines,startsHere);
+            List<String> updatedLines = new ArrayList<>();
+            for(int i = 0;i<lines.size()-1;i++){
+                if(removeIndex > i || endsHere < i){
+                    updatedLines.add(lines.get(i));
                 }else{
-                    lines.remove(removeIndex);
-                    removeIndex++;
+                    System.out.println(i);
                 }
             }
-            System.out.println(script.toPath());
-
-            Files.write(script.toPath(), lines, StandardCharsets.UTF_8);
-        } catch (IOException e) {
+            Files.write(script.toPath(), updatedLines,StandardCharsets.UTF_8);
+        }catch (Exception e){
             e.printStackTrace();
         }
     }
+
+    private Integer searchEndingPoint(List<String> lines, Integer startsHere) {
+        Integer endingPoint = 0;
+        for(int i = startsHere; i < lines.size()-1;i++){
+            if(lines.get(i).contains("::")) {
+                return i;
+            }
+            endingPoint = lines.size() -1;
+        }
+        return  endingPoint;
+    }
+
     private ArrayList<String> getScriptContent(){
         final ArrayList<String> listOfCode = new ArrayList<>();
         componentStorage.toBeChangedAction.stream().forEach(
