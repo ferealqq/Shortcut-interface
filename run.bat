@@ -1,2 +1,2 @@
-start E:\AHK-Interface\YourScripts\3.ahk
+start E:\AHK-Interface\YourScripts\newtest.ahk
 exit

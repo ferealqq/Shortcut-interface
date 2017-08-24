@@ -47,7 +47,7 @@ public class ScriptWriter {
     }
     public void changeAction(){
         File scriptToChangeIn = componentStorage.changeKeyInfo.currentScriptDisblayedFile;
-        Integer actionStartsHere = componentStorage.changeKeyInfo.getIndexForSpecificKey(componentStorage.ahkinterface.actionAndKey.get(componentStorage.changeKeyInfo.currentActionDisbalayedLabel.getText()));
+        Integer actionStartsHere = componentStorage.changeKeyInfo.getIndexForSpecificKey(componentStorage.ahkinterface.actionAndKey.get(componentStorage.changeKeyInfo.currentActionDisbalayedLabel.getText())); // -1 because list starts from zero and the code starts from one so
         ArrayList<String> spotifyContent = null;
         if(Objects.nonNull(componentStorage.toBeChangedAction.stream().filter(s -> s.toLowerCase().contains("spotify")))) spotifyContent = getSpotifyScriptContent();
         try {
@@ -58,19 +58,17 @@ public class ScriptWriter {
                 for (String oneLine : spotifyContent) {
                     if(placerIndex>=lines.size()){
                         lines.add(oneLine);
-                    }else if (lines.get(placerIndex).contains("::")){
-                        lines.add(oneLine);
-                    }else if(!lines.get(placerIndex).contains("::")){
-                        lines.remove(placerIndex);
+                    }else if (Objects.nonNull(lines.get(placerIndex)) && lines.get(placerIndex).contains("::")){
                         lines.add(placerIndex, oneLine);
-                        placerIndex++;
                     }
+                    placerIndex++;
                 }
+
                 componentStorage.toBeChangedAction.forEach(
                         action -> {
                             for(String oneLineOfCode : new ActionsData().getActionCode(action)){
                                 lines.add(3+actionStartsHere,oneLineOfCode);
-                                lines.add(10+actionStartsHere,oneLineOfCode);
+                                lines.add(11+actionStartsHere,oneLineOfCode);
                             }
                         }
                 );
@@ -84,17 +82,16 @@ public class ScriptWriter {
         return new ArrayList<String>(Arrays.asList(new ActionsData().getSpotifyActionCode()));
     }
     private void removeOldActionContent(File script,Integer startsHere){
-        Integer removeIndex = startsHere;
         List<String> lines;
         try{
             lines = Files.readAllLines(script.toPath(), StandardCharsets.UTF_8);
             Integer endsHere = searchEndingPoint(lines,startsHere);
             List<String> updatedLines = new ArrayList<>();
-            for(int i = 0;i<lines.size()-1;i++){
-                if(removeIndex > i || endsHere < i){
+            for(int i = 0;i<lines.size();i++){ // -1 from line.size could effect how the code is written
+                if(startsHere > i || endsHere <= i){ // changed the direction
                     updatedLines.add(lines.get(i));
                 }else{
-                    System.out.println(i);
+                    System.out.println("line removed at " +i);
                 }
             }
             Files.write(script.toPath(), updatedLines,StandardCharsets.UTF_8);
@@ -105,11 +102,11 @@ public class ScriptWriter {
 
     private Integer searchEndingPoint(List<String> lines, Integer startsHere) {
         Integer endingPoint = 0;
-        for(int i = startsHere; i < lines.size()-1;i++){
+        for(int i = startsHere; i < lines.size();i++){
             if(lines.get(i).contains("::")) {
                 return i;
             }
-            endingPoint = lines.size() -1;
+            endingPoint = lines.size();
         }
         return  endingPoint;
     }
