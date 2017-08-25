@@ -12,7 +12,6 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
@@ -21,7 +20,6 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.*;
-import java.util.stream.Stream;
 
 public class ChangeKey {
     public final JFXPanel changeKeyView = new JFXPanel();
@@ -78,30 +76,8 @@ public class ChangeKey {
                     JOptionPane.showMessageDialog(null, "You havent selected any keys try again later!");
                     return;
                 }
-                String keyToBeChanged = componentStorage.changeKeyInfo.currentKeyDisblayedLabel.getText().replace(" ","");
-                File scriptToChangeIn = componentStorage.changeKeyInfo.currentScriptDisblayedFile;
-                HashMap<String,Integer> map = componentStorage.changeKeyInfo.getCurrentScriptInformation();
-                int indexWhereToBePlaced= map.get(keyToBeChanged);
-                List<String> lines = null;
-                try {
-                    lines = Files.readAllLines(scriptToChangeIn.toPath(), StandardCharsets.UTF_8);
-                    lines.remove(indexWhereToBePlaced-1);
-                    if(componentStorage.toBeChangedKeys.size() == 2){
-                        lines.add(indexWhereToBePlaced-1,componentStorage.toBeChangedKeys.get(0).getKeysynonyminahk() + " & "+componentStorage.toBeChangedKeys.get(1).getKeysynonyminahk() + "::");
-                    }else{
-                        lines.add(indexWhereToBePlaced-1, componentStorage.toBeChangedKeys.get(0).getKeysynonyminahk()+"::");
-                    }
-                    Files.write(scriptToChangeIn.toPath(), lines, StandardCharsets.UTF_8);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if(componentStorage.toBeChangedKeys.size() == 2){
-                    componentStorage.changeKeyInfo.currentKeyDisblayedLabel.setText(componentStorage.toBeChangedKeys.get(0).getKey() + " & " + componentStorage.toBeChangedKeys.get(1).getKey());
-                }else{
-                    componentStorage.changeKeyInfo.currentKeyDisblayedLabel.setText(componentStorage.toBeChangedKeys.get(0).getKey());
-                }
+                componentStorage.scriptWriter.changeKey();
                 componentStorage.hideSelectedAndShowSelected(changeKeyView, componentStorage.viewMap.get("ahkinterface"));
-
             }
         });
         buttonRow.getChildren().addAll(btBack, btChangeKey);

@@ -68,8 +68,7 @@ public class ChangeAction{
         EventHandlerChangeAction = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                File scriptToChangeIn = componentStorage.changeKeyInfo.currentScriptDisblayedFile;
-                HashMap<String,Integer> map = componentStorage.changeKeyInfo.keysIndexInScript.get(scriptToChangeIn.getName().replaceFirst("[.][^.]+$", ""));
+                componentStorage.scriptWriter.changeAction();
                 componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1), componentStorage.viewMap.get("ahkinterface"));
             }
         };

@@ -1,6 +1,7 @@
 package ahk.pkginterface.ViewManagement;
 
 import ahk.pkginterface.ViewManagement.ComponentStorage;
+import ahk.pkginterface.database.ProfilesData;
 import javafx.embed.swing.JFXPanel;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,7 +20,7 @@ public class MenuSetup {
     public MenuSetup(ComponentStorage viewArchive) {
         componentStorage = viewArchive;
     }
-
+    private MenuItem usernameMenuItem;
     public MenuBar createMenuBar() {
         menuBar = new MenuBar();
         forwardsMenuButton = new Button(">");
@@ -33,8 +34,7 @@ public class MenuSetup {
         final Menu menuProfile = new Menu("Profile");
         menuItemsForProfile(menuProfile);
         final Menu menuHelp = new Menu("Help"); 
-        final Menu menuView = new Menu("View");
-        menuBar.getMenus().addAll(backwardsMenu, forwardsMenu, menuProfile, menuHelp, menuView);
+        menuBar.getMenus().addAll(backwardsMenu, forwardsMenu, menuProfile, menuHelp);
         String menuBarCss = this.getClass().getResource("Css/main_menu_bar.css").toExternalForm();
         menuBar.getStylesheets().add(menuBarCss);
         return menuBar;
@@ -56,6 +56,11 @@ public class MenuSetup {
         });
     }
 
+    private void createCurrentUserNameItem(Menu profileMenu){
+        usernameMenuItem = new MenuItem("Signed in as "+new ProfilesData().getUsernameById(componentStorage.currentUserId));
+        profileMenu.getItems().add(usernameMenuItem);
+    }
+
     private void menuItemsForProfile(Menu profileMenu) {
         if (0 < componentStorage.currentUserId) {
             createLogoutItem(profileMenu);
@@ -70,6 +75,7 @@ public class MenuSetup {
             }
         });
         profileMenu.getItems().add(registerItem);
+        if(0 < componentStorage.currentUserId)  createCurrentUserNameItem(profileMenu);
     }
 
     private void createSigninitem(Menu profileMenu) {
@@ -89,6 +95,7 @@ public class MenuSetup {
             public void handle(ActionEvent event) {
                 componentStorage.currentUserId = 0;
                 profileMenu.getItems().remove(logoutItem);
+                profileMenu.getItems().remove(usernameMenuItem);
                 createSigninitem(profileMenu);
             }
         });

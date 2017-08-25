@@ -1,2 +1,2 @@
-start E:\AHK-Interface\YourScripts\niceone.ahk
+start E:\AHK-Interface\YourScripts\newtest.ahk
 exit
