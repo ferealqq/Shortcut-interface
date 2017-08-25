@@ -103,8 +103,11 @@ public class SignIn {
                 if(profilesDb.checkPassword(tfUsername.getText(),tfPassword.getText())){
                     JOptionPane.showMessageDialog(componentStorage.mainFrame,"Successful!");
                     componentStorage.currentUserId = profilesDb.getProileIdByUsername(tfUsername.getText());
+                    tfUsername.setText("");
+                    tfPassword.setText("");
                     componentStorage.showBackwardsHideCurrent();
-                    System.out.println(componentStorage.currentUserId+"Sign in ");
+                }else{
+                    JOptionPane.showMessageDialog(componentStorage.mainFrame," Something went wrong try again!");
                 }
             }
         });
