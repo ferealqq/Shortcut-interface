@@ -140,9 +140,9 @@ public class Register{
                         JOptionPane.showMessageDialog(componentStorage.mainFrame,"Something went wrong!");
                     }else{
                         JOptionPane.showMessageDialog(componentStorage.mainFrame,"Successful!");
-                        componentStorage.showBackwardsHideCurrent();
                         componentStorage.currentUserId = profilesDb.getProileIdByUsername(tfUsername.getText());
-                    }   
+                        componentStorage.showBackwardsHideCurrent();
+                    }
                 }else{
                     JOptionPane.showMessageDialog(componentStorage.mainFrame,"Passwords won't match!");
                 }

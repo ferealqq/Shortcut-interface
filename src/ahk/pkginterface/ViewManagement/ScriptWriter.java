@@ -1,4 +1,4 @@
-package ahk.pkginterface;
+package ahk.pkginterface.ViewManagement;
 
 import ahk.pkginterface.ViewManagement.ComponentStorage;
 import ahk.pkginterface.database.ActionsData;
@@ -12,7 +12,7 @@ import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ScriptWriter {
+public class    ScriptWriter {
     private final ComponentStorage componentStorage;
 
     public ScriptWriter(ComponentStorage compStorage) {
@@ -49,7 +49,10 @@ public class ScriptWriter {
         File scriptToChangeIn = componentStorage.changeKeyInfo.currentScriptDisblayedFile;
         Integer actionStartsHere = componentStorage.changeKeyInfo.getIndexForSpecificKey(componentStorage.ahkinterface.actionAndKey.get(componentStorage.changeKeyInfo.currentActionDisbalayedLabel.getText())); // -1 because list starts from zero and the code starts from one so
         ArrayList<String> spotifyContent = null;
-        if(Objects.nonNull(componentStorage.toBeChangedAction.stream().filter(s -> s.toLowerCase().contains("spotify")))) spotifyContent = getSpotifyScriptContent();
+        List<String> containsSpotify = componentStorage.toBeChangedAction.stream().filter(s -> s.toLowerCase().contains("spotify")).collect(Collectors.toList());
+        if(!containsSpotify.isEmpty()){
+            spotifyContent = getSpotifyScriptContent();
+        }
         try {
             removeOldActionContent(scriptToChangeIn,actionStartsHere);
             final List<String> lines = Files.readAllLines(scriptToChangeIn.toPath(), StandardCharsets.UTF_8);
@@ -63,17 +66,32 @@ public class ScriptWriter {
                     }
                     placerIndex++;
                 }
-
+                final int[] indexPlacer = {11};
                 componentStorage.toBeChangedAction.forEach(
                         action -> {
                             for(String oneLineOfCode : new ActionsData().getActionCode(action)){
                                 lines.add(3+actionStartsHere,oneLineOfCode);
-                                lines.add(11+actionStartsHere,oneLineOfCode);
+                                lines.add(indexPlacer[0] +actionStartsHere,oneLineOfCode);
+                                indexPlacer[0]++;
                             }
                         }
                 );
-                Files.write(scriptToChangeIn.toPath(), lines, StandardCharsets.UTF_8);
+            }else{
+                final int[] indexPlacer = {actionStartsHere};
+                componentStorage.toBeChangedAction.forEach(
+                    action -> {
+                        for(String oneLineOfCode : new ActionsData().getActionCode(action)){
+                            if(indexPlacer[0]>=lines.size()){
+                                lines.add(oneLineOfCode);
+                            }else if(Objects.nonNull(lines.get(indexPlacer[0])) && lines.get(indexPlacer[0]).contains("::")){
+                                lines.add(indexPlacer[0],oneLineOfCode);
+                            }
+                            indexPlacer[0]++;
+                        }
+                    }
+                );
             }
+            Files.write(scriptToChangeIn.toPath(), lines, StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -90,8 +108,6 @@ public class ScriptWriter {
             for(int i = 0;i<lines.size();i++){ // -1 from line.size could effect how the code is written
                 if(startsHere > i || endsHere <= i){ // changed the direction
                     updatedLines.add(lines.get(i));
-                }else{
-                    System.out.println("line removed at " +i);
                 }
             }
             Files.write(script.toPath(), updatedLines,StandardCharsets.UTF_8);

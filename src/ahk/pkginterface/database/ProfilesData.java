@@ -2,7 +2,12 @@ package ahk.pkginterface.database;
 
 import ahk.pkginterface.JBcrypt.BCrypt;
 
+import java.io.File;
 import java.sql.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class ProfilesData {
 
@@ -119,6 +124,22 @@ public class ProfilesData {
         }
         return 0;
     }
+    public String getUsernameById(int id){
+        try{
+            connection = DriverManager.getConnection(setConnectionStrings());
+            String sqlquery = "select username from profile where profile_id = ?";
+            prepStatement = connection.prepareStatement(sqlquery);
+            prepStatement.setInt(1,id);
+            resultSet = prepStatement.executeQuery();
+            if(resultSet.next()) return resultSet.getString("username");
+            prepStatement.close();
+        }catch(Exception ex){
+            System.out.println("Error in getUsernameById : "+ex);
+        }finally {
+            closeConnection(connection);
+        }
+        return "";
+    }
     public void insertScriptPaths(String[] path,int id) {
         try{
             connection = DriverManager.getConnection(setConnectionStrings());
@@ -142,13 +163,29 @@ public class ProfilesData {
             prepStatement = connection.prepareStatement(sqlquery);
             prepStatement.setString(1,path);
             prepStatement.setInt(2,id);
-            prepStatement.executeQuery();
+            prepStatement.execute();
             prepStatement.close();
         }catch (Exception e){
             e.printStackTrace();
         }finally{
             closeConnection(connection);
         }
+    }
+    public List<String> getScriptPaths(int id){
+        try{
+            connection = DriverManager.getConnection(setConnectionStrings());
+            String sqlquery = "select scriptpaths from profile where profile_id = ?";
+            prepStatement = connection.prepareStatement(sqlquery);
+            prepStatement.setInt(1,id);
+            resultSet = prepStatement.executeQuery();
+            if(resultSet.next()){
+                Array sqlresultArray = resultSet.getArray("scriptpaths");
+                return Arrays.stream((String[]) sqlresultArray.getArray()).collect(Collectors.toList());
+            }
+        }catch (Exception e ){
+            e.printStackTrace();
+        }
+        return null;
     }
     public static void closeConnection(Connection con) {
         if (con != null) {
@@ -159,7 +196,6 @@ public class ProfilesData {
         }
     }
     public static void main(String[] args) {
-        String[] memus = {"pekka","kukka","kekki"};
-        new ProfilesData().insertScriptPaths(memus,1);
+        List<String> lista = new ProfilesData().getScriptPaths(2);
     }
 }
