@@ -79,7 +79,7 @@ public class KeySelection {
         yourScriptEventHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                yourScriptFrame.setLocation(componentStorage.ahkinterface.getX() + 200, componentStorage.ahkinterface.getY() + 75);
+                yourScriptFrame.setLocation(componentStorage.shortcutinterface.getX() + 200, componentStorage.shortcutinterface.getY() + 75);
                 yourScriptFrame.setVisible(true);
                 yourScriptFrame.createLabel();
             }
@@ -93,7 +93,7 @@ public class KeySelection {
         backtomenuEventHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                componentStorage.hideSelectedAndShowSelected((JFXPanel)componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("ahkinterface"));
+                componentStorage.hideSelectedAndShowSelected((JFXPanel)componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("shortcutinterface"));
             }
         };
     }

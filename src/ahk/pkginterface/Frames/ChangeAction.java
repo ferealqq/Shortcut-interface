@@ -69,7 +69,7 @@ public class ChangeAction{
             @Override
             public void handle(ActionEvent event) {
                 componentStorage.scriptWriter.changeAction();
-                componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1), componentStorage.viewMap.get("ahkinterface"));
+                componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1), componentStorage.viewMap.get("shortcutinterface"));
             }
         };
         focusListener = new ChangeListener<Boolean>() {

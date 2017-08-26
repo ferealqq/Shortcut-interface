@@ -1,11 +1,8 @@
 package ahk.pkginterface.ViewManagement;
 
-import ahk.pkginterface.ViewManagement.ComponentStorage;
 import ahk.pkginterface.database.ActionsData;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -47,7 +44,7 @@ public class    ScriptWriter {
     }
     public void changeAction(){
         File scriptToChangeIn = componentStorage.changeKeyInfo.currentScriptDisblayedFile;
-        Integer actionStartsHere = componentStorage.changeKeyInfo.getIndexForSpecificKey(componentStorage.ahkinterface.actionAndKey.get(componentStorage.changeKeyInfo.currentActionDisbalayedLabel.getText())); // -1 because list starts from zero and the code starts from one so
+        Integer actionStartsHere = componentStorage.changeKeyInfo.getIndexForSpecificKey(componentStorage.shortcutinterface.actionAndKey.get(componentStorage.changeKeyInfo.currentActionDisbalayedLabel.getText())); // -1 because list starts from zero and the code starts from one so
         ArrayList<String> spotifyContent = null;
         List<String> containsSpotify = componentStorage.toBeChangedAction.stream().filter(s -> s.toLowerCase().contains("spotify")).collect(Collectors.toList());
         if(!containsSpotify.isEmpty()){

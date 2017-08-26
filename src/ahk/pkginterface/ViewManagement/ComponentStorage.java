@@ -1,6 +1,6 @@
 package ahk.pkginterface.ViewManagement;
 
-import ahk.pkginterface.AHKInterface;
+import ahk.pkginterface.Shortcutinterface;
 import ahk.pkginterface.Frames.*;
 import ahk.pkginterface.Frames.BrowseAction;
 import ahk.pkginterface.database.Key;
@@ -28,7 +28,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 public class ComponentStorage {
-    public AHKInterface ahkinterface;
+    public Shortcutinterface shortcutinterface;
     public final KeySelection keySelection;
     public final ChangeKey changeKey;
     public final ChangeAction changeAction;
@@ -75,11 +75,11 @@ public class ComponentStorage {
     }
 
     /*
-    * Adding ahkinterface(Homepage) to viewmap and giving componentstorage the variable ahkinterface
+    * Adding shortcutinterface(Homepage) to viewmap and giving componentstorage the variable shortcutinterface
      */
-    public void setAhkinterface(AHKInterface ahkinterface) {
-        this.ahkinterface = ahkinterface;
-        viewMap.put("ahkinterface", this.ahkinterface.ahkinterfaceView);
+    public void setShortcutinterface(Shortcutinterface shortcutinterface) {
+        this.shortcutinterface = shortcutinterface;
+        viewMap.put("shortcutinterface", this.shortcutinterface.shortcutinterfaceview);
     }
     /*
     * Filling the viewmap with view
@@ -176,7 +176,7 @@ public class ComponentStorage {
     public void setMenuBars(){
         setMenubar(register.rootPane);
         setMenubar(browseaction.topPane);
-        setMenubar(ahkinterface.menuPaneAkaRealRootPane);
+        setMenubar(shortcutinterface.menuPaneAkaRealRootPane);
         setMenubar(keySelection.rootPane);
         setMenubar(signIn.rootPane);
         setMenubar(taskScheduler.rootPane);

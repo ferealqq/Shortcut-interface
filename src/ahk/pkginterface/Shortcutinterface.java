@@ -23,8 +23,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-public class AHKInterface extends JFrame {
-    public final JFXPanel ahkinterfaceView = new JFXPanel();
+public class Shortcutinterface extends JFrame {
+    public final JFXPanel shortcutinterfaceview = new JFXPanel();
     public final VBox menuPaneAkaRealRootPane = new VBox();
     public final HBox rootPane = new HBox();
     public final JFrame main = this;
@@ -39,19 +39,19 @@ public class AHKInterface extends JFrame {
     private final Label scriptNameLabel = new Label();
 
 
-    public AHKInterface() {
+    public Shortcutinterface() {
         componentStorage = new ComponentStorage(main);
-        componentStorage.setAhkinterface(this);
+        componentStorage.setShortcutinterface(this);
         constructAHK();
     }
 
     private void constructAHK() {
-        this.add(ahkinterfaceView);
+        this.add(shortcutinterfaceview);
         this.setVisible(true);
         this.setSize(800, 500);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(this.EXIT_ON_CLOSE);
-        initComponents(ahkinterfaceView);
+        initComponents(shortcutinterfaceview);
         componentStorage.findAHKScripts();
     }
 
@@ -96,22 +96,19 @@ public class AHKInterface extends JFrame {
         Button btChangeAction = new Button("Change action");
         btChangeAction.setMaxSize(Double.MAX_VALUE, 50);
         bottomButtonPane.setHgrow(btChangeAction, Priority.ALWAYS);
-        Button btEditTask = new Button("Edit Scheduled Task");
-        btEditTask.setMaxSize(Double.MAX_VALUE, 50);
-        bottomButtonPane.setHgrow(btEditTask, Priority.ALWAYS);
         Button btRun = new Button("Run");
         btRun.setMaxSize(Double.MAX_VALUE, 50);
         bottomButtonPane.setHgrow(btRun, Priority.ALWAYS);
 
-        createButtonActions(btRenameTheScript,btChangeKey,btChangeAction,btEditTask,btRun);
+        createButtonActions(btRenameTheScript,btChangeKey,btChangeAction ,btRun);
 
         bottomButtonPane.getStylesheets().add(this.getClass().getResource("Css/main_btns.css").toExternalForm());
-        bottomButtonPane.getChildren().addAll(btRenameTheScript,btChangeKey, btChangeAction, btEditTask, btRun);
+        bottomButtonPane.getChildren().addAll(btRenameTheScript,btChangeKey, btChangeAction, btRun);
 
         bottomButtonPane.setMaxSize(Double.MAX_VALUE, 50);
         return bottomButtonPane;
     }
-    private void createButtonActions(Button btRenameTheScript,Button btChangeKey, Button btChangeAction,Button btEditTask,Button btRun){
+    private void createButtonActions(Button btRenameTheScript,Button btChangeKey, Button btChangeAction,Button btRun){
         btRenameTheScript.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -146,12 +143,6 @@ public class AHKInterface extends JFrame {
                 }else{
                     JOptionPane.showMessageDialog(main,"You haven't selected an action to be changed");
                 }
-            }
-        });
-        btEditTask.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
             }
         });
         btRun.setOnAction(new EventHandler<ActionEvent>() {
@@ -438,7 +429,7 @@ public class AHKInterface extends JFrame {
             @Override
             public void handle(ActionEvent event) {
                 componentStorage.nameofthescript = JOptionPane.showInputDialog(main, "Name your Script");
-                componentStorage.hideSelectedAndShowSelected(ahkinterfaceView, componentStorage.viewMap.get("keyselection"));
+                componentStorage.hideSelectedAndShowSelected(shortcutinterfaceview, componentStorage.viewMap.get("keyselection"));
             }
         });
         plus.setTooltip(componentStorage.createTooltip("Create a new Script"));
@@ -453,6 +444,6 @@ public class AHKInterface extends JFrame {
     }
 
     public static void main(String[] args) {
-        new AHKInterface();
+        new Shortcutinterface();
     }
 }

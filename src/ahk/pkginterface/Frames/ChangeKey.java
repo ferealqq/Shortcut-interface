@@ -59,7 +59,7 @@ public class ChangeKey {
         btBack.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                componentStorage.hideSelectedAndShowSelected((JFXPanel)componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("ahkinterface"));
+                componentStorage.hideSelectedAndShowSelected((JFXPanel)componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("shortcutinterface"));
             }
         });
         buttonRow.setHgrow(btBack, Priority.ALWAYS);
@@ -77,7 +77,7 @@ public class ChangeKey {
                     return;
                 }
                 componentStorage.scriptWriter.changeKey();
-                componentStorage.hideSelectedAndShowSelected(changeKeyView, componentStorage.viewMap.get("ahkinterface"));
+                componentStorage.hideSelectedAndShowSelected(changeKeyView, componentStorage.viewMap.get("shortcutinterface"));
             }
         });
         buttonRow.getChildren().addAll(btBack, btChangeKey);
