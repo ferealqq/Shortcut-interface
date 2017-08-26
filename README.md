@@ -1,1 +1,1 @@
-# AHK-Interface
+# Shortcut-interface
