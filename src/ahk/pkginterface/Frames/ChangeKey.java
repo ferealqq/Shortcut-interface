@@ -17,8 +17,6 @@ import javafx.scene.layout.VBox;
 
 import javax.swing.*;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.*;
 
 public class ChangeKey {
@@ -146,8 +144,8 @@ public class ChangeKey {
         */
     }
     public void disableRightKeys(){
-        if(Objects.nonNull(componentStorage.changeKeyInfo.currentKeyDisblayedLabel)) {
-            ArrayList<String> listOfKeysInCurrentScript = componentStorage.changeKeyInfo.getCurrentScriptKeysInArrayList();
+        if(Objects.nonNull(componentStorage.currentScriptInfo.currentKeyDisblayedLabel)) {
+            ArrayList<String> listOfKeysInCurrentScript = componentStorage.currentScriptInfo.getCurrentScriptKeysInArrayList();
             for (Node childInKeyButtonPane : KeyButtonPane.getChildren()) {
                 if (childInKeyButtonPane.getClass().equals(HBox.class)) {
                     HBox hBox = (HBox) childInKeyButtonPane;

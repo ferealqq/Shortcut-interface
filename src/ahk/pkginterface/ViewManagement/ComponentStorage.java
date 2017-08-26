@@ -21,11 +21,9 @@ import javafx.util.Duration;
 
 import javax.swing.*;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
+import java.util.*;
 
 public class ComponentStorage {
     public Shortcutinterface shortcutinterface;
@@ -52,10 +50,11 @@ public class ComponentStorage {
 
     public final ArrayList<String> choosenActionName = new ArrayList<>();
 
-    public final ChangeInfo changeKeyInfo = new ChangeInfo();
+    public final CurrentScriptInfo currentScriptInfo = new CurrentScriptInfo();
 
     public String nameofthescript;
     public final ArrayList<String> oldScriptPaths = new ArrayList<>();
+    public String ahkRootPath = "";
 
     public ComponentStorage(JFrame main) {
         mainFrame = main;
@@ -277,22 +276,37 @@ public class ComponentStorage {
         File[] roots = new File("").listRoots();
         for (File root : roots) {
             final File[] files = new File(root.getAbsolutePath()).listFiles();
-            if(files != null) showFiles(files);
+            if(files != null) {
+                searchFilesForAHKScriptAndAHKRoot(files);
+            }
         }
     }
     /*
     * Just for making a loop of for
      */
-    public void showFiles(File[] files) {
+    public void searchFilesForAHKScriptAndAHKRoot(File[] files) {
         for (File file : files) {
             if (file.isDirectory()) {
-                if (file.listFiles() != null) showFiles(file.listFiles());
+                if (file.listFiles() != null) searchFilesForAHKScriptAndAHKRoot(file.listFiles());
             } else {
                 if (file.getAbsolutePath().endsWith(".ahk")) {
-                    System.out.println(file.getAbsolutePath());
                     oldScriptPaths.add(file.getAbsolutePath());
+                }else if(file.getAbsolutePath().endsWith("AutoHotkey.exe")){
+                    ahkRootPath = file.getAbsolutePath();
+                }else if(file.getAbsolutePath().contains("AutoHotkey.exe")){
+                    ahkRootPath = file.getAbsolutePath();
                 }
             }
+        }
+    }
+    public void runThisScript(File ScriptToRun){
+        String ahkPath = "C:\\Program Files\\AutoHotkey\\AutoHotkey.exe";
+        File ahkPathFile = new File(ahkPath);
+        if(!ahkPathFile.exists()) ahkPath = ahkRootPath;
+        try {
+            Runtime.getRuntime().exec(new String[] {ahkPath,ScriptToRun.getAbsolutePath(),"wutface"});
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

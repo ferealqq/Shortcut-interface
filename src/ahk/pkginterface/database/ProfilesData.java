@@ -21,7 +21,7 @@ public class ProfilesData {
     }
 
     private String setConnectionStrings(){
-        return "jdbc:postgresql://localhost:5432/ahk-interface?user=postgres&password=pekka";
+        return "jdbc:postgresql://localhost:5432/shortcut-interface?user=postgres&password=pekka";
     }
 
     public boolean createUser(String username, String email, String password){

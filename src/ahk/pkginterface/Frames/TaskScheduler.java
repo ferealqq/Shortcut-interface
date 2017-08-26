@@ -154,15 +154,7 @@ public class TaskScheduler {
                 }
                 String absolutePathOfTheScript = writeScript(file);
                 if (btnRunNow.isSelected()) {
-                    try {
-                        BufferedWriter writer = new BufferedWriter(new FileWriter("run.bat"));
-                        writer.write("start " + absolutePathOfTheScript);
-                        writer.newLine();
-                        writer.write("exit");
-                        Process batRunner = Runtime.getRuntime().exec("cmd /c start run.bat");
-                        close(writer);
-                    } catch (IOException e) {
-                    }
+                   componentStorage.runThisScript(file);
                 }
                 //if the file exists and the task all ready have been created you dont need to create a     new task
                 createTask(componentStorage.nameofthescript, absolutePathOfTheScript);

@@ -100,7 +100,7 @@ public class Shortcutinterface extends JFrame {
         btRun.setMaxSize(Double.MAX_VALUE, 50);
         bottomButtonPane.setHgrow(btRun, Priority.ALWAYS);
 
-        createButtonActions(btRenameTheScript,btChangeKey,btChangeAction ,btRun);
+        createButtonActions(btRenameTheScript,btChangeKey,btChangeAction,btRun);
 
         bottomButtonPane.getStylesheets().add(this.getClass().getResource("Css/main_btns.css").toExternalForm());
         bottomButtonPane.getChildren().addAll(btRenameTheScript,btChangeKey, btChangeAction, btRun);
@@ -108,59 +108,6 @@ public class Shortcutinterface extends JFrame {
         bottomButtonPane.setMaxSize(Double.MAX_VALUE, 50);
         return bottomButtonPane;
     }
-    private void createButtonActions(Button btRenameTheScript,Button btChangeKey, Button btChangeAction,Button btRun){
-        btRenameTheScript.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                String newName = JOptionPane.showInputDialog(main,"Write new name of the script","Rename");
-                if(!newName.isEmpty()){
-                    Boolean bool = componentStorage.changeKeyInfo.currentScriptDisblayedFile.renameTo(new File(componentStorage.changeKeyInfo.currentScriptDisblayedFile.getParent()+"\\"+newName+".ahk"));
-                    if(bool) {
-                        scriptNameLabel.setText(newName);
-                        componentStorage.changeKeyInfo.currentScriptDisblayedLabel.setText(newName);
-                    }
-                }
-            }
-        });
-        btChangeKey.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(componentStorage.changeKeyInfo.currentKeyDisblayedLabel != null){
-                    componentStorage.toBeChangedKeys.removeAll(componentStorage.toBeChangedKeys);
-                    componentStorage.changeKey.resetColors();
-                    componentStorage.changeKey.disableRightKeys();
-                    componentStorage.hideSelectedAndShowSelected((JFXPanel)main.getContentPane().getComponent(main.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("changekey"));
-                }else{
-                    JOptionPane.showMessageDialog(main,"You haven't selected a key to be changed");
-                }
-            }
-        });
-        btChangeAction.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if(componentStorage.changeKeyInfo.currentActionDisbalayedLabel != null){
-                    componentStorage.hideSelectedAndShowSelected((JFXPanel)main.getContentPane().getComponent(main.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("changeaction"));
-                }else{
-                    JOptionPane.showMessageDialog(main,"You haven't selected an action to be changed");
-                }
-            }
-        });
-        btRun.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-                    BufferedWriter writer = new BufferedWriter(new FileWriter("run.bat"));
-                    writer.write("start " + componentStorage.changeKeyInfo.currentScriptDisblayedFile.getAbsolutePath());
-                    writer.newLine();
-                    writer.write("exit");
-                    Process batRunner = Runtime.getRuntime().exec("cmd /c start run.bat");
-                    writer.close();
-                } catch (IOException e) {
-                }
-            }
-        });
-    }
-
     private HBox createScriptInfoPane() {
         HBox scriptInfoPane = new HBox();
         keySectionPane = new VBox();
@@ -203,6 +150,51 @@ public class Shortcutinterface extends JFrame {
         return scriptInfoPane;
     }
 
+    private void createButtonActions(Button btRenameTheScript,Button btChangeKey, Button btChangeAction, Button btRun){
+        btRenameTheScript.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String newName = JOptionPane.showInputDialog(main,"Write new name of the script","Rename");
+                if(!newName.isEmpty()){
+                    Boolean bool = componentStorage.currentScriptInfo.currentScriptDisblayedFile.renameTo(new File(componentStorage.currentScriptInfo.currentScriptDisblayedFile.getParent()+"\\"+newName+".ahk"));
+                    if(bool) {
+                        scriptNameLabel.setText(newName);
+                        componentStorage.currentScriptInfo.currentScriptDisblayedLabel.setText(newName);
+                    }
+                }
+            }
+        });
+        btChangeKey.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(componentStorage.currentScriptInfo.currentKeyDisblayedLabel != null){
+                    componentStorage.toBeChangedKeys.removeAll(componentStorage.toBeChangedKeys);
+                    componentStorage.changeKey.resetColors();
+                    componentStorage.changeKey.disableRightKeys();
+                    componentStorage.hideSelectedAndShowSelected((JFXPanel)main.getContentPane().getComponent(main.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("changekey"));
+                }else{
+                    JOptionPane.showMessageDialog(main,"You haven't selected a key to be changed");
+                }
+            }
+        });
+        btChangeAction.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if(componentStorage.currentScriptInfo.currentActionDisbalayedLabel != null){
+                    componentStorage.hideSelectedAndShowSelected((JFXPanel)main.getContentPane().getComponent(main.getContentPane().getComponentCount()-1),componentStorage.viewMap.get("changeaction"));
+                }else{
+                    JOptionPane.showMessageDialog(main,"You haven't selected an action to be changed");
+                }
+            }
+        });
+        btRun.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                componentStorage.runThisScript(componentStorage.currentScriptInfo.currentScriptDisblayedFile);
+            }
+        });
+    }
+
     private BorderPane createLabelpane() {
         BorderPane labelPane = new BorderPane();
 
@@ -229,6 +221,7 @@ public class Shortcutinterface extends JFrame {
         BorderPane bottomButonPane = new BorderPane();
         Button searchScripts = new Button("Search Scripts");
         searchScripts.setMaxWidth(800 / 2.8);
+        searchScripts.setMaxHeight(Double.MAX_VALUE);
         searchScripts.setAlignment(Pos.BOTTOM_CENTER);
         bottomButonPane.setBottom(searchScripts);
         scriptPane.getChildren().add(bottomButonPane);
@@ -253,8 +246,8 @@ public class Shortcutinterface extends JFrame {
                     @Override
                     public void handle(MouseEvent event) {
                         if (!scriptLabel.getStyle().equals("-fx-background-color: #A9A9A9;")) {
-                            componentStorage.changeKeyInfo.currentScriptDisblayedFile = file;
-                            componentStorage.changeKeyInfo.currentScriptDisblayedLabel = scriptLabel;
+                            componentStorage.currentScriptInfo.currentScriptDisblayedFile = file;
+                            componentStorage.currentScriptInfo.currentScriptDisblayedLabel = scriptLabel;
                             oldColorReplacement(labelPane.getChildren().iterator());
                             scriptLabel.setStyle("-fx-background-color: #A9A9A9;");
                             scriptNameLabel.setText(scriptName);
@@ -269,7 +262,7 @@ public class Shortcutinterface extends JFrame {
                                     if(sCurrentline.endsWith("::")) keysIndex.put(sCurrentline.replace(":","").replace(" ",""),reader.getLineNumber());
                                 }
                                 deleteOldScriptInfo();
-                                componentStorage.changeKeyInfo.keysIndexInScript.put(scriptName,keysIndex);
+                                componentStorage.currentScriptInfo.keysIndexInScript.put(scriptName,keysIndex);
                                 createCurrentScriptInfo(insidesOfTheFile);
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -280,8 +273,8 @@ public class Shortcutinterface extends JFrame {
                                 }
                             }
                         }else{
-                            componentStorage.changeKeyInfo.currentScriptDisblayedFile = null;
-                            componentStorage.changeKeyInfo.currentScriptDisblayedLabel = null;
+                            componentStorage.currentScriptInfo.currentScriptDisblayedFile = null;
+                            componentStorage.currentScriptInfo.currentScriptDisblayedLabel = null;
                             deleteOldScriptInfo();
                             oldColorReplacement(labelPane.getChildren().iterator());
                             scriptNameLabel.setText("");
@@ -346,9 +339,9 @@ public class Shortcutinterface extends JFrame {
                     if(!currentKeyLabel.getStyle().equals("-fx-background-color: #A9A9A9;")){
                         oldColorReplacement(iterator);
                         currentKeyLabel.setStyle("-fx-background-color: #A9A9A9;");
-                        componentStorage.changeKeyInfo.currentKeyDisblayedLabel = currentKeyLabel;
+                        componentStorage.currentScriptInfo.currentKeyDisblayedLabel = currentKeyLabel;
                     }else{
-                        componentStorage.changeKeyInfo. currentKeyDisblayedLabel = null;
+                        componentStorage.currentScriptInfo. currentKeyDisblayedLabel = null;
                         oldColorReplacement(iterator);
                     }
                 }
@@ -360,9 +353,9 @@ public class Shortcutinterface extends JFrame {
                     if(!currentActionlabel.getStyle().equals("-fx-background-color: #A9A9A9;")){
                         oldColorReplacement(iterator);
                         currentActionlabel.setStyle("-fx-background-color: #A9A9A9;");
-                        componentStorage.changeKeyInfo.currentActionDisbalayedLabel = currentActionlabel;
+                        componentStorage.currentScriptInfo.currentActionDisbalayedLabel = currentActionlabel;
                     }else{
-                        componentStorage.changeKeyInfo.currentActionDisbalayedLabel = null;
+                        componentStorage.currentScriptInfo.currentActionDisbalayedLabel = null;
                         oldColorReplacement(iterator);
                     }
                 }

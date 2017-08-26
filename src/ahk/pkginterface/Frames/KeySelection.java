@@ -136,11 +136,6 @@ public class KeySelection {
         btScripts.setMaxHeight(Double.MAX_VALUE);
         bottomRowButtons.add(btScripts);
 
-        Button btDetect = new Button("Detect");
-        buttonRow.setHgrow(btDetect, Priority.ALWAYS);
-        btDetect.setMaxWidth(Double.MAX_VALUE);
-        btDetect.setMaxHeight(Double.MAX_VALUE);
-        bottomRowButtons.add(btDetect);
 
 
         Button btBrowse = new Button("Browse Scripts");
@@ -157,7 +152,7 @@ public class KeySelection {
         } else {
             btNext.setDisable(false);
         }
-        buttonRow.getChildren().addAll(btBack, btScripts, btDetect, btBrowse, btNext);
+        buttonRow.getChildren().addAll(btBack, btScripts, btBrowse, btNext);
         buttonRow.setAlignment(Pos.BOTTOM_LEFT);
         bottomRowButtons.add(btNext);
 

@@ -19,9 +19,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.input.KeyEvent;
 
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import javafx.scene.control.TextField;
 
@@ -69,6 +67,7 @@ public class ChangeAction{
             @Override
             public void handle(ActionEvent event) {
                 componentStorage.scriptWriter.changeAction();
+                componentStorage.currentScriptInfo.currentActionDisbalayedLabel.setText(componentStorage.toBeChangedAction.toString());
                 componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount()-1), componentStorage.viewMap.get("shortcutinterface"));
             }
         };

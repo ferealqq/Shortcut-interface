@@ -29,7 +29,7 @@ public class KeyData {
     }
 
     private String setConnectionString() {
-        return "jdbc:postgresql://localhost:5432/ahk-interface?user=postgres&password=pekka";
+        return "jdbc:postgresql://localhost:5432/shortcut-interface?user=postgres&password=pekka";
     }
 
     /*

@@ -19,9 +19,9 @@ public class    ScriptWriter {
      * Call this method when you are changeing the key in ChangeKey class.
      */
     public void changeKey() {
-        String keyToBeChanged = componentStorage.changeKeyInfo.currentKeyDisblayedLabel.getText().replace(" ", "");
-        File scriptToChangeIn = componentStorage.changeKeyInfo.currentScriptDisblayedFile;
-        HashMap<String, Integer> map = componentStorage.changeKeyInfo.getCurrentScriptKeyInfo();
+        String keyToBeChanged = componentStorage.currentScriptInfo.currentKeyDisblayedLabel.getText().replace(" ", "");
+        File scriptToChangeIn = componentStorage.currentScriptInfo.currentScriptDisblayedFile;
+        HashMap<String, Integer> map = componentStorage.currentScriptInfo.getCurrentScriptKeyInfo();
         int indexWhereToBePlaced = map.get(keyToBeChanged);
         List<String> lines = null;
         try {
@@ -37,14 +37,14 @@ public class    ScriptWriter {
             e.printStackTrace();
         }
         if (componentStorage.toBeChangedKeys.size() == 2) {
-            componentStorage.changeKeyInfo.currentKeyDisblayedLabel.setText(componentStorage.toBeChangedKeys.get(0).getKey() + " & " + componentStorage.toBeChangedKeys.get(1).getKey());
+            componentStorage.currentScriptInfo.currentKeyDisblayedLabel.setText(componentStorage.toBeChangedKeys.get(0).getKey() + " & " + componentStorage.toBeChangedKeys.get(1).getKey());
         } else {
-            componentStorage.changeKeyInfo.currentKeyDisblayedLabel.setText(componentStorage.toBeChangedKeys.get(0).getKey());
+            componentStorage.currentScriptInfo.currentKeyDisblayedLabel.setText(componentStorage.toBeChangedKeys.get(0).getKey());
         }
     }
     public void changeAction(){
-        File scriptToChangeIn = componentStorage.changeKeyInfo.currentScriptDisblayedFile;
-        Integer actionStartsHere = componentStorage.changeKeyInfo.getIndexForSpecificKey(componentStorage.shortcutinterface.actionAndKey.get(componentStorage.changeKeyInfo.currentActionDisbalayedLabel.getText())); // -1 because list starts from zero and the code starts from one so
+        File scriptToChangeIn = componentStorage.currentScriptInfo.currentScriptDisblayedFile;
+        Integer actionStartsHere = componentStorage.currentScriptInfo.getIndexForSpecificKey(componentStorage.shortcutinterface.actionAndKey.get(componentStorage.currentScriptInfo.currentActionDisbalayedLabel.getText())); // -1 because list starts from zero and the code starts from one so
         ArrayList<String> spotifyContent = null;
         List<String> containsSpotify = componentStorage.toBeChangedAction.stream().filter(s -> s.toLowerCase().contains("spotify")).collect(Collectors.toList());
         if(!containsSpotify.isEmpty()){
@@ -123,7 +123,6 @@ public class    ScriptWriter {
         }
         return  endingPoint;
     }
-
     private ArrayList<String> getScriptContent(){
         final ArrayList<String> listOfCode = new ArrayList<>();
         componentStorage.toBeChangedAction.stream().forEach(
