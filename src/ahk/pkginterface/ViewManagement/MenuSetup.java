@@ -33,8 +33,7 @@ public class MenuSetup {
         backwardsMenu.setGraphic(backwardsMenuButton);
         final Menu menuProfile = new Menu("Profile");
         menuItemsForProfile(menuProfile);
-        final Menu menuHelp = new Menu("Help"); 
-        menuBar.getMenus().addAll(backwardsMenu, forwardsMenu, menuProfile, menuHelp);
+        menuBar.getMenus().addAll(backwardsMenu, forwardsMenu, menuProfile);
         String menuBarCss = this.getClass().getResource("Css/main_menu_bar.css").toExternalForm();
         menuBar.getStylesheets().add(menuBarCss);
         return menuBar;
