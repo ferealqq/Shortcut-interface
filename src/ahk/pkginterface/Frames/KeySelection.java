@@ -33,8 +33,7 @@ public class KeySelection {
     private EventHandler<ActionEvent> yourScriptEventHandler;
     private EventHandler<ActionEvent> backtomenuEventHandler;
 
-    private YourScriptFrame yourScriptFrame = new YourScriptFrame();
-    public ComponentStorage componentStorage;// siirä viewmap aloitus formiin sitten kuin se on tehty
+    public ComponentStorage componentStorage;
 
     public KeySelection(ComponentStorage compStorage) {
         componentStorage = compStorage;
@@ -76,14 +75,6 @@ public class KeySelection {
                 componentStorage.hideSelectedAndShowSelected(keySelectionView, componentStorage.viewMap.get("browseaction"));
             }
         };
-        yourScriptEventHandler = new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                yourScriptFrame.setLocation(componentStorage.shortcutinterface.getX() + 200, componentStorage.shortcutinterface.getY() + 75);
-                yourScriptFrame.setVisible(true);
-                yourScriptFrame.createLabel();
-            }
-        };
         detectEventHandler = new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -105,14 +96,6 @@ public class KeySelection {
                     Button btBack = bottomRowButtons.get(i);
                     btBack.setOnAction(backtomenuEventHandler);
                     break;
-                case "Detect":
-                    Button btDetect = bottomRowButtons.get(i);
-                    btDetect.setOnAction(detectEventHandler);
-                    break;
-                case "Your Scripts":
-                    Button btScript = bottomRowButtons.get(i);
-                    btScript.setOnAction(yourScriptEventHandler);
-                    break;
                 case "Next":
                     Button btNext = bottomRowButtons.get(i);
                     btNext.setOnAction(nextEventHandler);
@@ -130,20 +113,6 @@ public class KeySelection {
         btBack.setMaxHeight(Double.MAX_VALUE);
         bottomRowButtons.add(btBack);
 
-        Button btScripts = new Button("Your Scripts");
-        buttonRow.setHgrow(btScripts, Priority.ALWAYS);
-        btScripts.setMaxWidth(Double.MAX_VALUE);
-        btScripts.setMaxHeight(Double.MAX_VALUE);
-        bottomRowButtons.add(btScripts);
-
-
-
-        Button btBrowse = new Button("Browse Scripts");
-        buttonRow.setHgrow(btBrowse, Priority.ALWAYS);
-        btBrowse.setMaxWidth(Double.MAX_VALUE);
-        btBrowse.setMaxHeight(Double.MAX_VALUE);
-        bottomRowButtons.add(btBrowse);
-
 
         Button btNext = new Button("Next");
         buttonRow.setHgrow(btNext, Priority.ALWAYS);
@@ -152,7 +121,7 @@ public class KeySelection {
         } else {
             btNext.setDisable(false);
         }
-        buttonRow.getChildren().addAll(btBack, btScripts, btBrowse, btNext);
+        buttonRow.getChildren().addAll(btBack, btNext);
         buttonRow.setAlignment(Pos.BOTTOM_LEFT);
         bottomRowButtons.add(btNext);
 
@@ -237,40 +206,6 @@ public class KeySelection {
                     }
                 }
             }
-        }
-    }
-    class YourScriptFrame extends JFrame {
-        public final JFXPanel yourScriptView = new JFXPanel();
-
-        public final ScrollPane scrollPane = new ScrollPane();
-        public final VBox vBox = new VBox(10);
-
-        public YourScriptFrame() {
-            this.setUndecorated(true);
-            this.setSize(400, 400);
-            initComponent();
-        }
-
-        private void initComponent() {
-            Scene scene = createLocalScene();
-            this.yourScriptView.setScene(scene);
-            this.add(yourScriptView);
-        }
-
-        private Scene createLocalScene() {
-            Scene scene = new Scene(scrollPane);
-            return scene;
-        }
-
-        private void createLabel() {
-            for (String path : componentStorage.oldScriptPaths) {
-                Label currentlabel = new Label(path);
-                vBox.setVgrow(currentlabel, Priority.ALWAYS);
-                vBox.getChildren().add(currentlabel);
-            }
-            int oldsize = componentStorage.oldScriptPaths.size();
-            scrollPane.setContent(vBox);
-            vBox.minWidthProperty().bind(Bindings.createDoubleBinding(() -> scrollPane.getViewportBounds().getWidth(), scrollPane.viewportBoundsProperty()));
         }
     }
 }

@@ -37,7 +37,7 @@ public class Shortcutinterface extends JFrame {
     private VBox keySectionPane = null;
     private VBox actionSectionPane = null;
     private final Label scriptNameLabel = new Label();
-
+    private final VBox scriptLabelPane = new VBox();
 
     public Shortcutinterface() {
         componentStorage = new ComponentStorage(main);
@@ -69,6 +69,14 @@ public class Shortcutinterface extends JFrame {
         createInfoPane();
         rootPane.getStylesheets().add(this.getClass().getResource("Css/main_btns.css").toExternalForm());
         return (scene);
+    }
+    private ScrollPane initializeScrollPane(){
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(scriptLabelPane);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scriptLabelPane.minWidthProperty().bind(Bindings.createDoubleBinding(() -> scrollPane.getViewportBounds().getWidth(), scrollPane.viewportBoundsProperty()));
+        scrollPane.setPrefSize(800 / 2.8, 350);
+        return  scrollPane;
     }
 
     private void createInfoPane() {
@@ -209,7 +217,8 @@ public class Shortcutinterface extends JFrame {
         VBox ScriptPane = new VBox(10);
 
         createMinusAndPlusButtons(ScriptPane);
-        createScriptLabels(ScriptPane);
+        final File yourScriptsLocation = new File("YourScripts/");
+        createScriptLabels(ScriptPane,yourScriptsLocation);
         createFindScriptsBottomButton(ScriptPane);
 
         ScriptPane.setStyle("-fx-border-color: #A9A9A9");
@@ -220,75 +229,47 @@ public class Shortcutinterface extends JFrame {
     private void createFindScriptsBottomButton(VBox scriptPane) {
         BorderPane bottomButonPane = new BorderPane();
         Button searchScripts = new Button("Search Scripts");
-        searchScripts.setMaxWidth(800 / 2.8);
+        searchScripts.setMaxWidth(Double.MAX_VALUE);
         searchScripts.setMaxHeight(Double.MAX_VALUE);
         searchScripts.setAlignment(Pos.BOTTOM_CENTER);
+        searchScripts.setOnAction(event -> {
+            componentStorage.oldScriptPaths.stream().forEach(
+                oneScript -> {
+                    File file = new File(oneScript);
+                    if(!checkForDuplicates(file) && !file.getParent().contains("$RECYCLE.BIN")) createScriptLabel(file);
+                }
+            );
+        });
         bottomButonPane.setBottom(searchScripts);
         scriptPane.getChildren().add(bottomButonPane);
     }
+    public boolean checkForDuplicates(File file){
+        String scriptName = file.getName().replaceFirst("[.][^.]+$", "");
+        Iterator<Node> childsIterator =scriptLabelPane.getChildren().iterator();
+        while(childsIterator.hasNext()){
+            Node child = childsIterator.next();
+            System.out.println(file.getParent());
+            if(((Label)child).getText().equals(scriptName)) return true;
+        }
+        return false;
+    }
 
-    private void createScriptLabels(VBox scriptPane) {
-        VBox labelPane = new VBox();
+    private void createScriptLabels(VBox scriptPane,File yourScriptsLocation) {
         Label sectionTitleYourScripts = new Label("Your Scripts");
         sectionTitleYourScripts.setStyle("-fx-font-family: Lucida Sans Unicode;" +
                 "-fx-font-size: 20px");
-        labelPane.getChildren().add(sectionTitleYourScripts);
+        scriptLabelPane.getChildren().add(sectionTitleYourScripts);
 
-        final File yourScriptOriginal = new File("YourScripts/");
         File[] files = null;
-        if (yourScriptOriginal != null && yourScriptOriginal.listFiles() != null)
-            files = yourScriptOriginal.listFiles();
+        if (yourScriptsLocation != null && yourScriptsLocation.listFiles() != null) files = yourScriptsLocation.listFiles();
         if (files != null) for (File file : files) {
-            if (file.getAbsolutePath().endsWith(".ahk")) {
-                String scriptName = file.getName().replaceFirst("[.][^.]+$", "");
-                Label scriptLabel = new Label(scriptName);
-                scriptLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent event) {
-                        if (!scriptLabel.getStyle().equals("-fx-background-color: #A9A9A9;")) {
-                            componentStorage.currentScriptInfo.currentScriptDisblayedFile = file;
-                            componentStorage.currentScriptInfo.currentScriptDisblayedLabel = scriptLabel;
-                            oldColorReplacement(labelPane.getChildren().iterator());
-                            scriptLabel.setStyle("-fx-background-color: #A9A9A9;");
-                            scriptNameLabel.setText(scriptName);
-                            LineNumberReader reader = null;
-                            try {
-                                reader = new LineNumberReader(new FileReader(file.getAbsolutePath()));
-                                HashMap<String,Integer> keysIndex = new HashMap<>();
-                                ArrayList<String> insidesOfTheFile = new ArrayList<>();
-                                String sCurrentline;
-                                while ((sCurrentline = reader.readLine()) != null) {
-                                    insidesOfTheFile.add(sCurrentline);
-                                    if(sCurrentline.endsWith("::")) keysIndex.put(sCurrentline.replace(":","").replace(" ",""),reader.getLineNumber());
-                                }
-                                deleteOldScriptInfo();
-                                componentStorage.currentScriptInfo.keysIndexInScript.put(scriptName,keysIndex);
-                                createCurrentScriptInfo(insidesOfTheFile);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            } finally {
-                                try {
-                                    reader.close();
-                                } catch (IOException e) {
-                                }
-                            }
-                        }else{
-                            componentStorage.currentScriptInfo.currentScriptDisblayedFile = null;
-                            componentStorage.currentScriptInfo.currentScriptDisblayedLabel = null;
-                            deleteOldScriptInfo();
-                            oldColorReplacement(labelPane.getChildren().iterator());
-                            scriptNameLabel.setText("");
-                        }
-                    }
-                });
-                labelPane.getChildren().add(scriptLabel);
-            }
+            createScriptLabel(file);
         }
-        labelPane.setMaxSize(800 / 2.8, 350);
-        labelPane.setStyle("-fx-font-family: Lucida Sans Unicode;" +
+        scriptLabelPane.setMaxSize(800 / 2.8, 350);
+        scriptLabelPane.setStyle("-fx-font-family: Lucida Sans Unicode;" +
                 "-fx-font-size: 15px");
-        scriptPane.setVgrow(labelPane, Priority.ALWAYS);
-        scriptPane.getChildren().add(labelPane);
+        scriptPane.setVgrow(scriptLabelPane, Priority.ALWAYS);
+        scriptPane.getChildren().add(initializeScrollPane());
     }
     private void deleteOldScriptInfo(){
         Object[] listofkeys = keyAndAListOfActionsInCurrentScript.keySet().toArray();
@@ -316,6 +297,52 @@ public class Shortcutinterface extends JFrame {
                     if(iterator.next().getClass().equals(Label.class)) iterator.remove();
                 }
             }
+        }
+    }
+    public void createScriptLabel(File file){
+        if (file.getAbsolutePath().endsWith(".ahk")) {
+            String scriptName = file.getName().replaceFirst("[.][^.]+$", "");
+            Label scriptLabel = new Label(scriptName);
+            scriptLabel.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if (!scriptLabel.getStyle().equals("-fx-background-color: #A9A9A9;")) {
+                        componentStorage.currentScriptInfo.currentScriptDisblayedFile = file;
+                        componentStorage.currentScriptInfo.currentScriptDisblayedLabel = scriptLabel;
+                        oldColorReplacement(scriptLabelPane.getChildren().iterator());
+                        scriptLabel.setStyle("-fx-background-color: #A9A9A9;");
+                        scriptNameLabel.setText(scriptName);
+                        LineNumberReader reader = null;
+                        try {
+                            reader = new LineNumberReader(new FileReader(file.getAbsolutePath()));
+                            HashMap<String,Integer> keysIndex = new HashMap<>();
+                            ArrayList<String> insidesOfTheFile = new ArrayList<>();
+                            String sCurrentline;
+                            while ((sCurrentline = reader.readLine()) != null) {
+                                insidesOfTheFile.add(sCurrentline);
+                                if(sCurrentline.endsWith("::")) keysIndex.put(sCurrentline.replace(":","").replace(" ",""),reader.getLineNumber());
+                            }
+                            deleteOldScriptInfo();
+                            componentStorage.currentScriptInfo.keysIndexInScript.put(scriptName,keysIndex);
+                            createCurrentScriptInfo(insidesOfTheFile);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        } finally {
+                            try {
+                                reader.close();
+                            } catch (IOException e) {
+                            }
+                        }
+                    }else{
+                        componentStorage.currentScriptInfo.currentScriptDisblayedFile = null;
+                        componentStorage.currentScriptInfo.currentScriptDisblayedLabel = null;
+                        deleteOldScriptInfo();
+                        oldColorReplacement(scriptLabelPane.getChildren().iterator());
+                        scriptNameLabel.setText("");
+                    }
+                }
+            });
+            scriptLabelPane.getChildren().add(scriptLabel);
         }
     }
 

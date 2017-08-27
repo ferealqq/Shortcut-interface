@@ -143,8 +143,8 @@ public class TaskScheduler {
                 if (Objects.isNull(choosenPath)) {
                     choosenPath = "YourScripts/" + componentStorage.nameofthescript + ".ahk";
                 }
-                File file = new File(choosenPath);
-                if (checkForDoubleKey(file.getAbsolutePath())) {
+                File newScript = new File(choosenPath);
+                if (checkForDoubleKey(newScript.getAbsolutePath())) {
                     JOptionPane.showMessageDialog(componentStorage.mainFrame, "Key already has an action. Try another key!");
                     componentStorage.pressedKeys.removeAll(componentStorage.pressedKeys);
                     componentStorage.choosenActionName.removeAll(componentStorage.choosenActionName);
@@ -152,9 +152,9 @@ public class TaskScheduler {
                     resetColors();
                     return;
                 }
-                String absolutePathOfTheScript = writeScript(file);
+                String absolutePathOfTheScript = writeScript(newScript);
                 if (btnRunNow.isSelected()) {
-                   componentStorage.runThisScript(file);
+                   componentStorage.runThisScript(newScript);
                 }
                 //if the file exists and the task all ready have been created you dont need to create a     new task
                 createTask(componentStorage.nameofthescript, absolutePathOfTheScript);
@@ -162,14 +162,17 @@ public class TaskScheduler {
                 int integerofOptionAnwser = JOptionPane.showConfirmDialog(null,
                         "Saving sucessful! Would you like to add more actions to the same script", "choose one", JOptionPane.YES_NO_OPTION);
                 boolean choosenAnwser = Boolean.valueOf(integerofOptionAnwser > 0 ? "false" : "true");
-                System.out.println(integerofOptionAnwser);
                 if (choosenAnwser) {
                     componentStorage.pressedKeys.removeAll(componentStorage.pressedKeys);
                     componentStorage.choosenActionName.removeAll(componentStorage.choosenActionName);
                     componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1), componentStorage.viewMap.get("keyselection"));
                     resetColors();
                 }else{
-                    System.exit(1);
+                    componentStorage.shortcutinterface.createScriptLabel(newScript);
+                    componentStorage.pressedKeys.removeAll(componentStorage.pressedKeys);
+                    componentStorage.choosenActionName.removeAll(componentStorage.choosenActionName);
+                    componentStorage.hideSelectedAndShowSelected((JFXPanel) componentStorage.mainFrame.getContentPane().getComponent(componentStorage.mainFrame.getContentPane().getComponentCount() - 1), componentStorage.viewMap.get("shortcutinterface"));
+                    resetColors();
                 }
             }
         };
