@@ -449,6 +449,7 @@ public class Shortcutinterface extends JFrame {
             @Override
             public void handle(ActionEvent event) {
                 componentStorage.nameofthescript = JOptionPane.showInputDialog(main, "Name your Script");
+
                 componentStorage.hideSelectedAndShowSelected(shortcutinterfaceview, componentStorage.viewMap.get("keyselection"));
             }
         });
