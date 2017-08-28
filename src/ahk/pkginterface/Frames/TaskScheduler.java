@@ -126,6 +126,7 @@ public class TaskScheduler {
                 DirectoryChooser directoryChooser = new DirectoryChooser();
                 File path = directoryChooser.showDialog(null);
                 choosenPath = path.getAbsolutePath();
+                System.out.println(path);
                 if(componentStorage.currentUserId != 0) {
                     new ProfilesData().insertScriptPaths(choosenPath,componentStorage.currentUserId);
                 }else{

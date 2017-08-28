@@ -273,9 +273,9 @@ public class ComponentStorage {
     * Findnig the paths for the scripts and saving them to an arraylist which can be referenced as oldScriptPahts
      */
     public void findAHKScripts() {
-        File[] roots = new File("").listRoots();
-        for (File root : roots) {
-            final File[] files = new File(root.getAbsolutePath()).listFiles();
+        File[] users = new File("C:\\users").listFiles();
+        for (File user : users) {
+            final File[] files = new File(user.getAbsolutePath()).listFiles();
             if(files != null) {
                 searchFilesForAHKScriptAndAHKRoot(files);
             }

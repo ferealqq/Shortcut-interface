@@ -131,8 +131,7 @@ public class KeySelection {
     }
 
     private void createKeyboard() throws FileNotFoundException {
-        Keys keys = new KeyData().readKeyboardLayoutUSToKeys();
-        keys.addRowsToArrayListRows();
+        Keys keys = new KeyData().getRowsUsToKeys();
         VBox KeyButtonPane = new VBox();
         for (ArrayList<Key> row : keys.rows) {
             HBox rowPane = new HBox();

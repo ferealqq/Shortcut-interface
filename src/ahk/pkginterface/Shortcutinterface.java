@@ -217,7 +217,9 @@ public class Shortcutinterface extends JFrame {
         VBox ScriptPane = new VBox(10);
 
         createMinusAndPlusButtons(ScriptPane);
+
         final File yourScriptsLocation = new File("YourScripts/");
+        if(!yourScriptsLocation.exists()) yourScriptsLocation.mkdir();
         createScriptLabels(ScriptPane,yourScriptsLocation);
         createFindScriptsBottomButton(ScriptPane);
 
