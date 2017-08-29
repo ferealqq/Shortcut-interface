@@ -20,8 +20,8 @@ public class ProfilesData {
     public ProfilesData() {
     }
 
-    private String setConnectionStrings(){
-        return "jdbc:postgresql://localhost:5432/shortcut-interface?user=postgres&password=pekka";
+    private String setConnectionStrings() {
+        return new secretConnection().setConnectionStrings();
     }
 
     public boolean createUser(String username, String email, String password){

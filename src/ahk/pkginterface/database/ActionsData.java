@@ -17,7 +17,7 @@ public class ActionsData {
     }
 
     private String setConnectionStrings() {
-        return "jdbc:postgresql://localhost:5432/shortcut-interface?user=postgres&password=pekka";
+        return new secretConnection().setConnectionStrings();
     }
 
     public ArrayList<Actions> getActions() {

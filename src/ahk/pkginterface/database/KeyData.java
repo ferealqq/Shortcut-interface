@@ -133,7 +133,7 @@ public class KeyData {
     }
 
     private String setConnectionString() {
-        return "jdbc:postgresql://localhost:5432/shortcut-interface?user=postgres&password=pekka";
+        return new secretConnection().setConnectionStrings();
     }
 
     /*
