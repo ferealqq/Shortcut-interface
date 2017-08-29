@@ -11,13 +11,3 @@ It creates keyboard shortcuts. Shortcuts are automatically written by your choos
 3. Then you choose your action / actions you want. Press save and you have a shortcut script. 
 
 4. You can run your scripts in previously mentioned weird looking starting screen (bottom left of the starting screen has a button run). 
-
-<template name="fileList">
-  <div class="fileList">
-    {{#each files}}
-      <div class="file">
-        <strong>{{this.name}}</strong> <a href="{{this.url download=true}}" class="btn btn-primary" target="_parent">Download</a>
-      </div>
-    {{/each}}
-  </div>
-</template>
